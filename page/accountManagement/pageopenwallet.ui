@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageOpenWallet</class>
+ <widget class="QWidget" name="PageOpenWallet">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>310</width>
+    <height>595</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #FCD535;</string>
+  </property>
+  <widget class="QFrame" name="OpenWalletFrame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>310</width>
+     <height>595</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="showHidePushButton">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>152</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 64);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../res.qrc">
+      <normaloff>:/res/ic/res/ic/passwordHidden.png</normaloff>:/res/ic/res/ic/passwordHidden.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="walletNameLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>105</y>
+      <width>251</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+     </font>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+    padding-left: 4px;
+    padding-right: 4px;	
+}
+QLineEdit[text=&quot;&quot;]{ 
+	color:gray;
+ }
+</string>
+    </property>
+    <property name="placeholderText">
+     <string>Type wallet name</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="walletPasswordLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>155</y>
+      <width>201</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+     </font>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+    padding-left: 4px;
+    padding-right: 4px;	
+}
+QLineEdit[text=&quot;&quot;]{ 
+	color:gray;
+ }
+</string>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+    <property name="placeholderText">
+     <string>Type wallet password</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="headerLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>55</y>
+      <width>311</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+background-color: #FCD535;
+color: #474D57;
+}</string>
+    </property>
+    <property name="text">
+     <string>Open wallet</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="openWalletPushButton">
+    <property name="geometry">
+     <rect>
+      <x>59</x>
+      <y>205</y>
+      <width>191</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 64);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string>OPEN WALLET</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="newWalletPushButton">
+    <property name="geometry">
+     <rect>
+      <x>59</x>
+      <y>255</y>
+      <width>191</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 64);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string>NEW WALLET</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="importWalletPushButton">
+    <property name="geometry">
+     <rect>
+      <x>59</x>
+      <y>305</y>
+      <width>191</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(255, 255, 255, 16);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 64);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string>IMPORT WALLET</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../res.qrc"/>
+ </resources>
+ <connections/>
+</ui>

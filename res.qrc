@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/res/ic">
+        <file>res/ic/ic_usdt_foreground.png</file>
+        <file>res/ic/ic_usdc_foreground.png</file>
+        <file>res/ic/ic_unknown_foreground.png</file>
+        <file>res/ic/ic_tron_foreground.png</file>
+        <file>res/ic/ic_minted_token.png</file>
+        <file>res/ic/ic_minted_token_foreground.png</file>
+        <file>res/ic/ic_lyra_token_foreground.png</file>
+        <file>res/ic/ic_launcher.png</file>
+        <file>res/ic/ic_launcher_round.png</file>
+        <file>res/ic/ic_eth_foreground.png</file>
+        <file>res/ic/ic_launcher_foreground.png</file>
+        <file>res/ic/icon.ico</file>
+        <file>res/ic/arrowUp.png</file>
+        <file>res/ic/arrowDown.png</file>
+        <file>res/ic/article.ico</file>
+        <file>res/ic/back.png</file>
+        <file>res/ic/passwordShown.png</file>
+        <file>res/ic/passwordHidden.png</file>
+        <file>res/ic/waiting_dark.gif</file>
+        <file>res/ic/waiting_light.gif</file>
+        <file>res/ic/arrowLeftDown.png</file>
+        <file>res/ic/arrowRightUp.png</file>
+        <file>res/ic/copy.png</file>
+        <file>res/ic/magnify.png</file>
+        <file>res/ic/arowLeft.png</file>
+        <file>res/ic/qr.png</file>
+        <file>res/ic/paste.png</file>
+        <file>res/ic/dropDownArrow.png</file>
+        <file>res/qr.png</file>
+    </qresource>
+    <qresource prefix="/languages">
+        <file>languages/LyraPcWalletManager_ro.qm</file>
+        <file>languages/LyraPcWalletManager_en.qm</file>
+        <file>languages/LyraPcWalletManager_en.ts</file>
+        <file>languages/LyraPcWalletManager_ro.ts</file>
+    </qresource>
+</RCC>
