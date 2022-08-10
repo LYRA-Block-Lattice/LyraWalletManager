@@ -66,9 +66,12 @@ SOURCES += \
     page/accountManagement/pagerecoveraccount.cpp \
     page/dex/pagedex.cpp \
     page/more/pagemore.cpp \
+    page/more/subpage/settings/pagesettings.cpp \
     page/staking/pagestaking.cpp \
     page/swap/pageswap.cpp \
+    storage/storagecommon.cpp \
     storage/storageinternal.cpp \
+    storage/storagesettings.cpp \
     wallet/history.cpp \
     wallet/walletrpc.cpp
 
@@ -105,9 +108,12 @@ HEADERS += \
     page/accountManagement/pagerecoveraccount.h \
     page/dex/pagedex.h \
     page/more/pagemore.h \
+    page/more/subpage/settings/pagesettings.h \
     page/staking/pagestaking.h \
     page/swap/pageswap.h \
+    storage/storagecommon.h \
     storage/storageinternal.h \
+    storage/storagesettings.h \
     style.h \
     wallet/history.h \
     wallet/walletrpc.h
@@ -127,6 +133,7 @@ FORMS += \
     page/accountManagement/pagerecoveraccount.ui \
     page/dex/pagedex.ui \
     page/more/pagemore.ui \
+    page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \
     page/swap/pageswap.ui
 
@@ -162,3 +169,4 @@ contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
 }
+android: include(/Users/cry/Library/Android/sdk/android_openssl/openssl.pri)

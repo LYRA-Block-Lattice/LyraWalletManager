@@ -3,6 +3,7 @@
 
 #include "style.h"
 #include "global.h"
+#include "storage/storagesettings.h"
 
 PageOpenWallet::PageOpenWallet(QWidget *parent) :
     QWidget(parent),
@@ -110,13 +111,16 @@ void PageOpenWallet::on_showHidePushButton_clicked() {
 
 void PageOpenWallet::on_openWalletPushButton_clicked(){
     Global::Wallet::Name::set(ui->walletNameLineEdit->text());
-    StorageInternal::storageError_e err = StorageInternal::walletRead(ui->walletPasswordLineEdit->text());
+    StorageCommon::storageError_e err = StorageInternal::walletRead(ui->walletPasswordLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     if(Global::Account::getAccountList().count() == 0)
         Global::Page::goManagerPage(Global::Page::NEW_ACCOUNT);
     else
         Global::Page::goManagerPage(Global::Page::ACCOUNT);
+    StorageSettings::createDefault();
+    Global::Network::setNetwork(StorageSettings::get("network", "TESTNET"));
+    Global::Account::setSelectedAccount(StorageSettings::get("lastAccount"));
 }
 
 void PageOpenWallet::on_newWalletPushButton_clicked() {

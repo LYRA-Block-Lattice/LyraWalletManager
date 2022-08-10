@@ -40,6 +40,10 @@ PageNewAccount::~PageNewAccount() {
 void PageNewAccount::open() {
     ui->accountNameLineEdit->clear();
     ui->walletPasswordLineEdit->clear();
+    if(Global::Account::getAccountList().count())
+        ui->backPushButton->setVisible(true);
+    else
+        ui->backPushButton->setVisible(false);
 }
 
 void PageNewAccount::setScale() {
@@ -101,7 +105,7 @@ void PageNewAccount::on_backPushButton_clicked() {
 
 
 void PageNewAccount::on_createAccountPushButton_clicked() {
-    StorageInternal::storageError_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text());
+    StorageCommon::storageError_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     Global::Page::goManagerPage(Global::Page::ACCOUNT);

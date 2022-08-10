@@ -117,9 +117,12 @@ void PageAccount::setStyle() {
 }
 
 void PageAccount::loop() {
-    if(AccountListChangedCount != Global::Account::getAccountListChangedCount() || SelectedAccount != Global::Account::getSelectedAccount()) {
+    if(AccountListChangedCount != Global::Account::getAccountListChangedCount() ||
+            SelectedAccount != Global::Account::getSelectedAccount() ||
+            network != Global::Network::getNetwork()) {
         AccountListChangedCount = Global::Account::getAccountListChangedCount();
         SelectedAccount = Global::Account::getSelectedAccount();
+        network = Global::Network::getNetwork();
         if(Global::Account::getAccountList().count() > 0) {
             if(Wallet::History::get()) {
                 refreshBalances(Wallet::History::get()->history);

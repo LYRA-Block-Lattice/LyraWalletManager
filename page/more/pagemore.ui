@@ -186,12 +186,16 @@ QPushButton:pressed {
    <property name="text">
     <string>NEW ACCOUNT</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/newAccount.png</normaloff>:/res/ic/res/ic/newAccount.png</iconset>
+   </property>
   </widget>
   <widget class="QPushButton" name="settingsPushButton">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>220</y>
+     <y>180</y>
      <width>311</width>
      <height>41</height>
     </rect>
@@ -227,6 +231,10 @@ QPushButton:pressed {
    </property>
    <property name="text">
     <string>SETTINGS</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/settings.png</normaloff>:/res/ic/res/ic/settings.png</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="explorerPushButton">
@@ -275,53 +283,11 @@ QPushButton:pressed {
      <normaloff>:/res/ic/res/ic/magnify.png</normaloff>:/res/ic/res/ic/magnify.png</iconset>
    </property>
   </widget>
-  <widget class="QPushButton" name="backupWalletPushButton">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>180</y>
-     <width>311</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>13</pointsize>
-     <bold>true</bold>
-     <stylestrategy>PreferDefault</stylestrategy>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-	border-style: solid;
-	background-color: rgba(0, 0, 0, 8);
-	border-width: 1px;
-	border-color: lightgrey;
-	text-align:left;
-    padding-right: 3px;
-    padding-left: 3px;
-	color:black;
-}
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 16);
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 64);
-}</string>
-   </property>
-   <property name="text">
-    <string>BACKUP WALLET</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="aboutUsPushButton">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>260</y>
+     <y>220</y>
      <width>311</width>
      <height>41</height>
     </rect>
@@ -357,6 +323,10 @@ QPushButton:pressed {
    </property>
    <property name="text">
     <string>ABOUT US</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/aboutUs.png</normaloff>:/res/ic/res/ic/aboutUs.png</iconset>
    </property>
   </widget>
  </widget>

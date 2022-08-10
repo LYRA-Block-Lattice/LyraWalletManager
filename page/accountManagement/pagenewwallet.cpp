@@ -138,7 +138,7 @@ void PageNewWallet::on_walletPasswordLineEdit_2_textChanged(const QString &arg1)
 
 void PageNewWallet::on_createWalletPushButton_clicked() {
     Global::Wallet::Name::set(ui->walletNameLineEdit->text());
-    StorageInternal::storageError_e err = StorageInternal::walletCreate(ui->walletPasswordLineEdit->text());
+    StorageCommon::storageError_e err = StorageInternal::walletCreate(ui->walletPasswordLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     Global::Wallet::Password::set(ui->walletPasswordLineEdit->text());

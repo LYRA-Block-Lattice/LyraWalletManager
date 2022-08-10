@@ -9,6 +9,7 @@
 #include <QList>
 #include <QDebug>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 #include "page/accountManagement/pageimportwallet.h"
 #include "page/accountManagement/pagenewaccount.h"
@@ -21,9 +22,13 @@
 #include "page/account/subpage/send/pagesend.h"
 #include "page/account/subpage/receive/pagereceive.h"
 
+#include "page/more/subpage/settings/pagesettings.h"
+
 #include "globallyra.h"
 #include "crypto/base58Encoding.h"
 #include "crypto/signatures.h"
+
+#include "storage/storagecommon.h"
 
 #define PAGE_WIDTH      310
 #define MENU_BAR_HEIGHT 30
@@ -49,12 +54,19 @@ extern PageTransactionDetail *pageTransactionDetail;
 extern PageSend *pageSend;
 extern PageReceive *pageReceive;
 
+extern PageSettings *pageSettings;
+
 extern double yScale;
 extern double xScale;
 extern int headerHeight;
 
 extern networkName_e Net;
 extern QList<QList<QPair<QString,QString>>> NodeList;
+
+#define COMPOSE_WALLET_PARH     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+#define COMPOSE_WALLET_NAME     COMPOSE_WALLET_PARH + QDir::separator() + Global::Wallet::Name::get() + ".lyr"
+#define COMPOSE_SETTINGS_PARH     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+#define COMPOSE_SETTINGS_NAME     COMPOSE_SETTINGS_PARH + QDir::separator() + Global::Wallet::Name::get() + "_settings.cfg"
 
 namespace Global {
     class Page{
@@ -77,6 +89,8 @@ namespace Global {
             TRANSACTION_DETAIL,
             SEND,
             RECEIVE,
+
+            SETTINGS = 30,
         }PAGE;
 
         //static void backManagerPage();
@@ -86,10 +100,12 @@ namespace Global {
     class Layout {
     public:
         static QRect getLayoutGeometry() { return QRect(0, headerHeight, PAGE_WIDTH, 532); }
-        static QRect getLayoutGeometryScaled() { return QRect(0, headerHeight, (int)((double)PAGE_WIDTH * xScale), (int)((double)getLayoutGeometry().height() * yScale)); }
+        static QRect getLayoutGeometryScaled() { return QRect(0, headerHeight, (int)((double)PAGE_WIDTH * xScale),
+                                                              (int)((double)getLayoutGeometry().height() * yScale)); }
 
         static QRect getTabLayoutGeometry() { return QRect(0, 0, PAGE_WIDTH, getLayoutGeometry().height() - MENU_BAR_HEIGHT); }
-        static QRect getTabLayoutGeometryScaled() { return QRect(0, 0, (int)((double)PAGE_WIDTH * xScale), (int)((double)getTabLayoutGeometry().height() * yScale)); }
+        static QRect getTabLayoutGeometryScaled() { return QRect(0, 0, (int)((double)PAGE_WIDTH * xScale),
+                                                                 (int)((double)getTabLayoutGeometry().height() * yScale)); }
 
         static void setXScale(double sc) { xScale = sc; }
         static void setYScale(double sc) { yScale = sc; }
@@ -110,10 +126,14 @@ namespace Global {
         static QFont scaleFontOffset(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale * FONT_OFFSET)); return font; }
         static QFont scaleFontOffset(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale * scale)); return font; }
 
-        static QRect scaleRect(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale), (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale)); }
-        static QRect scaleRect(QRect rect, double scale) { return QRect((int)((double)rect.x() * scale), (int)((double)rect.y() * scale), (int)((double)rect.width() * scale), (int)((double)rect.height() * scale)); }
-        static QRect scaleRectXY(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * yScale), (int)((double)rect.width() * xScale), (int)((double)rect.height() * yScale)); }
-        static QRect scaleRectXYNoDisplace(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale), (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale * yScale)); }
+        static QRect scaleRect(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale),
+                                                          (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale)); }
+        static QRect scaleRect(QRect rect, double scale) { return QRect((int)((double)rect.x() * scale), (int)((double)rect.y() * scale),
+                                                                        (int)((double)rect.width() * scale), (int)((double)rect.height() * scale)); }
+        static QRect scaleRectXY(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * yScale),
+                                                            (int)((double)rect.width() * xScale), (int)((double)rect.height() * yScale)); }
+        static QRect scaleRectXYNoDisplace(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale),
+                                                                      (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale * yScale)); }
 
         static QSize scaleSize(QSize size) { return QSize((int)((double)size.width() * xScale), (int)((double)size.height() * xScale)); }
         static QSize scaleSize(QSize size, double scale) { return QSize((int)((double)size.width() * scale), (int)((double)size.height() * scale)); }
@@ -134,6 +154,16 @@ namespace Global {
     class Network {
     public:
         static void setNetwork(networkName_e network) { Net = network; }
+        static void setNetwork(QString network) {
+            if(!network.compare("TESTNET"))
+                Net = networkName_e::TESTNET;
+            else if(!network.compare("MAINNET"))
+                Net = networkName_e::MAINNET;
+            else if(!network.compare("DEVNET"))
+                Net = networkName_e::DEVNET;
+            else
+                Net = networkName_e::NONE;
+        }
         static networkName_e getNetwork() { return Net; }
         static QString getNetworkName() {
             switch(Net) {
@@ -141,6 +171,14 @@ namespace Global {
                 case MAINNET: return "MAINNET";
                 case DEVNET: return "DEVNET";
                 default: return "TESTNET";
+            }
+        }
+        static QString getNetworkName(networkName_e i) {
+            switch(i) {
+                case TESTNET: return "TESTNET";
+                case MAINNET: return "MAINNET";
+                case DEVNET: return "DEVNET";
+                default: return "NONE";
             }
         }
         static QString getNebulaAddress() {
@@ -151,6 +189,8 @@ namespace Global {
                 return "https://nebula.lyra.live";
             case networkName_e::DEVNET:
                 return "https://nebuladevnet.lyra.live";
+            default:
+                return "";
             }
         }
         static QPair<QString,QString> getNodeAddress() { return NodeList[Net][4]; }
@@ -350,36 +390,36 @@ namespace Global {
         INVALID_PASSWORD
         */
     public:
-        static bool show(QWidget *parent, StorageInternal::storageError_e err) {
+        static bool show(QWidget *parent, StorageCommon::storageError_e err) {
             switch(err) {
-            case StorageInternal::ALREADY_EXISTS:
+            case StorageCommon::ALREADY_EXISTS:
                 QMessageBox::critical(parent, "ERROR", "A file with this name already exists.");
                 break;
-            case StorageInternal::FILE_NOT_EXISTS:
+            case StorageCommon::FILE_NOT_EXISTS:
                 QMessageBox::critical(parent, "ERROR", "The file with this name does not exist.");
                 break;
-            case StorageInternal::INVALID_NAME:
+            case StorageCommon::INVALID_NAME:
                 QMessageBox::critical(parent, "ERROR", "The name have invalid format.");
                 break;
-            case StorageInternal::CANNOT_SAVE:
+            case StorageCommon::CANNOT_SAVE:
                 QMessageBox::critical(parent, "ERROR", "Unable to save the wallet file.");
                 break;
-            case StorageInternal::CANNOT_READ:
+            case StorageCommon::CANNOT_READ:
                 QMessageBox::critical(parent, "ERROR", "Unable to read the wallet file.");
                 break;
-            case StorageInternal::INVALID_FILE:
+            case StorageCommon::INVALID_FILE:
                 QMessageBox::critical(parent, "ERROR", "Invalid file format.");
                 break;
-            case StorageInternal::FILE_PROTECTED:
+            case StorageCommon::FILE_PROTECTED:
                 QMessageBox::critical(parent, "ERROR", "The file is protected.");
                 break;
-            case StorageInternal::ACCOUNT_NOT_FOUND:
+            case StorageCommon::ACCOUNT_NOT_FOUND:
                 QMessageBox::critical(parent, "ERROR", "Account not found.");
                 break;
-            case StorageInternal::INVALID_PASSWORD:
+            case StorageCommon::INVALID_PASSWORD:
                 QMessageBox::critical(parent, "ERROR", "Invalid password.");
                 break;
-            case StorageInternal::INVALID_PRIVATE_KEY:
+            case StorageCommon::INVALID_PRIVATE_KEY:
                 QMessageBox::critical(parent, "ERROR", "Invalid private key.");
                 break;
             default:

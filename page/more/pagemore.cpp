@@ -6,6 +6,7 @@
 #include "global.h"
 #include "color.h"
 #include "style.h"
+#include "storage/storagesettings.h"
 
 PageMore::PageMore(QWidget *parent) :
     QWidget(parent),
@@ -26,9 +27,6 @@ PageMore::PageMore(QWidget *parent) :
     newAccountPushButtonQRectBack = ui->newAccountPushButton->geometry();
     newAccountPushButtonQSizeBack = ui->newAccountPushButton->iconSize();
     newAccountPushButtonQFontBack = ui->newAccountPushButton->font();
-    backupWalletPushButtonQRectBack = ui->backupWalletPushButton->geometry();
-    backupWalletPushButtonQSizeBack = ui->backupWalletPushButton->iconSize();
-    backupWalletPushButtonQFontBack = ui->backupWalletPushButton->font();
     settingsPushButtonQRectBack = ui->settingsPushButton->geometry();
     settingsPushButtonQSizeBack = ui->settingsPushButton->iconSize();
     settingsPushButtonQFontBack = ui->settingsPushButton->font();
@@ -81,9 +79,6 @@ void PageMore::setScale() {
     ui->newAccountPushButton->setGeometry(Global::Layout::scaleRect(newAccountPushButtonQRectBack));
     ui->newAccountPushButton->setIconSize(Global::Layout::scaleSize(newAccountPushButtonQSizeBack));
     ui->newAccountPushButton->setFont(Global::Layout::scaleFontOffset(newAccountPushButtonQFontBack));
-    ui->backupWalletPushButton->setGeometry(Global::Layout::scaleRect(backupWalletPushButtonQRectBack));
-    ui->backupWalletPushButton->setIconSize(Global::Layout::scaleSize(backupWalletPushButtonQSizeBack));
-    ui->backupWalletPushButton->setFont(Global::Layout::scaleFontOffset(backupWalletPushButtonQFontBack));
     ui->settingsPushButton->setGeometry(Global::Layout::scaleRect(settingsPushButtonQRectBack));
     ui->settingsPushButton->setIconSize(Global::Layout::scaleSize(settingsPushButtonQSizeBack));
     ui->settingsPushButton->setFont(Global::Layout::scaleFontOffset(settingsPushButtonQFontBack));
@@ -111,7 +106,13 @@ void PageMore::on_newAccountPushButton_clicked() {
 }
 
 void PageMore::on_accountsComboBox_currentTextChanged(const QString &arg1) {
-    if(initialized && arg1.length() != 0)
+    if(initialized && arg1.length() != 0) {
         Global::Account::setSelectedAccount(arg1);
+        StorageSettings::set("lastAccount", arg1);
+    }
+}
+
+void PageMore::on_settingsPushButton_clicked() {
+    Global::Page::goManagerPage(Global::Page::SETTINGS);
 }
 

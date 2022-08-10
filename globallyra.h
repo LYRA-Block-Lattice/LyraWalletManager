@@ -1,6 +1,9 @@
 #ifndef GLOBALLYRA_H
 #define GLOBALLYRA_H
 
+#include <QString>
+#include <QList>
+
 #define LYRA_CHECKSUM_SIZE_IN_BYTES             4
 #define ADDRESSPREFIX                           'L'
 #define LYRA_MAX_SUPPLY                         10_000_000_000
@@ -17,10 +20,13 @@
 #define RPC_CONNECTION_TIMEOUT_MS               20000
 
 typedef enum {
+    NONE = -1,
     TESTNET = 0,
     MAINNET = 1,
     DEVNET = 2
 } networkName_e;
+
+static QList<QString> networkNameList = QList<QString>({"TESTNET", "MAINNET"/*, "DEVNET"*/});
 
 /*class GlobalLyra {
     static double getAmount(long long amount) {

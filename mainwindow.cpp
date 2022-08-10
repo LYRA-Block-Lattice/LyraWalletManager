@@ -11,6 +11,7 @@
 #include "color.h"
 #include "global.h"
 #include "style.h"
+#include "storage/storagesettings.h"
 
 int lastIndex = -1;
 
@@ -91,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pageTransactionDetail = new PageTransactionDetail(this);
     pageSend = new PageSend(this);
     pageReceive = new PageReceive(this);
+    pageSettings = new PageSettings(this);
 
     pageImportWallet->setVisible(false);
     pageNewAccount->setVisible(false);
@@ -101,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pageTransactionDetail->setVisible(false);
     pageSend->setVisible(false);
     pageReceive->setVisible(false);
+    pageSettings->setVisible(false);
     ui->mainTabWidget->setVisible(false);
 
 
@@ -238,6 +241,9 @@ void MainWindow::on_timerLoopTick() {
         break;
     case Global::Page::RECEIVE:
         pageReceive->loop();
+        break;
+    case Global::Page::SETTINGS:
+        pageSettings->loop();
         break;
     default:
         break;

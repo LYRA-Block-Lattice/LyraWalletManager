@@ -28,6 +28,7 @@ private slots:
     void on_explorerPushButton_clicked();
     void on_newAccountPushButton_clicked();
     void on_accountsComboBox_currentTextChanged(const QString &arg1);
+    void on_settingsPushButton_clicked();
 
 private:
     Ui::PageMore *ui;
@@ -45,9 +46,6 @@ private:
     QRect newAccountPushButtonQRectBack;
     QSize newAccountPushButtonQSizeBack;
     QFont newAccountPushButtonQFontBack;
-    QRect backupWalletPushButtonQRectBack;
-    QSize backupWalletPushButtonQSizeBack;
-    QFont backupWalletPushButtonQFontBack;
     QRect settingsPushButtonQRectBack;
     QSize settingsPushButtonQSizeBack;
     QFont settingsPushButtonQFontBack;

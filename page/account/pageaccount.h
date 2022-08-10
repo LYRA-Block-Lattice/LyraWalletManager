@@ -81,6 +81,7 @@ private:
 
     int AccountListChangedCount = -1;
     int SelectedAccount = -1;
+    networkName_e network = networkName_e::NONE;
 
 signals:
     void balanceOperate();

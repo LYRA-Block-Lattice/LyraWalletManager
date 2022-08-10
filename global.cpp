@@ -16,6 +16,8 @@ PageTransactionDetail *pageTransactionDetail;
 PageSend *pageSend;
 PageReceive *pageReceive;
 
+PageSettings *pageSettings;
+
 /**********************************************************************************/
 double yScale = 1.0;
 double xScale = 1.0;
@@ -84,6 +86,7 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
     pageTransactionDetail->setVisible(false);
     pageSend->setVisible(false);
     pageReceive->setVisible(false);
+    pageSettings->setVisible(false);
     mainTabWidget->setVisible(false);
     switch(page) {
     case Global::Page::OPEN_WALLET:
@@ -121,6 +124,10 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
     case Global::Page::RECEIVE:
         pageReceive->setVisible(true);
         pageReceive->open();
+        break;
+    case Global::Page::SETTINGS:
+        pageSettings->setVisible(true);
+        pageSettings->open();
         break;
     default:
         mainTabWidget->setVisible(true);
@@ -256,6 +263,8 @@ bool Global::Account::setSelectedAccount(int accountNr) {
 }
 
 bool Global::Account::setSelectedAccount(QString accountName) {
+    if(!accountName.count())
+        return false;
     Global::Account::account_t acc;
     int accCnt = 0;
     foreach(acc, AccountList) {
