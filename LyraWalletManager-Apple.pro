@@ -38,8 +38,8 @@ win32: {
 
 SOURCES += \
     api/rpc/rpcsocket.cpp \
-    api/rpc/webclass.cpp \
-    api/rpc/websocket.cpp \
+    api/web/webclass.cpp \
+    api/web/webget.cpp \
     crypto/aes.cpp \
     crypto/base58Encoding.cpp \
     crypto/ecc.cpp \
@@ -77,8 +77,8 @@ SOURCES += \
 
 HEADERS += \
     api/rpc/rpcsocket.h \
-    api/rpc/webclass.h \
-    api/rpc/websocket.h \
+    api/web/webclass.h \
+    api/web/webget.h \
     crypto/aes.h \
     crypto/base58Encoding.h \
     crypto/ecc.h \

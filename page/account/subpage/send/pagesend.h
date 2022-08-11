@@ -31,7 +31,6 @@ public:
     void loop();
 
 private slots:
-    void on_sendingFadeTimer();
     void on_backPushButton_clicked();
     void on_recipientAddressLineEdit_textChanged(const QString &arg1);
     void on_amountLineEdit_textChanged(const QString &arg1);

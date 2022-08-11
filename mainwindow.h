@@ -5,6 +5,9 @@
 #include <QTranslator>
 #include <QTimer>
 
+#include "api/web/webget.h"
+#include "api/web/webclass.h"
+
 #include "page/accountManagement/pageimportwallet.h"
 #include "page/accountManagement/pagenewaccount.h"
 #include "page/accountManagement/pagenewwallet.h"
@@ -31,7 +34,6 @@ public:
     void setScale();
     static void setPage(int index);
 private:
-
     PageStaking *pageStaking;
     PageSwap *pageSwap;
     PageAccount *pageAccount;
@@ -50,11 +52,23 @@ private:
     void switchTranslator(const QString filename);
 
     QTimer loopTimer;
+    QTimer fetchCoinGeckoTimer;
+
+
 private slots:
     void on_mainTabWidget_currentChanged(int index);
     void on_timerLoopTick();
 
+    void fetchCoingecko();
+    void on_coingeckoFetchDone(QString data);
+    void on_coingeckoFetchError(QString err);
+
 private:
     Ui::MainWindow *ui;
+
+    WebGet *coinGecckoFetchWorker = nullptr;
+    QThread *coinGecckoFetchWorkerThread = nullptr;
+signals:
+    void fetchCoinGeckoSignal(QString url);
 };
 #endif // MAINWINDOW_H

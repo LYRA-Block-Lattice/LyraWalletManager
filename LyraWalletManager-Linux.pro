@@ -38,8 +38,8 @@ win32: {
 
 SOURCES += \
     api/rpc/rpcsocket.cpp \
-    api/rpc/webclass.cpp \
-    api/rpc/websocket.cpp \
+    api/web/webclass.cpp \
+    api/web/webget.cpp \
     crypto/aes.cpp \
     crypto/base58Encoding.cpp \
     crypto/ecc.cpp \
@@ -66,16 +66,19 @@ SOURCES += \
     page/accountManagement/pagerecoveraccount.cpp \
     page/dex/pagedex.cpp \
     page/more/pagemore.cpp \
+    page/more/subpage/settings/pagesettings.cpp \
     page/staking/pagestaking.cpp \
     page/swap/pageswap.cpp \
+    storage/storagecommon.cpp \
     storage/storageinternal.cpp \
+    storage/storagesettings.cpp \
     wallet/history.cpp \
     wallet/walletrpc.cpp
 
 HEADERS += \
     api/rpc/rpcsocket.h \
-    api/rpc/webclass.h \
-    api/rpc/websocket.h \
+    api/web/webclass.h \
+    api/web/webget.h \
     crypto/aes.h \
     crypto/base58Encoding.h \
     crypto/ecc.h \
@@ -105,9 +108,12 @@ HEADERS += \
     page/accountManagement/pagerecoveraccount.h \
     page/dex/pagedex.h \
     page/more/pagemore.h \
+    page/more/subpage/settings/pagesettings.h \
     page/staking/pagestaking.h \
     page/swap/pageswap.h \
+    storage/storagecommon.h \
     storage/storageinternal.h \
+    storage/storagesettings.h \
     style.h \
     wallet/history.h \
     wallet/walletrpc.h
@@ -127,6 +133,7 @@ FORMS += \
     page/accountManagement/pagerecoveraccount.ui \
     page/dex/pagedex.ui \
     page/more/pagemore.ui \
+    page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \
     page/swap/pageswap.ui
 

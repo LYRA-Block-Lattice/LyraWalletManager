@@ -181,4 +181,17 @@ void WalletRpc::Send::on_SendRetriveDone(const QString &s) {
     }
 }
 
+/*
+    historyThread = new WalletRpc::History;
+    historyWorkerThread = new QThread;
+    historyThread->moveToThread(historyWorkerThread);
+    connect(historyWorkerThread, &QThread::finished, historyThread, &QObject::deleteLater);
+    connect(this, &PageAccount::historyOperate, historyThread, &WalletRpc::History::doWork);
+    connect(historyThread, &WalletRpc::History::resultReady, this, &PageAccount::on_HistoryRetriveDone);
+    connect(historyThread, &WalletRpc::History::resultError, this, &PageAccount::on_HistoryRetriveError);
+    historyWorkerThread->start();
+    emit historyOperate();
+
+ */
+
 

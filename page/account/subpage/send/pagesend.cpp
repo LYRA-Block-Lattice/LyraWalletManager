@@ -68,7 +68,25 @@ PageSend::PageSend(QWidget *parent) :
 
     fadeTimer.setInterval(20);
     fadeTimer.stop();
-    connect(&fadeTimer, &QTimer::timeout, this, &PageSend::on_sendingFadeTimer);
+    connect(&fadeTimer, &QTimer::timeout, this, [=] {
+        if(fadeCount == FADE_COUNT_START_VALE)
+            ui->sendingLabel->setVisible(true);
+        double opacity = 0;
+        if(fadeCount == 0) {
+            opacity = 0.0;
+            ui->sendingLabel->setVisible(false);
+            fadeTimer.stop();
+        } else  if(fadeCount < 100) {
+            opacity = (double)fadeCount / 100.0;
+            fadeCount--;
+        } else {
+            opacity = 1.0;
+            fadeCount--;
+        }
+        QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+        effect->setOpacity(opacity);
+        ui->sendingLabel->setGraphicsEffect(effect);
+    });
 }
 
 PageSend::~PageSend() {
@@ -256,24 +274,5 @@ void PageSend::on_SendRetriveError(const QString &s) {
     ui->sendingLabel->setText(s);
     fadeCount = FADE_COUNT_START_VALE;
     fadeTimer.start();
-}
-void PageSend::on_sendingFadeTimer() {
-    if(fadeCount == FADE_COUNT_START_VALE)
-        ui->sendingLabel->setVisible(true);
-    double opacity = 0;
-    if(fadeCount == 0) {
-        opacity = 0.0;
-        ui->sendingLabel->setVisible(false);
-        fadeTimer.stop();
-    } else  if(fadeCount < 100) {
-        opacity = (double)fadeCount / 100.0;
-        fadeCount--;
-    } else {
-        opacity = 1.0;
-        fadeCount--;
-    }
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
-    effect->setOpacity(opacity);
-    ui->sendingLabel->setGraphicsEffect(effect);
 }
 

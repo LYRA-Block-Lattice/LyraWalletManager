@@ -68,7 +68,9 @@ PageAccount::PageAccount(QWidget *parent) :
     connect(ui->receivePushButton, &QPushButton::clicked, ui->receivePushButton, &QPushButton::clearFocus);
 
     refreshTimer.setInterval(ACCOUNT_REFRESH_INTERVAL);
-    connect(&refreshTimer, &QTimer::timeout, this, &PageAccount::on_refreshTimer);
+    connect(&refreshTimer, &QTimer::timeout, this, [=] {
+        getBalance();
+    });
     refreshTimer.start();
 }
 
@@ -138,6 +140,9 @@ void PageAccount::refreshBalances(RpcClass::History *history) {
     if(!history)
         return;
     messageList->clearAll();
+    double totalValueUsd = 0.0;
+    double lyrInAccount = 0.0;
+    double lyrValueUsd = 0.0;
     if(history->getHistory().count() > 0 && history->getValid()) {
         QList<QPair<QString, double>> balances = history->getHistory().at(history->getHistory().count() - 1).Balances;
         QPair<QString, double> balance;
@@ -146,9 +151,17 @@ void PageAccount::refreshBalances(RpcClass::History *history) {
                                     balance.first, balance.second,
                                     balance.second * Global::TickerPrice::get(balance.first),
                                     Global::TickerPrice::get(balance.first));
+            totalValueUsd += balance.second * Global::TickerPrice::get(balance.first);
+            if(!balance.first.compare("LYR")) {
+                lyrInAccount = balance.second;
+                lyrValueUsd = balance.second * Global::TickerPrice::get(balance.first);
+            }
         }
         messageList->scrollToTop();
     }
+    ui->accountValueLyrLabel->setText(Global::Util::normaliseNumber(lyrInAccount) + " LYR");
+    ui->accountValueUsdLabel->setText(Global::Util::normaliseNumber(lyrValueUsd) + " USD");
+    ui->accountTotalValueUsdLabel->setText("Total balance: $ " + Global::Util::normaliseNumber(totalValueUsd));
 }
 
 void PageAccount::getBalance() {
@@ -222,10 +235,6 @@ void PageAccount::on_HistoryRetriveDone(const QString &d) {
 
 void PageAccount::on_ReceiveRetriveDone(const QString &d) {
     emit historyOperate();
-}
-
-void PageAccount::on_refreshTimer() {
-    getBalance();
 }
 
 void PageAccount::on_BalanceRetriveError() {

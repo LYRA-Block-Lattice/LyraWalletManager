@@ -331,6 +331,7 @@ namespace Global {
             return snr;
         }
         static QString tickerToTokenName(QString ticker);
+        static QString tokenNameToTicker(QString tokenName);
     };
     class Check {
     public:

@@ -75,9 +75,12 @@ void PageHistoryList::addMessage(const QPixmap &pixmap, const QString &ticker, c
     QString samount = Global::Util::normaliseNumber(amount);
     QString svalue = Global::Util::normaliseNumber(value);
     QString stokenValue = Global::Util::normaliseNumber(tokenValue);
-    if(tokenValue == 1)
-        item->setData(QString::asprintf("%s\r\r\r%s", samount.toUtf8().data(), Global::Util::tickerToTokenName(ticker).toUtf8().data()), Qt::UserRole);
-    else
+    /*if(tokenValue == 1)
+        item->setData(QString::asprintf("%s\r\r\r\r%s",
+                                        samount.toUtf8().data(),
+                                        Global::Util::tickerToTokenName(ticker).toUtf8().data()),
+                      Qt::UserRole);
+    else*/
         item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s\r%d",
                                         samount.toUtf8().data(),
                                         svalue.toUtf8().data(),

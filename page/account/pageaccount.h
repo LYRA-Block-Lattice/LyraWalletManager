@@ -30,7 +30,6 @@ public:
     void setStyle();
     void loop();
 private slots:
-    void on_refreshTimer();
     void on_BalanceRetriveDone(const QString &s);
     void on_BalanceRetriveError();
     void on_HistoryRetriveDone(const QString &s);

@@ -121,26 +121,25 @@ MainWindow::MainWindow(QWidget *parent) :
     initialized = true;
     ui->mainTabWidget->setCurrentIndex(Global::Page::PAGE::NONE);
 
-    /*Global::Account::account_t account;
-    account.accountName ="Pig2";
-    account.privateKey = "";
-    account.publicId = "LF6LpgcrANQWrErPcLREAbKzJg9DLeuXXa45cz5hKsUng7aJ2zCrAgHbtkSXv5dXiEfUB8ypN8i3daUkmiJwcX8cbXSv5U";
-    Global::Account::addAccount(account);*/
-
-    QPair<QString, double> tickerPrice;
-    tickerPrice.first = "LYR";
-    tickerPrice.second = 0.00141321;
-    Global::TickerPrice::set(tickerPrice);
-    tickerPrice.first = "Tester/Coin";
-    tickerPrice.second = 0.1;
-    Global::TickerPrice::set(tickerPrice);
+    // One to one hardwritten pairs insertion
+    /*QPair<QString, double> tickerPrice;
     tickerPrice.first = "USDT";
-    tickerPrice.second = 1;
+    tickerPrice.second = 1.0;
     Global::TickerPrice::set(tickerPrice);
+    tickerPrice.first = "USDC";
+    tickerPrice.second = 1.0;
+    Global::TickerPrice::set(tickerPrice);
+    tickerPrice.first = "BUSD";
+    tickerPrice.second = 1.0;
+    Global::TickerPrice::set(tickerPrice);*/
 
     loopTimer.setInterval(250);
     connect(&loopTimer, &QTimer::timeout, this, &MainWindow::on_timerLoopTick);
     loopTimer.start();
+
+    fetchCoinGeckoTimer.setInterval(250);
+    connect(&fetchCoinGeckoTimer, &QTimer::timeout, this, &MainWindow::fetchCoingecko);
+    fetchCoinGeckoTimer.start();
 
     ui->walletNetworkNameLabel->setParent(this);
     Style::setLabelStyle(ui->walletNetworkNameLabel);
@@ -266,5 +265,36 @@ void MainWindow::switchTranslator(const QString filename) {
         qApp->installTranslator(qtTranslator);
     else
         qDebug() << "Unable to find translation file";
+}
+
+void MainWindow::fetchCoingecko() {
+    fetchCoinGeckoTimer.stop();
+    fetchCoinGeckoTimer.setInterval(5 * 60 *1000);
+    fetchCoinGeckoTimer.start();
+    coinGecckoFetchWorker = new WebGet;
+    coinGecckoFetchWorkerThread = new QThread;
+    coinGecckoFetchWorker->moveToThread(coinGecckoFetchWorkerThread);
+    connect(coinGecckoFetchWorker, &WebGet::resultReady, this, &MainWindow::on_coingeckoFetchDone);
+    connect(coinGecckoFetchWorker, &WebGet::resultError, this, &MainWindow::on_coingeckoFetchError);
+    connect(coinGecckoFetchWorkerThread, &QThread::finished, coinGecckoFetchWorker, &QObject::deleteLater);
+    connect(this, &MainWindow::fetchCoinGeckoSignal, coinGecckoFetchWorker, &WebGet::doWork);
+    coinGecckoFetchWorkerThread->start();
+    emit fetchCoinGeckoSignal("https://api.coingecko.com/api/v3/simple/price?"
+                              "ids=lyra,tron,ethereum,bitcoin,tether,binance-usd,usd-coin,ethereum-classic&"
+                              "vs_currencies=usd&"
+                              "include_market_cap=false&"
+                              "include_24hr_vol=false&"
+                              "include_24hr_change=false&"
+                              "include_last_updated_at=false");
+}
+
+void MainWindow::on_coingeckoFetchDone(QString data) {
+    qDebug() << data;
+    WebClass::CoinGecko coinGecko(data);
+    //coinGecckoFetchWorkerThread->exit(0);
+}
+
+void MainWindow::on_coingeckoFetchError(QString err) {
+    qDebug() << err;
 }
 

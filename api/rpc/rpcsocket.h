@@ -14,20 +14,15 @@ class RpcSocket : public QObject {
 public:
 private:
     QString Url;
-    QString Message;
+    QString msg;
     QWebSocket *WebSocket = nullptr;
     QTimer *TimeoutTimer;
     bool Connected = false;
 signals:
     void resultReady(const QString &s);
-private slots:
-    void onConnected();
-    void onDisconnected();
-    void onTextMessageReceived(QString message);
-    void onSslErrors(const QList<QSslError> &errors);
+    void resultError(const QString &s);
 public slots:
-    void doWork(QString url, QString message);
-    void onResponseTimeout();
+    void doWork(QString url, QString msg);
     void sendMessage(QString message);
     void socketDisconnect();
 };

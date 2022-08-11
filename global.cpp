@@ -329,8 +329,9 @@ void Global::TickerPrice::set(QPair<QString, double> tickerPrice) {
 }
 
 double Global::TickerPrice::get(QString ticker) {
+    QString t = ticker.remove("$");
     for(int cnt = 0; cnt < TickerPriceList.count(); cnt++) {
-        if(!TickerPriceList.at(cnt).first.compare(ticker)) {
+        if(!TickerPriceList.at(cnt).first.compare(t)) {
             return TickerPriceList.at(cnt).second;
         }
     }
@@ -340,12 +341,13 @@ double Global::TickerPrice::get(QString ticker) {
 QList<QPair<QString, QString>> tickerToTokenNameList = {
     QPair<QString, QString>("LYR", "Lyra"),
     QPair<QString, QString>("TLYR", "Lyra"),
-    QPair<QString, QString>("ETH", "Ethereum"),
     QPair<QString, QString>("BTC", "Bitcoin"),
-    QPair<QString, QString>("TRX", "Tether"),
-    QPair<QString, QString>("USDT", "USDT"),
-    QPair<QString, QString>("USDC", "USDC"),
-    QPair<QString, QString>("BUSD", "BUSD"),
+    QPair<QString, QString>("ETH", "Ethereum"),
+    QPair<QString, QString>("ETC", "ethereum-classic"),
+    QPair<QString, QString>("TRX", "Tron"),
+    QPair<QString, QString>("USDT", "Tether"),
+    QPair<QString, QString>("USDC", "usd-coin"),
+    QPair<QString, QString>("BUSD", "binance-usd"),
 };
 QString Global::Util::tickerToTokenName(QString ticker) {
     QString t = ticker.remove('$');
@@ -353,6 +355,17 @@ QString Global::Util::tickerToTokenName(QString ticker) {
     foreach(p, tickerToTokenNameList) {
         if(!p.first.compare(t))
             return p.second;
+    }
+    return "";
+}
+
+QString Global::Util::tokenNameToTicker(QString tokenName) {
+    QString t = tokenName.toLower();
+    QPair<QString, QString> p;
+    foreach(p, tickerToTokenNameList) {
+        QString pp = p.second.toLower();
+        if(!pp.compare(t, Qt::CaseSensitive))
+            return p.first;
     }
     return "";
 }

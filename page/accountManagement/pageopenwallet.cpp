@@ -29,6 +29,11 @@ PageOpenWallet::PageOpenWallet(QWidget *parent) :
     importWalletPushButtonQRectBack = ui->importWalletPushButton->geometry();
     importWalletPushButtonQFontBack = ui->importWalletPushButton->font();
 
+    connect(ui->walletPasswordLineEdit, &QLineEdit::returnPressed, this, [this] {
+        on_openWalletPushButton_clicked();
+    });
+
+
     setScale();
     setStyle();
     retranslateUi();
