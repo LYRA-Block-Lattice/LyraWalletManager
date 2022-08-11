@@ -18,10 +18,9 @@ static QString composeSign(int id, QString sig);
         RpcSocket *worker = nullptr;
         QThread *workerThread = nullptr;
     public slots:
-        void on_HistoryRetriveDone(const QString &s);
         void doWork();
     signals:
-        void operate(QString url, QString message);
+        void startFetch(QString url, QString message);
         void socketDisconnect();
         void resultReady(const QString &s);
         void resultError();
@@ -33,10 +32,9 @@ static QString composeSign(int id, QString sig);
         RpcSocket *worker = nullptr;
         QThread *workerThread = nullptr;
     public slots:
-        void on_BalanceRetriveDone(const QString &s);
         void doWork();
     signals:
-        void operate(QString url, QString message);
+        void startFetch(QString url, QString message);
         void socketDisconnect();
         void resultReady(const QString &s);
         void resultError();
@@ -49,10 +47,9 @@ static QString composeSign(int id, QString sig);
         QThread *workerThread = nullptr;
         int id = 1;
     public slots:
-        void on_ReceiveRetriveDone(const QString &s);
         void doWork();
     signals:
-        void operate(QString url, QString message);
+        void startFetch(QString url, QString message);
         void sendMessage(QString message);
         void socketDisconnect();
         void resultReady(const QString &s);
@@ -70,15 +67,29 @@ static QString composeSign(int id, QString sig);
         QString Ticker;
         int id = 1;
     public slots:
-        void on_SendRetriveDone(const QString &s);
         void doWork(QString amount, QString destAccount, QString ticker);
     signals:
-        void operate(QString url, QString message);
+        void startFetch(QString url, QString message);
         void sendMessage(QString message);
         void socketDisconnect();
         void resultReady(const QString &s);
         void resultError(const QString &s);
     };
+
+    class Pool : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+    public slots:
+        void doWork(QString token1, QString token0 = "LYR");
+    signals:
+        void startFetch(QString url, QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError();
+    };
+
 };
 
 #endif // WALLETRPC_H

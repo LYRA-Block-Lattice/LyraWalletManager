@@ -75,21 +75,43 @@ void PageAccountList::addMessage(const QPixmap &pixmap, const QString &ticker, c
     QString samount = Global::Util::normaliseNumber(amount);
     QString svalue = Global::Util::normaliseNumber(value);
     QString stokenValue = Global::Util::normaliseNumber(tokenValue);
-    /*if(tokenValue == 1)
-        item->setData(QString::asprintf("%s\r\r\r%s",
-                                        samount.toUtf8().data(),
-                                        Global::Util::tickerToTokenName(ticker).toUtf8().data()),
-                      Qt::UserRole);
-    else*/
-        item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s",
-                                        samount.toUtf8().data(),
-                                        svalue.toUtf8().data(),
-                                        stokenValue.toUtf8().data(),
-                                        Global::Util::tickerToTokenName(ticker).toUtf8().data()),
-                      Qt::UserRole);
+    item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s",
+                                    samount.toUtf8().data(),
+                                    svalue.toUtf8().data(),
+                                    stokenValue.toUtf8().data(),
+                                    Global::Util::tickerToTokenName(ticker).toUtf8().data()),
+                  Qt::UserRole);
 
     static_cast<QStandardItemModel *>(model())->appendRow(item);
     scrollToBottom();
+}
+
+void PageAccountList::setTokenValue(QString ticker, double tokenValue) {
+    QString stokenValue = Global::Util::normaliseNumber(tokenValue);
+    for(int i = 0; i < model()->rowCount(); i++) {
+        QStandardItem *item = static_cast<QStandardItemModel *>(model())->itemFromIndex(model()->index(i, 0));
+        QList<QString> values = item->data(Qt::UserRole).toString().split("\r");
+        if(!ticker.compare(item->text())) {
+            if(values[2].remove(',').toDouble() != tokenValue) {
+                QString svalue = Global::Util::normaliseNumber(values[0].remove(',').toDouble() * tokenValue);
+                item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s",
+                                                values.at(0).toUtf8().data(),
+                                                svalue.toUtf8().data(),
+                                                stokenValue.toUtf8().data(),
+                                                values.at(3).toUtf8().data()),
+                              Qt::UserRole);
+            }
+        }
+    }
+}
+
+QList<QString> PageAccountList::getTickers() {
+    QList<QString> list;
+    for(int i = 0; i < model()->rowCount(); i++) {
+        QStandardItem *item = static_cast<QStandardItemModel *>(model())->itemFromIndex(model()->index(i, 0));
+        list.append(item->text());
+    }
+    return list;
 }
 
 void PageAccountList::clearAll()

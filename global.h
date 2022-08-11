@@ -247,6 +247,9 @@ namespace Global {
     public:
         static void set(QPair<QString, double> tickerPrice);
         static double get(QString ticker);
+        static int getModifyCount(QString ticker);
+        static int getModifyCount();
+        static QList<QPair<int, QPair<QString, double>>> getList();
     };
     /**********************************************************************************/
     /**********************************************************************************/

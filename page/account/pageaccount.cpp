@@ -31,7 +31,8 @@ PageAccount::PageAccount(QWidget *parent) :
         progressLabel->setGeometry(135,320,40,40);
         progressLabel->setScaledContents(true);
         progressLabel->setMovie(progressMovie);
-        progressMovie->start();
+        progressLabel->setVisible(false);
+        //progressMovie->start();
     }
 
     // Backup items geometry, size and font.
@@ -134,6 +135,14 @@ void PageAccount::loop() {
             refreshTimer.start();
         }
     }
+    if(BalancesChangedCount != Global::TickerPrice::getModifyCount()) {
+        BalancesChangedCount = Global::TickerPrice::getModifyCount();
+        QList<QString> tickerList = messageList->getTickers();
+        foreach(QString ticker, tickerList) {
+            QString tick = ticker.compare("LYR") ? ticker : "intern/LYR";
+            messageList->setTokenValue(ticker, Global::TickerPrice::get(tick.remove('$')));
+        }
+    }
 }
 
 void PageAccount::refreshBalances(RpcClass::History *history) {
@@ -147,17 +156,20 @@ void PageAccount::refreshBalances(RpcClass::History *history) {
         QList<QPair<QString, double>> balances = history->getHistory().at(history->getHistory().count() - 1).Balances;
         QPair<QString, double> balance;
         foreach(balance, balances) {
+            QString tick = balance.first.compare("LYR") ? balance.first : "intern/LYR";
+            double tickerPrice = Global::TickerPrice::get(tick);
             messageList->addMessage(QPixmap(Global::TickerIcon::get(balance.first)),
                                     balance.first, balance.second,
-                                    balance.second * Global::TickerPrice::get(balance.first),
-                                    Global::TickerPrice::get(balance.first));
-            totalValueUsd += balance.second * Global::TickerPrice::get(balance.first);
+                                    balance.second * tickerPrice,
+                                    Global::TickerPrice::get(tick));
+            totalValueUsd += balance.second * tickerPrice;
             if(!balance.first.compare("LYR")) {
                 lyrInAccount = balance.second;
-                lyrValueUsd = balance.second * Global::TickerPrice::get(balance.first);
+                lyrValueUsd = balance.second * tickerPrice;
             }
         }
         messageList->scrollToTop();
+
     }
     ui->accountValueLyrLabel->setText(Global::Util::normaliseNumber(lyrInAccount) + " LYR");
     ui->accountValueUsdLabel->setText(Global::Util::normaliseNumber(lyrValueUsd) + " USD");
@@ -167,88 +179,78 @@ void PageAccount::refreshBalances(RpcClass::History *history) {
 void PageAccount::getBalance() {
     if(Global::Account::getAccountList().count() == 0)
         return;
-    if(!balanceThread) {
-        balanceThread = new WalletRpc::Balance;
-        balanceWorkerThread = new QThread;
-        balanceThread->moveToThread(balanceWorkerThread);
-        connect(balanceWorkerThread, &QThread::finished, balanceThread, &QObject::deleteLater);
-        connect(this, &PageAccount::balanceOperate, balanceThread, &WalletRpc::Balance::doWork);
-        connect(balanceThread, &WalletRpc::Balance::resultReady, this, &PageAccount::on_BalanceRetriveDone);
-        connect(balanceThread, &WalletRpc::Balance::resultError, this, &PageAccount::on_BalanceRetriveError);
-        balanceWorkerThread->start();
-    }
-    progressMovie->start();
-    progressLabel->setVisible(true);
-    emit balanceOperate();
-}
-
-void PageAccount::on_BalanceRetriveDone(const QString &d) {
-    RpcClass::Balance *balanceInst = new RpcClass::Balance(d);
-    if(Wallet::History::get()) {
-        if(balanceInst->getUnreceived()) {
-            if(!receiveThread) {
+    balanceThread = new WalletRpc::Balance;
+    balanceWorkerThread = new QThread;
+    balanceThread->moveToThread(balanceWorkerThread);
+    connect(balanceWorkerThread, &QThread::finished, balanceThread, &QObject::deleteLater);
+    connect(this, &PageAccount::balanceStartFetch, balanceThread, &WalletRpc::Balance::doWork);
+    connect(balanceThread, &WalletRpc::Balance::resultReady, this, [=](const QString d) {
+        RpcClass::Balance *balanceInst = new RpcClass::Balance(d);
+        if(Wallet::History::get()) {
+            if(balanceInst->getUnreceived()) {
+                progressMovie->start();
+                progressLabel->setVisible(true);
                 receiveThread = new WalletRpc::Receive;
                 receiveWorkerThread = new QThread;
                 receiveThread->moveToThread(receiveWorkerThread);
                 connect(receiveWorkerThread, &QThread::finished, receiveThread, &QObject::deleteLater);
-                connect(this, &PageAccount::receiveOperate, receiveThread, &WalletRpc::Receive::doWork);
-                connect(receiveThread, &WalletRpc::Receive::resultReady, this, &PageAccount::on_ReceiveRetriveDone);
-                connect(receiveThread, &WalletRpc::Receive::resultError, this, &PageAccount::on_ReceiveRetriveError);
+                connect(this, &PageAccount::receiveStartFetch, receiveThread, &WalletRpc::Receive::doWork);
+                connect(receiveThread, &WalletRpc::Receive::resultReady, this, [=](const QString d) {
+                    Q_UNUSED(d)
+                    fetchHistory();
+                });
+                connect(receiveThread, &WalletRpc::Receive::resultError, this, [=] {
+                    progressLabel->setVisible(false);
+                    progressMovie->stop();
+                });
                 receiveWorkerThread->start();
+                emit receiveStartFetch();
+                delete balanceInst;
+                return;
             }
-            emit receiveOperate();
-            delete balanceInst;
-            return;
+            if(Wallet::History::get()->history->getHistory().count() == balanceInst->getHeight()) {
+                progressLabel->setVisible(false);
+                progressMovie->stop();
+                delete balanceInst;
+                return;
+            }
         }
-        if(Wallet::History::get()->history->getHistory().count() == balanceInst->getHeight()) {
-            progressLabel->setVisible(false);
-            progressMovie->stop();
-            delete balanceInst;
-            return;
+        delete balanceInst;
+
+        progressMovie->start();
+        progressLabel->setVisible(true);
+        fetchHistory();
+    });
+    connect(balanceThread, &WalletRpc::Balance::resultError, this, [=] {
+        progressLabel->setVisible(false);
+        progressMovie->stop();
+    });
+    balanceWorkerThread->start();
+    emit balanceStartFetch();
+}
+
+void PageAccount::fetchHistory() {
+    historyThread = new WalletRpc::History;
+    historyWorkerThread = new QThread;
+    historyThread->moveToThread(historyWorkerThread);
+    connect(historyWorkerThread, &QThread::finished, historyThread, &QObject::deleteLater);
+    connect(this, &PageAccount::historyStartFetch, historyThread, &WalletRpc::History::doWork);
+    connect(historyThread, &WalletRpc::History::resultReady, this, [=](const QString d) {
+        progressLabel->setVisible(false);
+        progressMovie->stop();
+        RpcClass::History *historyInst = new RpcClass::History(d);
+        if(historyInst->getHistory().count() > 0 && historyInst->getValid()) {
+            Wallet::History::set(historyInst);
         }
-    }
-    delete balanceInst;
-
-    if(!historyThread) {
-        historyThread = new WalletRpc::History;
-        historyWorkerThread = new QThread;
-        historyThread->moveToThread(historyWorkerThread);
-        connect(historyWorkerThread, &QThread::finished, historyThread, &QObject::deleteLater);
-        connect(this, &PageAccount::historyOperate, historyThread, &WalletRpc::History::doWork);
-        connect(historyThread, &WalletRpc::History::resultReady, this, &PageAccount::on_HistoryRetriveDone);
-        connect(historyThread, &WalletRpc::History::resultError, this, &PageAccount::on_HistoryRetriveError);
-        historyWorkerThread->start();
-    }
-    emit historyOperate();
-}
-
-void PageAccount::on_HistoryRetriveDone(const QString &d) {
-    progressLabel->setVisible(false);
-    progressMovie->stop();
-    RpcClass::History *historyInst = new RpcClass::History(d);
-    if(historyInst->getHistory().count() > 0 && historyInst->getValid()) {
-        Wallet::History::set(historyInst);
-    }
-    messageList->clearAll();
-    refreshBalances(historyInst);
-}
-
-void PageAccount::on_ReceiveRetriveDone(const QString &d) {
-    emit historyOperate();
-}
-
-void PageAccount::on_BalanceRetriveError() {
-    progressLabel->setVisible(false);
-    progressMovie->stop();
-}
-
-void PageAccount::on_HistoryRetriveError() {
-    progressLabel->setVisible(false);
-    progressMovie->stop();
-}
-
-void PageAccount::on_ReceiveRetriveError(const QString &s) {
-    qDebug() << s;
+        messageList->clearAll();
+        refreshBalances(historyInst);
+    });
+    connect(historyThread, &WalletRpc::History::resultError, this, [=] {
+        progressLabel->setVisible(false);
+        progressMovie->stop();
+    });
+    historyWorkerThread->start();
+    emit historyStartFetch();
 }
 
 void PageAccount::on_sendPushButton_clicked() {
@@ -262,10 +264,6 @@ void PageAccount::on_receivePushButton_clicked() {
 }
 
 void PageAccount::on_historyPushButton_clicked() {
-    /*if(!pageHistory) {
-        pageHistory = new PageHistory(this);
-    }*/
-    //pageHistory->setVisible(true);
     Global::Page::goManagerPage(Global::Page::HISTORY);
 }
 

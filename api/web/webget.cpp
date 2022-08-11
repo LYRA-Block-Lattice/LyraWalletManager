@@ -35,7 +35,7 @@ void WebGet::doWork(QString url) {
     });
 
     timeoutTimer = new QTimer();
-    timeoutTimer->setInterval(5000);
+    timeoutTimer->setInterval(10000);
     connect(timeoutTimer, &QTimer::timeout, this, [=]{
         timeoutTimer->stop();
         emit resultError("WEB GET 3: Timeout");

@@ -7,6 +7,12 @@
 #include <QScreen>
 #include <QDebug>
 #include <QLayout>
+#include <QVector>
+
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 
 #include "color.h"
 #include "global.h"
@@ -25,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Global::Layout::setYScale(1.2);
     Global::Layout::setXScale(1.1);
     Global::Layout::setHeaderHeight(0);
+
 
     // Backup items geometry, size and font.
     walletNetworkNameLabelQRectBack = ui->walletNetworkNameLabel->geometry();
@@ -148,6 +155,9 @@ MainWindow::MainWindow(QWidget *parent) :
                                             ui->walletNetworkNameLabel->geometry().width(),
                                             ui->walletNetworkNameLabel->geometry().height());
     ui->walletNetworkNameLabel->clear();
+
+    Global::Network::setNetwork(StorageSettings::get("network", "TESTNET"));
+    networkName = Global::Network::getNetwork();
 }
 
 MainWindow::~MainWindow() {
@@ -171,7 +181,7 @@ void MainWindow::setPage(int index) {
 void MainWindow::on_mainTabWidget_currentChanged(int index) {
     if(!initialized)
         return;
-    qDebug() << "selected" << index;
+    //qDebug() << "selected" << index;
     if(lastIndex != index) {
         switch(lastIndex) {
         case Global::Page::STAKING:
@@ -251,6 +261,11 @@ void MainWindow::on_timerLoopTick() {
         accountNetworkName = Global::Util::getAccountNameAndNetwork();
         ui->walletNetworkNameLabel->setText(Global::Util::getAccountNameAndNetwork());
     }
+    if(networkName != Global::Network::getNetwork()) {
+        networkName = Global::Network::getNetwork();
+        if(!priceToRetriveList)
+            getPoolPairPrice();
+    }
 }
 
 void MainWindow::switchTranslator(const QString filename) {
@@ -277,21 +292,72 @@ void MainWindow::fetchCoingecko() {
     connect(coinGecckoFetchWorker, &WebGet::resultReady, this, &MainWindow::on_coingeckoFetchDone);
     connect(coinGecckoFetchWorker, &WebGet::resultError, this, &MainWindow::on_coingeckoFetchError);
     connect(coinGecckoFetchWorkerThread, &QThread::finished, coinGecckoFetchWorker, &QObject::deleteLater);
-    connect(this, &MainWindow::fetchCoinGeckoSignal, coinGecckoFetchWorker, &WebGet::doWork);
+    connect(this, &MainWindow::coinGeckofetch, coinGecckoFetchWorker, &WebGet::doWork);
     coinGecckoFetchWorkerThread->start();
-    emit fetchCoinGeckoSignal("https://api.coingecko.com/api/v3/simple/price?"
+    emit coinGeckofetch("https://api.coingecko.com/api/v3/simple/price?"
                               "ids=lyra,tron,ethereum,bitcoin,tether,binance-usd,usd-coin,ethereum-classic&"
                               "vs_currencies=usd&"
                               "include_market_cap=false&"
                               "include_24hr_vol=false&"
                               "include_24hr_change=false&"
                               "include_last_updated_at=false");
+
 }
 
 void MainWindow::on_coingeckoFetchDone(QString data) {
     qDebug() << data;
     WebClass::CoinGecko coinGecko(data);
     //coinGecckoFetchWorkerThread->exit(0);
+
+    if(!priceToRetriveList)
+        getPoolPairPrice();
+}
+
+void MainWindow::getPoolPairPrice() {
+    if(!priceToRetriveList) {
+        priceToRetriveList = new QList<QPair<QString, QString>>({
+                                                                   QPair<QString, QString>("LYR", "tether/TLYR"),
+                                                                   QPair<QString, QString>("LYR", "tether/USDT")
+                                                               });
+    }
+    poolThread = new WalletRpc::Pool;
+    poolWorkerThread = new QThread;
+    poolThread->moveToThread(poolWorkerThread);
+    connect(poolWorkerThread, &QThread::finished, poolThread, &QObject::deleteLater);
+    connect(this, &MainWindow::poolStartFetch, poolThread, &WalletRpc::Pool::doWork);
+    connect(poolThread, &WalletRpc::Pool::resultReady, this, [=](const QString d) {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(d.toUtf8());
+        if(!jsonResponse.isObject())
+            return;
+        QJsonObject jsonObject = jsonResponse.object();
+        if(!jsonObject["result"].isNull()) {
+            QJsonObject resultJsonObject = jsonObject["result"].toObject();
+            if(resultJsonObject["balance"].isNull())
+                return;
+            QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+            if(balanceJsonObject[priceToRetriveList->at(0).first].isNull() || balanceJsonObject[priceToRetriveList->at(0).second].isNull())
+                return;
+            QPair<QString, double> tickerPrice;
+            QString second = priceToRetriveList->at(0).second;
+            if(second.compare("tether/TLYR")) {
+                tickerPrice.first = "intern/LYR";
+                tickerPrice.second = balanceJsonObject[second].toDouble() / balanceJsonObject[priceToRetriveList->at(0).first].toDouble();
+            } else {
+                tickerPrice.first = second.remove("tether/");
+                tickerPrice.second = Global::TickerPrice::get("LYR") / (balanceJsonObject["LYR"].toDouble() / balanceJsonObject["tether/TLYR"].toDouble());
+            }
+            //qDebug() << tickerPrice.first << ":" << tickerPrice.second;
+            Global::TickerPrice::set(tickerPrice);
+        }
+        priceToRetriveList->remove(0);
+        if(priceToRetriveList->count()) {
+            getPoolPairPrice();
+        } else {
+            priceToRetriveList = nullptr;
+        }
+    });
+    poolWorkerThread->start();
+    emit poolStartFetch(priceToRetriveList->at(0).second, priceToRetriveList->at(0).first);
 }
 
 void MainWindow::on_coingeckoFetchError(QString err) {

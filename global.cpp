@@ -315,27 +315,52 @@ QString Global::TickerIcon::get(QString ticker) {
 }
 /**********************************************************************************/
 int TickerPriceListChangedCnt = 0;
-QList<QPair<QString, double>> TickerPriceList;
+QList<QPair<int, QPair<QString, double>>> TickerPriceList;
 
 void Global::TickerPrice::set(QPair<QString, double> tickerPrice) {
+    QPair<int, QPair<QString, double>> pair;
+    pair.second = tickerPrice;
     for(int cnt = 0; cnt < TickerPriceList.count(); cnt++) {
-        if(!TickerPriceList.at(cnt).first.compare(tickerPrice.first)) {
-            TickerPriceList.replace(cnt, tickerPrice);
+        if(!TickerPriceList.at(cnt).second.first.compare(tickerPrice.first)) {
+            if(pair.second.second == TickerPriceList.at(cnt).second.second)
+                return;
+            pair.first = TickerPriceList.at(cnt).first + 1;
+            TickerPriceList.replace(cnt, pair);
             TickerPriceListChangedCnt++;
             return;
         }
     }
-    TickerPriceList.append(tickerPrice);
+    pair.first = 1;
+    TickerPriceList.append(pair);
+    TickerPriceListChangedCnt++;
 }
 
 double Global::TickerPrice::get(QString ticker) {
     QString t = ticker.remove("$");
     for(int cnt = 0; cnt < TickerPriceList.count(); cnt++) {
-        if(!TickerPriceList.at(cnt).first.compare(t)) {
-            return TickerPriceList.at(cnt).second;
+        if(!TickerPriceList.at(cnt).second.first.compare(t)) {
+            return TickerPriceList.at(cnt).second.second;
         }
     }
     return 0.0;
+}
+
+int Global::TickerPrice::getModifyCount(QString ticker) {
+    QString t = ticker.remove("$");
+    for(int cnt = 0; cnt < TickerPriceList.count(); cnt++) {
+        if(!TickerPriceList.at(cnt).second.first.compare(t)) {
+            return TickerPriceList.at(cnt).first;
+        }
+    }
+    return 0.0;
+}
+
+int Global::TickerPrice::getModifyCount() {
+    return TickerPriceListChangedCnt;
+}
+
+QList<QPair<int, QPair<QString, double>>> Global::TickerPrice::getList() {
+    return TickerPriceList;
 }
 /**********************************************************************************/
 QList<QPair<QString, QString>> tickerToTokenNameList = {

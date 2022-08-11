@@ -30,12 +30,6 @@ public:
     void setStyle();
     void loop();
 private slots:
-    void on_BalanceRetriveDone(const QString &s);
-    void on_BalanceRetriveError();
-    void on_HistoryRetriveDone(const QString &s);
-    void on_HistoryRetriveError();
-    void on_ReceiveRetriveDone(const QString &s);
-    void on_ReceiveRetriveError(const QString &s);
     void on_sendPushButton_clicked();
     void on_receivePushButton_clicked();
     void on_historyPushButton_clicked();
@@ -43,6 +37,7 @@ private slots:
 private:
     void getBalance();
     void refreshBalances(RpcClass::History *history);
+    void fetchHistory();
 
     Ui::PageAccount *ui;
     QWidget *parent;
@@ -80,12 +75,13 @@ private:
 
     int AccountListChangedCount = -1;
     int SelectedAccount = -1;
+    int BalancesChangedCount = -1;
     networkName_e network = networkName_e::NONE;
 
 signals:
-    void balanceOperate();
-    void historyOperate();
-    void receiveOperate();
+    void balanceStartFetch();
+    void historyStartFetch();
+    void receiveStartFetch();
 };
 
 #endif // PAGEACCOUNT_H

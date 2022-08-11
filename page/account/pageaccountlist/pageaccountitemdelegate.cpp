@@ -103,11 +103,12 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
                             opt.icon.pixmap(m_ptr->iconSize));
 
     // Draw ticker text
-    QRect tickerRect(m_ptr->tickerBox(opt, index));
+    QRect tickerRect(m_ptr->tickerBox(opt));
 
     tickerRect.moveTo(m_ptr->margins.left() + m_ptr->iconSize.width()
                          + m_ptr->spacingHorizontal, contentRect.top());
 
+    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
     painter->drawText(tickerRect, Qt::TextSingleLine,
@@ -119,36 +120,38 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     painter->drawText(nameRect, Qt::TextSingleLine,
                       values.at(3));
     // Draw amount text
-    QRect amountRect(m_ptr->amountBox(opt, index));
+    QString txt = values.at(0);
+    QRect amountRect(m_ptr->amountBox(opt, txt));
 
     amountRect.moveTo(m_ptr->margins.left() + m_ptr->iconSize.width()
                       + m_ptr->spacingHorizontal, tickerRect.bottom() + verticalSpacing());
 
+    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
-    painter->drawText(amountRect, Qt::TextSingleLine, values.at(0));
+    painter->drawText(amountRect, Qt::TextSingleLine, txt);
 
     // Draw value text
-    QRect valueRect(m_ptr->valueBox(opt, index));
+    txt = values.at(1);
+    QRect valueRect(m_ptr->valueBox(opt, txt));
 
     valueRect.moveTo(contentRect.right() - valueRect.width(), contentRect.top());
 
-    if(values.at(1).length() > 0) {
-        painter->setFont(f);
-        painter->setPen(palette.text().color());
-        painter->drawText(valueRect, Qt::TextSingleLine,values.at(1));
-    }
+    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    painter->setFont(f);
+    painter->setPen(palette.text().color());
+    painter->drawText(valueRect, Qt::TextSingleLine, txt);
 
     // Draw amount text
-    QRect tokenValueRect(m_ptr->tokenValueBox(opt, index));
+    txt = values.at(2);
+    QRect tokenValueRect(m_ptr->tokenValueBox(opt, txt));
 
     tokenValueRect.moveTo(contentRect.right() - tokenValueRect.width(), valueRect.bottom() + verticalSpacing());
 
-    if(values.at(2).length() > 0) {
-        painter->setFont(f);
-        painter->setPen(palette.text().color());
-        painter->drawText(tokenValueRect, Qt::TextSingleLine, values.at(2));
-    }
+    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    painter->setFont(f);
+    painter->setPen(palette.text().color());
+    painter->drawText(tokenValueRect, Qt::TextSingleLine, txt);
 
     painter->restore();
 }
@@ -159,7 +162,7 @@ QSize PageAccountItemDelegate::sizeHint(const QStyleOptionViewItem &option,
     QStyleOptionViewItem opt(option);
     initStyleOption(&opt, index);
 
-    int textHeight = m_ptr->tickerBox(opt, index).height()
+    int textHeight = m_ptr->tickerBox(opt).height()
             + m_ptr->spacingVertical + m_ptr->messageBox(opt).height();
     int iconHeight = m_ptr->iconSize.height();
     int h = textHeight > iconHeight ? textHeight : iconHeight;
@@ -177,8 +180,7 @@ PageAccountItemDelegatePrivate::PageAccountItemDelegatePrivate() :
 
 }
 
-QRect PageAccountItemDelegatePrivate::tickerBox(const QStyleOptionViewItem &option,
-                             const QModelIndex &/*index*/) const
+QRect PageAccountItemDelegatePrivate::tickerBox(const QStyleOptionViewItem &option) const
 {
     QFont f(option.font);
 
@@ -199,40 +201,37 @@ QRect PageAccountItemDelegatePrivate::nameBox(const QStyleOptionViewItem &option
             .adjusted(0, 0, 1, 1);
 }
 
-QRect PageAccountItemDelegatePrivate::amountBox(const QStyleOptionViewItem &option,
-                             const QModelIndex &index) const
+QRect PageAccountItemDelegatePrivate::amountBox(const QStyleOptionViewItem &option, QString str) const
 {
     QFont f(option.font);
 
     f.setPointSizeF(timestampFontPointSize(option.font));
 
-    return QFontMetrics(f).boundingRect(index.data(Qt::UserRole).toString().split("\r").at(0))
+    return QFontMetrics(f).boundingRect(str)
             .adjusted(0, 0, 1, 1);
 }
 
-QRect PageAccountItemDelegatePrivate::valueBox(const QStyleOptionViewItem &option,
-                             const QModelIndex &index) const
+QRect PageAccountItemDelegatePrivate::valueBox(const QStyleOptionViewItem &option, QString str) const
 {
     QFont f(option.font);
 
     f.setPointSizeF(timestampFontPointSize(option.font));
 
-    return QFontMetrics(f).boundingRect(index.data(Qt::UserRole).toString().split("\r").at(1))
+    return QFontMetrics(f).boundingRect(str)
             .adjusted(0, 0, 1, 1);
 }
 
-QRect PageAccountItemDelegatePrivate::tokenValueBox(const QStyleOptionViewItem &option,
-                             const QModelIndex &index) const
+QRect PageAccountItemDelegatePrivate::tokenValueBox(const QStyleOptionViewItem &option, QString str) const
 {
     QFont f(option.font);
 
     f.setPointSizeF(timestampFontPointSize(option.font));
 
-    return QFontMetrics(f).boundingRect(index.data(Qt::UserRole).toString().split("\r").at(2))
+    return QFontMetrics(f).boundingRect(str)
             .adjusted(0, 0, 1, 1);
 }
 
-qreal PageAccountItemDelegatePrivate::timestampFontPointSize(const QFont &f) const
+qreal PageAccountItemDelegatePrivate::timestampFontPointSize(const QFont &f)
 {
     return f.pointSize() * (1/Global::Layout::getXScale());
 }

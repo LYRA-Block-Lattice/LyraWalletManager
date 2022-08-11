@@ -14,6 +14,8 @@ public:
 
 public slots:
     void addMessage(const QPixmap &pixmap, const QString &ticker, const double &amount, const double &value, const double &tokenValue);
+    void setTokenValue(QString ticker, double tokenValue);
+    QList<QString> getTickers();
     void clearAll();
 };
 

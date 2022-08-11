@@ -76,10 +76,12 @@ void PageHistory::open() {
                 listHash += QString::number(hEntry.TimeStamp);
                 if( itemsCount % 20 == 9 )
                     QApplication::processEvents();
+                QString tick = hEntry.Changes[0].first.compare("LYR") ? hEntry.Changes[0].first : "intern/LYR";
+                double tickerPrice = Global::TickerPrice::get(tick);
                 messageList->addMessage(QPixmap(Global::TickerIcon::get(hEntry.Changes[0].first)),
                                         hEntry.Changes[0].first, hEntry.Changes[0].second,
-                                        hEntry.Changes[0].second * Global::TickerPrice::get(hEntry.Changes[0].first),
-                                        Global::TickerPrice::get(hEntry.Changes[0].first),
+                                        hEntry.Changes[0].second * tickerPrice,
+                                        tickerPrice,
                                         hEntry.Height);
                 messageList->scrollToTop();
                 itemsCount++;
@@ -117,6 +119,22 @@ void PageHistory::loop() {
             historyChangeCount = Wallet::History::getChangeCount();
             open();
         }
+    }
+    if(BalancesChangedCount != Global::TickerPrice::getModifyCount()) {
+        BalancesChangedCount = Global::TickerPrice::getModifyCount();
+        int itemsCount = 0;
+        showProgress(true);
+        QList<QString> tickerList = messageList->getTickers();
+        historyLoadProgressBar->setMaximum(tickerList.count());
+        foreach(QString ticker, tickerList) {
+            QApplication::processEvents();
+            QString tick = ticker.compare("LYR") ? ticker : "intern/LYR";
+            messageList->setTokenValue(ticker, Global::TickerPrice::get(tick.remove('$')));
+            itemsCount++;
+            historyLoadProgressBar->setValue(itemsCount);
+        }
+        tokenPriceList = Global::TickerPrice::getList();
+        showProgress(false);
     }
 }
 

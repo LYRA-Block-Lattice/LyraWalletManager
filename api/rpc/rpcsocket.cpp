@@ -3,6 +3,7 @@
 #include <QtWebSockets/QWebSocket>
 #include <QSslSocket>
 
+#include "QtCore/qthread.h"
 #include "globallyra.h"
 
 void RpcSocket::doWork(QString url, QString msg) {
@@ -21,6 +22,7 @@ void RpcSocket::doWork(QString url, QString msg) {
             Connected = false;
             qDebug() << "SSLWEBSOCKET 2 :" << WebSocket->errorString();
             TimeoutTimer->stop();
+            this->thread()->exit();
         });
         connect(WebSocket, QOverload<const QList<QSslError>&>::of(&QWebSocket::sslErrors),this, [=] {
             // WARNING: Never ignore SSL errors in production code.
@@ -38,6 +40,7 @@ void RpcSocket::doWork(QString url, QString msg) {
         connect(TimeoutTimer, &QTimer::timeout, this, [=]() {
             TimeoutTimer->stop();
             emit resultError("");
+            this->thread()->exit();
         });
     }
     if(!Connected) {
@@ -54,6 +57,7 @@ void RpcSocket::sendMessage(QString message) {
 
 void RpcSocket::socketDisconnect() {
     WebSocket->close();
+    this->thread()->exit();
 }
 
 /* Usage */

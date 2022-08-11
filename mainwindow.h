@@ -46,10 +46,12 @@ private:
     QTranslator * qtTranslator = NULL;
 
     QString accountNetworkName = " ";
+    networkName_e networkName = networkName_e::NONE;
 
     bool initialized = false;
 
     void switchTranslator(const QString filename);
+    void getPoolPairPrice();
 
     QTimer loopTimer;
     QTimer fetchCoinGeckoTimer;
@@ -68,7 +70,13 @@ private:
 
     WebGet *coinGecckoFetchWorker = nullptr;
     QThread *coinGecckoFetchWorkerThread = nullptr;
+
+    WalletRpc::Pool *poolThread = nullptr;
+    QThread *poolWorkerThread = nullptr;
+
+    QList<QPair<QString, QString>> *priceToRetriveList = nullptr;
 signals:
-    void fetchCoinGeckoSignal(QString url);
+    void coinGeckofetch(QString url);
+    void poolStartFetch(QString token1, QString token0);
 };
 #endif // MAINWINDOW_H

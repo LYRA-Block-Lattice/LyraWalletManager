@@ -52,6 +52,8 @@ private:
 
     int AccountListChangedCount = -1;
     int historyChangeCount = -1;
+    int BalancesChangedCount = -1;
+    QList<QPair<int, QPair<QString, double>>> tokenPriceList;
 
     void showProgress(bool show);
 };
