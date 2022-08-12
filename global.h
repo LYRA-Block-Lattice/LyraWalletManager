@@ -287,47 +287,56 @@ namespace Global {
         static QString normaliseNumber(double nr, int decimals = 8) {
             QString expression = "%." + QString::number(decimals) + "f";
             QString snr = QString::asprintf(expression.toUtf8(), nr);
-            if(snr.indexOf('.') != -1) {
-                while ( snr.at(snr.length() - 1) == '0' && snr.at(snr.length() - 1) != '.' ) {
-                    snr.remove(snr.length() - 1, 1);
+            return normaliseNumber(snr, true);
+        }
+        static QString normaliseNumber(QString snr, bool clearZeroDecimals) {
+            snr = snr.remove(',');
+            while (!snr.mid(0, 1).compare('0') && !snr.mid(1, 1).compare('0')) { snr.remove(1,1); }
+            if(clearZeroDecimals) {
+                if(snr.indexOf('.') != -1) {
+                    while ( snr.at(snr.length() - 1) == '0' && snr.at(snr.length() - 1) != '.' ) {
+                        snr.remove(snr.length() - 1, 1);
+                    }
                 }
+                if(snr.at(snr.length() - 1) == '.')
+                    snr.remove(snr.length() - 1, 1);
             }
-            if(snr.at(snr.length() - 1) == '.')
-                snr.remove(snr.length() - 1, 1);
-            int loc = snr.indexOf('.');
             bool negative = snr.contains('-');
             snr = snr.remove('-');
-            if(loc != -1) {
-                if(loc > 12) {
-                    snr.insert(loc - 3, ',');
-                    snr.insert(loc - 6, ',');
-                    snr.insert(loc - 9, ',');
-                    snr.insert(loc - 12, ',');
-                } else if(loc > 9) {
-                    snr.insert(loc - 3, ',');
-                    snr.insert(loc - 6, ',');
-                    snr.insert(loc - 9, ',');
-                } else if(loc > 6) {
-                    snr.insert(loc - 3, ',');
-                    snr.insert(loc - 6, ',');
-                } else if(loc > 3)
-                    snr.insert(loc - 3, ',');
-            } else {
-                int len = snr.length();
-                if(len > 12) {
-                    snr.insert(len - 3, ',');
-                    snr.insert(len - 6, ',');
-                    snr.insert(len - 9, ',');
-                    snr.insert(len - 12, ',');
-                } else if(len > 9) {
-                    snr.insert(len - 3, ',');
-                    snr.insert(len - 6, ',');
-                    snr.insert(len - 9, ',');
-                } else if(len > 6) {
-                    snr.insert(len - 3, ',');
-                    snr.insert(len - 6, ',');
-                } else if(len > 3)
-                    snr.insert(len - 3, ',');
+            int loc = snr.indexOf('.');
+            if(snr.length() > 2) {
+                if(loc != -1) {
+                    if(loc > 12) {
+                        snr.insert(loc - 3, ',');
+                        snr.insert(loc - 6, ',');
+                        snr.insert(loc - 9, ',');
+                        snr.insert(loc - 12, ',');
+                    } else if(loc > 9) {
+                        snr.insert(loc - 3, ',');
+                        snr.insert(loc - 6, ',');
+                        snr.insert(loc - 9, ',');
+                    } else if(loc > 6) {
+                        snr.insert(loc - 3, ',');
+                        snr.insert(loc - 6, ',');
+                    } else if(loc > 3)
+                        snr.insert(loc - 3, ',');
+                } else {
+                    int len = snr.length();
+                    if(len > 12) {
+                        snr.insert(len - 3, ',');
+                        snr.insert(len - 6, ',');
+                        snr.insert(len - 9, ',');
+                        snr.insert(len - 12, ',');
+                    } else if(len > 9) {
+                        snr.insert(len - 3, ',');
+                        snr.insert(len - 6, ',');
+                        snr.insert(len - 9, ',');
+                    } else if(len > 6) {
+                        snr.insert(len - 3, ',');
+                        snr.insert(len - 6, ',');
+                    } else if(len > 3)
+                        snr.insert(len - 3, ',');
+                }
             }
             if(negative)
                 snr.insert(0, '-');

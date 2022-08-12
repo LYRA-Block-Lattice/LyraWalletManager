@@ -46,6 +46,7 @@ private:
     Ui::PageSend *ui;
 
     void checkIntegrityOfInputs();
+    bool checkEnoughFunds();
 
     QRect backPushButtonQRectBack;
     QSize backPushButtonQSizeBack;

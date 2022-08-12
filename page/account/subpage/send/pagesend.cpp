@@ -14,6 +14,7 @@
 
 #include "style.h"
 #include "global.h"
+#include "globallyra.h"
 #include "crypto/signatures.h"
 #include "wallet/history.h"
 
@@ -177,6 +178,58 @@ void PageSend::checkIntegrityOfInputs() {
     ui->sendPushButton->setEnabled(true);
 }
 
+bool PageSend::checkEnoughFunds() {
+    bool validate;
+    double amount = ui->amountLineEdit->text().toDouble(&validate);
+    if(!validate) {
+        ui->sendingLabel->setText("Invalid amount");
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
+        return false;
+    }
+    Wallet::History::HistoryEntry_t *historyEntry = Wallet::History::get();
+    if(historyEntry) {
+        RpcClass::History *historyInst = historyEntry->history;
+        RpcClass::History::entry_t hEntry;
+        QList<RpcClass::History::entry_t> tmpListEntrys = historyInst->getHistory();
+        QList<QPair<QString, double>> balances = tmpListEntrys.last().Balances;
+        double lyrAmount = 0.0;
+        QPair<QString, double> balance;
+        foreach(balance, balances) {
+            if(!balance.first.compare("LYR")) {
+                lyrAmount = balance.second;
+            }
+        }
+        if(lyrAmount < LYRA_TX_FEE) {
+            ui->sendingLabel->setText("Not enough funds for fee");
+            fadeCount = FADE_COUNT_START_VALE;
+            fadeTimer.start();
+            return false;
+        }
+        foreach(balance, balances) {
+            if(!balance.first.compare(ui->tokenComboBox->currentText())) {
+                if(!balance.first.compare("LYR")) {
+                    if(balance.second - LYRA_TX_FEE >= amount) {
+                        return true;
+                    }
+                } else {
+                    if(balance.second >= amount) {
+                        return true;
+                    }
+                }
+            }
+        }
+        ui->sendingLabel->setText("Not enough funds");
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
+        return false;
+    }
+    ui->sendingLabel->setText("Account is empty");
+    fadeCount = FADE_COUNT_START_VALE;
+    fadeTimer.start();
+    return false;
+}
+
 void PageSend::on_backPushButton_clicked() {
     /*if( camera )
         if( camera->isVisible())
@@ -230,6 +283,9 @@ void PageSend::on_qrWindowClosed() {
 }
 
 void PageSend::on_sendPushButton_clicked() {
+    if(!checkEnoughFunds()) {
+        return;
+    }
     QString sendreview = tr("Do you want to send") + ":\n" +
             ui->amountLineEdit->text() + " " + ui->tokenComboBox->currentText() + "\n" +
             tr("to address") + "\n" +
@@ -241,21 +297,17 @@ void PageSend::on_sendPushButton_clicked() {
     connect(message, &QDialog::finished, this, [message, this] {
         message->deleteLater();
         if (message->result() == QMessageBox::Button::Yes) {
-            //QApplication::quit();
             ui->sendingLabel->setText("Sending");
             fadeCount = FADE_COUNT_START_VALE;
             fadeTimer.start();
-            //Global::Page::goManagerPage(Global::Page::ACCOUNT);
-            if(!sendThread) {
-                sendThread = new WalletRpc::Send;
-                sendWorkerThread = new QThread;
-                sendThread->moveToThread(sendWorkerThread);
-                connect(sendWorkerThread, &QThread::finished, sendThread, &QObject::deleteLater);
-                connect(this, &PageSend::sendOperate, sendThread, &WalletRpc::Send::doWork);
-                connect(sendThread, &WalletRpc::Send::resultReady, this, &PageSend::on_SendRetriveDone);
-                connect(sendThread, &WalletRpc::Send::resultError, this, &PageSend::on_SendRetriveError);
-                sendWorkerThread->start();
-            }
+            sendThread = new WalletRpc::Send;
+            sendWorkerThread = new QThread;
+            sendThread->moveToThread(sendWorkerThread);
+            connect(sendWorkerThread, &QThread::finished, sendThread, &QObject::deleteLater);
+            connect(this, &PageSend::sendOperate, sendThread, &WalletRpc::Send::doWork);
+            connect(sendThread, &WalletRpc::Send::resultReady, this, &PageSend::on_SendRetriveDone);
+            connect(sendThread, &WalletRpc::Send::resultError, this, &PageSend::on_SendRetriveError);
+            sendWorkerThread->start();
             emit sendOperate(ui->amountLineEdit->text(), ui->recipientAddressLineEdit->text(), Global::Util::signToTicker(ui->tokenComboBox->currentText()));
         }
     });

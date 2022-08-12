@@ -96,7 +96,7 @@ void PageHistoryList::setTokenValue(QString ticker, double tokenValue) {
             if(values[2].remove(',').toDouble() != tokenValue) {
                 QString svalue = Global::Util::normaliseNumber(values[0].remove(',').toDouble() * tokenValue);
                 item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s\r%d",
-                                                values.at(0).toUtf8().data(),
+                                                Global::Util::normaliseNumber(values.at(0), true).toUtf8().data(),
                                                 svalue.toUtf8().data(),
                                                 stokenValue.toUtf8().data(),
                                                 values.at(3).toUtf8().data(),
