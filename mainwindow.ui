@@ -75,7 +75,7 @@ QTabBar::tab:selected {
 	border-bottom-color: #FFEF4F; 
 }
 QTabBar::tab:!selected {
-	margin-top: 4px; /* make non-selected tabs look smaller */
+	margin-top: 0px; /* make non-selected tabs look smaller */
 }</string>
     </property>
     <property name="tabPosition">
@@ -85,7 +85,7 @@ QTabBar::tab:!selected {
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <property name="usesScrollButtons">
      <bool>false</bool>

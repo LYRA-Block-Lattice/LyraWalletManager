@@ -75,6 +75,30 @@ private:
     QRect statucGridWidgetQRectBack;
     QFont statucGridWidgetQFontBack;
 
+    QFont externalPriceLabelQFontBack;
+    QFont externalPriceValueLabelQFontBack;
+    QFont internalPriceLabelQFontBack;
+    QFont internalPriceValueLabelQFontBack;
+    QFont tokenPairLabelQFontBack;
+    QFont tokenPairValueLabelQFontBack;
+    QFont estimatedRatioLabelQFontBack;
+    QFont estimatedRatioValueLabelQFontBack;
+    QFont youWillSellLabelQFontBack;
+    QFont youWillSellValueLabelQFontBack;
+    QFont youWillGetLabelQFontBack;
+    QFont youWillGetValueLabelQFontBack;
+    QFont priceImpactLabelQFontBack;
+    QFont priceImpactValueLabelQFontBack;
+    QFont poolFeeLabelQFontBack;
+    QFont poolFeeValueLabelQFontBack;
+    QFont networkFeeLabelQFontBack;
+    QFont networkFeeValueLabelQFontBack;
+    QFont totalLiquidityLabelQFontBack;
+    QFont totalLiquidityValueLabelQFontBack;
+    QFont yourShareLabelQFontBack;
+    QFont yourShareValueLabelQFontBack;
+
+
     int AccountListChangedCount = -1;
 };
 

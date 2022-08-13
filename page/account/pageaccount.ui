@@ -61,7 +61,7 @@
     <bool>true</bool>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -146,7 +146,7 @@ QPushButton::pressed {
     <bool>true</bool>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -290,7 +290,7 @@ QPushButton:pressed {
     <bool>true</bool>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {

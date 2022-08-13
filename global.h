@@ -34,9 +34,9 @@
 #define MENU_BAR_HEIGHT 30
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#define FONT_OFFSET     0.75
+#define FONT_OFFSET     0.60
 #elif __linux__
-#define FONT_OFFSET     0.75
+#define FONT_OFFSET     0.60
 #else
 #define FONT_OFFSET     0.8
 #endif

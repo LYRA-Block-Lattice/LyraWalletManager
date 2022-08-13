@@ -111,27 +111,221 @@ QPushButton:pressed {
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="backupWalletPushButton">
+  <widget class="QFrame" name="settingsVerticalFrame">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>140</y>
+     <y>60</y>
      <width>311</width>
-     <height>41</height>
+     <height>471</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>13</pointsize>
-     <bold>true</bold>
-     <stylestrategy>PreferDefault</stylestrategy>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton {
+    <string notr="true">background-color: transparent;</string>
+   </property>
+   <layout class="QVBoxLayout" name="settingsVerticalLayout">
+    <property name="spacing">
+     <number>-1</number>
+    </property>
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>12</number>
+    </property>
+    <property name="topMargin">
+     <number>12</number>
+    </property>
+    <property name="rightMargin">
+     <number>12</number>
+    </property>
+    <property name="bottomMargin">
+     <number>12</number>
+    </property>
+    <item>
+     <widget class="QComboBox" name="networkComboBox">
+      <property name="minimumSize">
+       <size>
+        <width>119</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <bold>true</bold>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    border: 1px solid lightgray;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em; 
+	color:black;
+}
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 5px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 5px;
+}
+QComboBox::drop-down::hover {
+	background-color: rgba(0, 0, 0, 16);
+}
+QComboBox::drop-down::pressed {
+    background-color: rgba(0, 0, 0, 64);
+}
+QComboBox::down-arrow {
+    image: url(:/res/ic/res/ic/dropDownArrow.png);
+	width: 12px;
+    height: 12px;
+}
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+QListView::item {
+	height: 31px;
+	background-color: white;
+	color: black;
+}
+QListView::item:selected:!active, QListView::item:selected:active {
+	background-color: lightgrey;
+	color: black;
+}
+QListView::item::hover {
+	background-color: grey;
+	/*font: url(:/Resources/Fonts/GameJam.ttf);*/
+	color: black;
+}
+</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="languageComboBox">
+      <property name="minimumSize">
+       <size>
+        <width>119</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <bold>true</bold>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    border: 1px solid lightgray;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em; 
+	color:black;
+}
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 5px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 5px;
+}
+QComboBox::drop-down::hover {
+	background-color: rgba(0, 0, 0, 16);
+}
+QComboBox::drop-down::pressed {
+    background-color: rgba(0, 0, 0, 64);
+}
+QComboBox::down-arrow {
+    image: url(:/res/ic/res/ic/dropDownArrow.png);
+	width: 12px;
+    height: 12px;
+}
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+QListView::item {
+	height: 31px;
+	background-color: white;
+	color: black;
+}
+QListView::item:selected:!active, QListView::item:selected:active {
+	background-color: lightgrey;
+	color: black;
+}
+QListView::item::hover {
+	background-color: grey;
+	/*font: url(:/Resources/Fonts/GameJam.ttf);*/
+	color: black;
+}
+</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="backupWalletPushButton">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <bold>true</bold>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
 	border-style: solid;
 	background-color: rgba(0, 0, 0, 8);
 	border-width: 1px;
@@ -148,160 +342,30 @@ QPushButton:hover {
 QPushButton:pressed {
     background-color: rgba(0, 0, 0, 64);
 }</string>
-   </property>
-   <property name="text">
-    <string>BACKUP WALLET</string>
-   </property>
-   <property name="icon">
-    <iconset resource="../../../../res.qrc">
-     <normaloff>:/res/ic/res/ic/backup.png</normaloff>:/res/ic/res/ic/backup.png</iconset>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="languageComboBox">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>60</y>
-     <width>311</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>13</pointsize>
-     <bold>true</bold>
-     <stylestrategy>PreferDefault</stylestrategy>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QComboBox {
-    border: 1px solid lightgray;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em; 
-	color:black;
-}
-QComboBox:on { /* shift the text when the popup opens */
-    padding-top: 3px;
-    padding-left: 4px;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 5px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 5px;
-}
-QComboBox::drop-down::hover {
-	background-color: rgba(0, 0, 0, 16);
-}
-QComboBox::drop-down::pressed {
-    background-color: rgba(0, 0, 0, 64);
-}
-QComboBox::down-arrow {
-    image: url(:/res/ic/res/ic/dropDownArrow.png);
-	width: 12px;
-    height: 12px;
-}
-QComboBox::down-arrow:on { /* shift the arrow when popup is open */
-    top: 1px;
-    left: 1px;
-}
-QListView::item {
-	height: 31px;
-	background-color: white;
-	color: black;
-}
-QListView::item:selected:!active, QListView::item:selected:active {
-	background-color: lightgrey;
-	color: black;
-}
-QListView::item::hover {
-	background-color: grey;
-	/*font: url(:/Resources/Fonts/GameJam.ttf);*/
-	color: black;
-}
-</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="networkComboBox">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>100</y>
-     <width>311</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>13</pointsize>
-     <bold>true</bold>
-     <stylestrategy>PreferDefault</stylestrategy>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QComboBox {
-    border: 1px solid lightgray;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em; 
-	color:black;
-}
-QComboBox:on { /* shift the text when the popup opens */
-    padding-top: 3px;
-    padding-left: 4px;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 5px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 5px;
-}
-QComboBox::drop-down::hover {
-	background-color: rgba(0, 0, 0, 16);
-}
-QComboBox::drop-down::pressed {
-    background-color: rgba(0, 0, 0, 64);
-}
-QComboBox::down-arrow {
-    image: url(:/res/ic/res/ic/dropDownArrow.png);
-	width: 12px;
-    height: 12px;
-}
-QComboBox::down-arrow:on { /* shift the arrow when popup is open */
-    top: 1px;
-    left: 1px;
-}
-QListView::item {
-	height: 31px;
-	background-color: white;
-	color: black;
-}
-QListView::item:selected:!active, QListView::item:selected:active {
-	background-color: lightgrey;
-	color: black;
-}
-QListView::item::hover {
-	background-color: grey;
-	/*font: url(:/Resources/Fonts/GameJam.ttf);*/
-	color: black;
-}
-</string>
-   </property>
+      </property>
+      <property name="text">
+       <string>BACKUP WALLET</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../../../../res.qrc">
+        <normaloff>:/res/ic/res/ic/backup.png</normaloff>:/res/ic/res/ic/backup.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>

@@ -79,7 +79,7 @@ color: rgb(0, 0, 0);</string>
      </rect>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
@@ -294,6 +294,11 @@ QPushButton:pressed {
      <width>231</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>

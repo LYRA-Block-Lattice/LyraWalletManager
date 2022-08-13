@@ -12,9 +12,6 @@ PageSwap::PageSwap(QWidget *parent) :
     ui(new Ui::PageSwap) {
     ui->setupUi(this);
 
-
-
-
     // Backup items geometry, size and font.
     headerFrameQRectBack = ui->headerFrame->geometry();
     titleLabelQRectBack = ui->titleLabel->geometry();
@@ -48,6 +45,30 @@ PageSwap::PageSwap(QWidget *parent) :
 
     statucGridWidgetQRectBack = ui->statucGridWidget->geometry();
     statucGridWidgetQFontBack = ui->statucGridWidget->font();
+
+    externalPriceLabelQFontBack = ui->externalPriceLabel->font();
+    externalPriceValueLabelQFontBack = ui->externalPriceValueLabel->font();
+    internalPriceLabelQFontBack = ui->internalPriceLabel->font();
+    internalPriceValueLabelQFontBack = ui->internalPriceValueLabel->font();
+    tokenPairLabelQFontBack = ui->tokenPairLabel->font();
+    tokenPairValueLabelQFontBack = ui->tokenPairValueLabel->font();
+    estimatedRatioLabelQFontBack = ui->estimatedRatioLabel->font();
+    estimatedRatioValueLabelQFontBack = ui->estimatedRatioValueLabel->font();
+    youWillSellLabelQFontBack = ui->youWillSellLabel->font();
+    youWillSellValueLabelQFontBack = ui->youWillSellValueLabel->font();
+    youWillGetLabelQFontBack = ui->youWillGetLabel->font();
+    youWillGetValueLabelQFontBack = ui->youWillGetValueLabel->font();
+    priceImpactLabelQFontBack = ui->priceImpactLabel->font();
+    priceImpactValueLabelQFontBack = ui->priceImpactValueLabel->font();
+    poolFeeLabelQFontBack = ui->poolFeeLabel->font();
+    poolFeeValueLabelQFontBack = ui->poolFeeValueLabel->font();
+    networkFeeLabelQFontBack = ui->networkFeeLabel->font();
+    networkFeeValueLabelQFontBack = ui->networkFeeValueLabel->font();
+    totalLiquidityLabelQFontBack = ui->totalLiquidityLabel->font();
+    totalLiquidityValueLabelQFontBack = ui->totalLiquidityValueLabel->font();
+    yourShareLabelQFontBack = ui->yourShareLabel->font();
+    yourShareValueLabelQFontBack = ui->yourShareValueLabel->font();
+
 
 
     setScale();
@@ -116,6 +137,31 @@ void PageSwap::setScale() {
 
     ui->statucGridWidget->setGeometry(Global::Layout::scaleRect(statucGridWidgetQRectBack));
     ui->statucGridWidget->setFont(Global::Layout::scaleFontOffset(statucGridWidgetQFontBack));
+
+    ui->externalPriceLabel->setFont(Global::Layout::scaleFontOffset(externalPriceLabelQFontBack));
+    ui->externalPriceValueLabel->setFont(Global::Layout::scaleFontOffset(externalPriceValueLabelQFontBack));
+    ui->internalPriceLabel->setFont(Global::Layout::scaleFontOffset(internalPriceLabelQFontBack));
+    ui->internalPriceValueLabel->setFont(Global::Layout::scaleFontOffset(internalPriceValueLabelQFontBack));
+    ui->tokenPairLabel->setFont(Global::Layout::scaleFontOffset(tokenPairLabelQFontBack));
+    ui->tokenPairValueLabel->setFont(Global::Layout::scaleFontOffset(tokenPairValueLabelQFontBack));
+    ui->estimatedRatioLabel->setFont(Global::Layout::scaleFontOffset(estimatedRatioLabelQFontBack));
+    ui->estimatedRatioValueLabel->setFont(Global::Layout::scaleFontOffset(estimatedRatioValueLabelQFontBack));
+    ui->youWillSellLabel->setFont(Global::Layout::scaleFontOffset(youWillSellLabelQFontBack));
+    ui->youWillSellValueLabel->setFont(Global::Layout::scaleFontOffset(youWillSellValueLabelQFontBack));
+    ui->youWillGetLabel->setFont(Global::Layout::scaleFontOffset(youWillGetLabelQFontBack));
+    ui->youWillGetValueLabel->setFont(Global::Layout::scaleFontOffset(youWillGetValueLabelQFontBack));
+    ui->priceImpactLabel->setFont(Global::Layout::scaleFontOffset(priceImpactLabelQFontBack));
+    ui->priceImpactValueLabel->setFont(Global::Layout::scaleFontOffset(priceImpactValueLabelQFontBack));
+    ui->poolFeeLabel->setFont(Global::Layout::scaleFontOffset(poolFeeLabelQFontBack));
+    ui->poolFeeValueLabel->setFont(Global::Layout::scaleFontOffset(poolFeeValueLabelQFontBack));
+    ui->networkFeeLabel->setFont(Global::Layout::scaleFontOffset(networkFeeLabelQFontBack));
+    ui->networkFeeValueLabel->setFont(Global::Layout::scaleFontOffset(networkFeeValueLabelQFontBack));
+    ui->totalLiquidityLabel->setFont(Global::Layout::scaleFontOffset(totalLiquidityLabelQFontBack));
+    ui->totalLiquidityValueLabel->setFont(Global::Layout::scaleFontOffset(totalLiquidityValueLabelQFontBack));
+    ui->yourShareLabel->setFont(Global::Layout::scaleFontOffset(yourShareLabelQFontBack));
+    ui->yourShareValueLabel->setFont(Global::Layout::scaleFontOffset(yourShareValueLabelQFontBack));
+
+
 }
 
 void PageSwap::setStyle() {

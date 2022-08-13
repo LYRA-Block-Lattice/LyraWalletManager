@@ -39,12 +39,6 @@
         <file>res/ic/icon.icns</file>
         <file>res/ic/aboutUs.png</file>
     </qresource>
-    <qresource prefix="/languages">
-        <file>languages/LyraPcWalletManager_ro.qm</file>
-        <file>languages/LyraPcWalletManager_en.qm</file>
-        <file>languages/LyraPcWalletManager_en.ts</file>
-        <file>languages/LyraPcWalletManager_ro.ts</file>
-    </qresource>
     <qresource prefix="/flag">
         <file>res/flag/tj.png</file>
         <file>res/flag/vu.png</file>
@@ -293,5 +287,8 @@
         <file>res/flag/la.png</file>
         <file>res/flag/me.png</file>
         <file>res/flag/tg.png</file>
+    </qresource>
+    <qresource prefix="/language">
+        <file>translate/languages/rom.tr</file>
     </qresource>
 </RCC>

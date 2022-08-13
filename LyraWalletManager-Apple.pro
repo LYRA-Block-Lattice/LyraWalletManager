@@ -72,6 +72,7 @@ SOURCES += \
     storage/storagecommon.cpp \
     storage/storageinternal.cpp \
     storage/storagesettings.cpp \
+    translate/translate.cpp \
     wallet/history.cpp \
     wallet/walletrpc.cpp
 
@@ -115,6 +116,7 @@ HEADERS += \
     storage/storageinternal.h \
     storage/storagesettings.h \
     style.h \
+    translate/translate.h \
     wallet/history.h \
     wallet/walletrpc.h
 
@@ -137,9 +139,6 @@ FORMS += \
     page/staking/pagestaking.ui \
     page/swap/pageswap.ui
 
-TRANSLATIONS += \
-    languages/LyraPcWalletManager_ro.ts \
-    languages/LyraPcWalletManager_en.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 

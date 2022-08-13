@@ -87,7 +87,7 @@ QLineEdit[text=&quot;&quot;]{
      <bool>true</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
@@ -131,7 +131,7 @@ QPushButton:pressed {
     </property>
     <property name="font">
      <font>
-      <pointsize>24</pointsize>
+      <pointsize>22</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -156,11 +156,16 @@ color: #474D57;
       <height>32</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="tabletTracking">
      <bool>true</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
