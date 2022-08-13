@@ -179,7 +179,9 @@ void WalletRpc::Send::doWork(QString amount, QString destAccount, QString ticker
                  WalletRpc::compose(1, "Send", QList<QString>({Global::Account::getAccountPublicId(), amount, destAccount, ticker})));
 }
 
-void WalletRpc::Pool::doWork(QString token1, QString token0) {
+void WalletRpc::Pool::doWork(QString token1, QString token0, QList<QString> *userData) {
+    if(userData)
+        this->userData = *userData;
     if(!worker) {
         worker = new RpcSocket;
         workerThread= new QThread;
@@ -188,7 +190,7 @@ void WalletRpc::Pool::doWork(QString token1, QString token0) {
         connect(this, &WalletRpc::Pool::startFetch, worker, &RpcSocket::doWork);
         connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
             emit socketDisconnect();
-            emit resultReady(s);
+            emit resultReady(s, this->userData);
             this->thread()->exit();
         });
         connect(this, &WalletRpc::Pool::socketDisconnect, worker, &RpcSocket::socketDisconnect);
@@ -196,6 +198,25 @@ void WalletRpc::Pool::doWork(QString token1, QString token0) {
     }
     emit startFetch(Global::Network::getNodeAddress().second,
                  WalletRpc::compose(1, "Pool", QList<QString>({token0, token1})));
+}
+
+void WalletRpc::PoolCalculate::doWork(QString poolId, QString swapFrom, double amount, double slippage) {
+    if(!worker) {
+        worker = new RpcSocket;
+        workerThread= new QThread;
+        worker->moveToThread(workerThread);
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(this, &WalletRpc::PoolCalculate::startFetch, worker, &RpcSocket::doWork);
+        connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
+            emit socketDisconnect();
+            emit resultReady(s);
+            this->thread()->exit();
+        });
+        connect(this, &WalletRpc::PoolCalculate::socketDisconnect, worker, &RpcSocket::socketDisconnect);
+        workerThread->start();
+    }
+    emit startFetch(Global::Network::getNodeAddress().second,
+                 WalletRpc::compose(1, "PoolCalculate", QList<QString>({poolId, swapFrom, QString::number(amount), QString::number(slippage)})));
 }
 
 /*

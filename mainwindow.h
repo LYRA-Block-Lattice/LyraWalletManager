@@ -77,6 +77,6 @@ private:
     QList<QPair<QString, QString>> *priceToRetriveList = nullptr;
 signals:
     void coinGeckofetch(QString url);
-    void poolStartFetch(QString token1, QString token0);
+    void poolStartFetch(QString token1, QString token0, QList<QString> *userData);
 };
 #endif // MAINWINDOW_H

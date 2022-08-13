@@ -330,7 +330,7 @@ void Global::TickerPrice::set(QPair<QString, double> tickerPrice) {
             return;
         }
     }
-    pair.first = 1;
+    pair.first = 0;
     TickerPriceList.append(pair);
     TickerPriceListChangedCnt++;
 }

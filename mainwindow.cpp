@@ -13,7 +13,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-
 #include "color.h"
 #include "global.h"
 #include "style.h"
@@ -326,25 +325,16 @@ void MainWindow::getPoolPairPrice() {
     connect(poolWorkerThread, &QThread::finished, poolThread, &QObject::deleteLater);
     connect(this, &MainWindow::poolStartFetch, poolThread, &WalletRpc::Pool::doWork);
     connect(poolThread, &WalletRpc::Pool::resultReady, this, [=](const QString d) {
-        QJsonDocument jsonResponse = QJsonDocument::fromJson(d.toUtf8());
-        if(!jsonResponse.isObject())
-            return;
-        QJsonObject jsonObject = jsonResponse.object();
-        if(!jsonObject["result"].isNull()) {
-            QJsonObject resultJsonObject = jsonObject["result"].toObject();
-            if(resultJsonObject["balance"].isNull())
-                return;
-            QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
-            if(balanceJsonObject[priceToRetriveList->at(0).first].isNull() || balanceJsonObject[priceToRetriveList->at(0).second].isNull())
-                return;
+        RpcClass::Pool poolInstance = RpcClass::Pool(d);
+        if(poolInstance.getValid()) {
             QPair<QString, double> tickerPrice;
             QString second = priceToRetriveList->at(0).second;
-            if(second.compare("tether/TLYR")) {
-                tickerPrice.first = "intern/LYR";
-                tickerPrice.second = balanceJsonObject[second].toDouble() / balanceJsonObject[priceToRetriveList->at(0).first].toDouble();
-            } else {
+            if(!second.compare("tether/TLYR")) {
                 tickerPrice.first = second.remove("tether/");
-                tickerPrice.second = Global::TickerPrice::get("LYR") / (balanceJsonObject["LYR"].toDouble() / balanceJsonObject["tether/TLYR"].toDouble());
+                tickerPrice.second = Global::TickerPrice::get("LYR") / (poolInstance.getBalanceToken0() / poolInstance.getBalanceToken1());
+            } else {
+                tickerPrice.first = "intern/LYR";
+                tickerPrice.second = poolInstance.getBalanceToken1() / poolInstance.getBalanceToken0();
             }
             //qDebug() << tickerPrice.first << ":" << tickerPrice.second;
             Global::TickerPrice::set(tickerPrice);
@@ -357,7 +347,7 @@ void MainWindow::getPoolPairPrice() {
         }
     });
     poolWorkerThread->start();
-    emit poolStartFetch(priceToRetriveList->at(0).second, priceToRetriveList->at(0).first);
+    emit poolStartFetch(priceToRetriveList->at(0).second, priceToRetriveList->at(0).first, new QList<QString>());
 }
 
 void MainWindow::on_coingeckoFetchError(QString err) {

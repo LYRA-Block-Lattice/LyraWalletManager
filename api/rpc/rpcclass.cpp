@@ -6,15 +6,13 @@
 
 #include <global.h>
 
+/******************************************************************************/
 RpcClass::History::History(QString data) {
-    if (data.count() == 0) {
-        Account.Valid = false;
+    if (data.count() == 0)
         return;
-    }
     Account.AccountName = Global::Account::getSelectedAccountName();
     Account.NetworkName = Global::Network::getNetwork();
     Account.HistoryData = data;
-    Account.Valid = false;
     try {
         QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
         QJsonObject jsonObject = jsonResponse.object();
@@ -84,12 +82,10 @@ RpcClass::History::History(RpcClass::History *history) {
 
 RpcClass::History::~History() {
 }
-
+/******************************************************************************/
 RpcClass::Balance::Balance(QString data) {
-    if (data.count() == 0) {
-        valid = false;
+    if (data.count() == 0)
         return;
-    }
     try {
         QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
         QJsonObject jsonObject = jsonResponse.object();
@@ -117,5 +113,54 @@ RpcClass::Balance::Balance(QString data) {
 }
 
 RpcClass::Balance::~Balance() {
+}
+/******************************************************************************/
+RpcClass::Pool::Pool(QString data) {
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(!jsonResponse.isObject())
+        return;
+    QJsonObject jsonObject = jsonResponse.object();
+    if(!jsonObject["result"].isNull()) {
+        QJsonObject resultJsonObject = jsonObject["result"].toObject();
+        if(resultJsonObject["balance"].isNull())
+            return;
+        height = resultJsonObject["height"].toVariant().toLongLong();
+        poolId = resultJsonObject["poolId"].toString();
+        token0 = resultJsonObject["token0"].toString();
+        token1 = resultJsonObject["token1"].toString();
+        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+        balanceToken0 = balanceJsonObject[token0].toDouble();
+        balanceToken1 = balanceJsonObject[token1].toDouble();
+        valid = true;
+    }
+}
+
+RpcClass::Pool::~Pool() {
+}
+/******************************************************************************/
+RpcClass::PoolCalculate::PoolCalculate(QString data) {
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(!jsonResponse.isObject())
+        return;
+    QJsonObject jsonObject = jsonResponse.object();
+    if(!jsonObject["result"].isNull()) {
+        QJsonObject resultJsonObject = jsonObject["result"].toObject();
+        height = resultJsonObject["Height"].toVariant().toLongLong();
+        providerFee = resultJsonObject["ProviderFee"].toDouble();
+        protocolFee = resultJsonObject["ProtocolFee"].toDouble();
+        swapInToken = resultJsonObject["SwapInToken"].toString();
+        swapInAmount = resultJsonObject["SwapInAmount"].toDouble();
+        swapOutToken = resultJsonObject["SwapOutToken"].toString();
+        swapOutAmount = resultJsonObject["SwapOutAmount"].toDouble();
+        price = resultJsonObject["Price"].toDouble();
+        priceImpact = resultJsonObject["PriceImpact"].toDouble();
+        minimumReceived = resultJsonObject["MinimumReceived"].toDouble();
+        payToProvider = resultJsonObject["PayToProvider"].toDouble();
+        payToAuthorizer = resultJsonObject["PayToAuthorizer"].toDouble();
+        valid = true;
+    }
+}
+
+RpcClass::PoolCalculate::~PoolCalculate() {
 }
 

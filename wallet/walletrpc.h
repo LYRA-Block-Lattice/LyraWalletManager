@@ -81,8 +81,23 @@ static QString composeSign(int id, QString sig);
     private:
         RpcSocket *worker = nullptr;
         QThread *workerThread = nullptr;
+        QList<QString> userData;
     public slots:
-        void doWork(QString token1, QString token0 = "LYR");
+        void doWork(QString token1, QString token0, QList<QString> *userData = nullptr);
+    signals:
+        void startFetch(QString url, QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s, QList<QString> userData);
+        void resultError();
+    };
+
+    class PoolCalculate : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+    public slots:
+        void doWork(QString poolId, QString swapFrom, double amount, double slippage);
     signals:
         void startFetch(QString url, QString message);
         void socketDisconnect();

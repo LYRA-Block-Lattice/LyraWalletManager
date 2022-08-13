@@ -2,13 +2,16 @@
 #define PAGESWAP_H
 
 #include <QWidget>
+#include <QTimer>
 
 #include <QRect>
 #include <QFont>
 #include <QSize>
 
+#include "wallet/walletrpc.h"
+
 namespace Ui {
-class PageSwap;
+    class PageSwap;
 }
 
 class PageSwap : public QWidget
@@ -34,13 +37,21 @@ private slots:
     void on_swapPushButton_clicked();
     void on_removeLiquidityPushButton_clicked();
 
+    void on_editTimeoutTimer();
+
 private:
     void populateSendTickers(QString txt);
-    QString sendSelectedTicker;
-    QString receiveSelectedTicker;
     bool populatingTickers = false;
+    void fetchPool();
+    void fetchPoolCalculate(QString poolId, QString tickerFrom, QString tickerTo, double amount, double slippage);
+    void showPoolCalculateData(bool show);
 
     Ui::PageSwap *ui;
+
+    WalletRpc::Pool *poolThread = nullptr;
+    QThread *poolWorkerThread = nullptr;
+    WalletRpc::PoolCalculate *poolCalculateThread = nullptr;
+    QThread *poolCalculateWorkerThread = nullptr;
 
     QRect headerFrameQRectBack;
     QRect titleLabelQRectBack;
@@ -100,6 +111,18 @@ private:
 
 
     int AccountListChangedCount = -1;
+    int WalletHistoryChangedCount = -1;
+    int LyrExternPricesChangedCount = -1;
+    int LyrInternPricesChangedCount = -1;
+    QString sendSelectedTicker;
+    QString receiveSelectedTicker;
+    QString poolIdool;
+
+    QTimer editTimeoutTimer;
+signals:
+    void poolStartFetch(QString token1, QString token0, QList<QString> *userData);
+    void poolCalculateStartFetch(QString poolId, QString swapFrom, double amount, double slippage);
+
 };
 
 #endif // PAGESWAP_H

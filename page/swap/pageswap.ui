@@ -271,7 +271,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>0.000015 %</string>
+       <string>0 %</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -291,7 +291,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>$0.00000000</string>
+       <string>$0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -311,7 +311,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>1.00000000 LYR</string>
+       <string>0 LYR</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -331,7 +331,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>0.00014023 $USDT</string>
+       <string>0 $USDT</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -464,8 +464,8 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>6,839,199.38264862 LYR
-962.89951990 $USDT</string>
+       <string>0 LYR
+0 $USDT</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -485,7 +485,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>LYR vs &amp;USDT</string>
+       <string>? vs ?</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -505,7 +505,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>0.0003 LYR</string>
+       <string>0 LYR</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -542,7 +542,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>7,131.14169579 LYR/&amp;USDT</string>
+       <string>0 LYR per $USDT</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -562,7 +562,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>0.0001 LYR</string>
+       <string>0 LYR</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -673,7 +673,7 @@ border-color: transparent;
 </string>
       </property>
       <property name="text">
-       <string>$0.00000000</string>
+       <string>$0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -936,11 +936,14 @@ QLineEdit{
        <property name="frame">
         <bool>false</bool>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="placeholderText">
         <string>Amount</string>
        </property>
        <property name="clearButtonEnabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -1052,14 +1055,17 @@ QLineEdit{
        <property name="frame">
         <bool>false</bool>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
        <property name="placeholderText">
-        <string>Amount</string>
+        <string/>
        </property>
        <property name="clearButtonEnabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QComboBox" name="tokenReceiveComboBox">

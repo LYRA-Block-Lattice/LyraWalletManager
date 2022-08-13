@@ -1,6 +1,10 @@
 #include "pageswap.h"
 #include "ui_pageswap.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include "global.h"
 #include "color.h"
 #include "style.h"
@@ -76,6 +80,8 @@ PageSwap::PageSwap(QWidget *parent) :
 
     ui->tokenSentComboBox->setView(new QListView);
     ui->tokenReceiveComboBox->setView(new QListView);
+
+    connect(&editTimeoutTimer, &QTimer::timeout, this, &PageSwap::on_editTimeoutTimer);
 }
 
 PageSwap::~PageSwap() {
@@ -109,15 +115,6 @@ void PageSwap::setScale() {
     ui->swapPushButton->setFont(Global::Layout::scaleFontOffset(swapPushButtonQFontBack));
     ui->removeSharePushButton->setGeometry(Global::Layout::scaleRect(removeSharePushButtonQRectBack));
     ui->removeSharePushButton->setFont(Global::Layout::scaleFontOffset(removeSharePushButtonQFontBack));
-
-    //ui->receiveGridWidget->setGeometry(Global::Layout::scaleRect(ui->receiveGridWidget->geometry()));
-    //ui->sendGridWidget->setGeometry(Global::Layout::scaleRect(ui->sendGridWidget->geometry()));
-    /*ui->receiveGridFrame->setGeometry(0, 0,
-                                       Global::Layout::scaleRect(ui->receiveGridFrame->geometry()).width(),
-                                       Global::Layout::scaleRect(ui->receiveGridFrame->geometry()).height());*/
-    /*ui->sendGridFrame->setGeometry(0, 0,
-                                    Global::Layout::scaleRect(ui->sendGridFrame->geometry()).width(),
-                                    Global::Layout::scaleRect(ui->sendGridFrame->geometry()).height());*/
 
     ui->amountSentLineEdit->setGeometry(Global::Layout::scaleRect(amountSentLineEditQRectBack));
     ui->amountSentLineEdit->setFont(Global::Layout::scaleFontOffset(amountSentLineEditQFontBack));
@@ -169,8 +166,24 @@ void PageSwap::setStyle() {
 }
 
 void PageSwap::loop() {
-    if(AccountListChangedCount != Global::Account::getAccountListChangedCount()) {
+    if(LyrExternPricesChangedCount != Global::TickerPrice::getModifyCount("LYR")) {
+        LyrExternPricesChangedCount = Global::TickerPrice::getModifyCount("LYR");
+        ui->externalPriceValueLabel->setText(QString::asprintf("$%s", Global::Util::normaliseNumber(Global::TickerPrice::get("LYR")).toUtf8().data()));
+    }
+    if(LyrInternPricesChangedCount != Global::TickerPrice::getModifyCount("intern/LYR")) {
+        LyrInternPricesChangedCount = Global::TickerPrice::getModifyCount("intern/LYR");
+        ui->internalPriceValueLabel->setText(QString::asprintf("$%s", Global::Util::normaliseNumber(Global::TickerPrice::get("intern/LYR")).toUtf8().data()));
+    }
+    if(AccountListChangedCount != Global::Account::getAccountListChangedCount() ||
+            WalletHistoryChangedCount != Wallet::History::getChangeCount()) {
         AccountListChangedCount = Global::Account::getAccountListChangedCount();
+        WalletHistoryChangedCount = Wallet::History::getChangeCount();
+    }
+    if(sendSelectedTicker.compare(ui->tokenSentComboBox->currentText()) ||
+            receiveSelectedTicker.compare(ui->tokenReceiveComboBox->currentText())) {
+        sendSelectedTicker = ui->tokenSentComboBox->currentText();
+        receiveSelectedTicker = ui->tokenReceiveComboBox->currentText();
+        fetchPool();
     }
 }
 
@@ -210,6 +223,107 @@ void PageSwap::populateSendTickers(QString txt) {
         }
     }
     populatingTickers = false;
+}
+
+void PageSwap::fetchPool() {
+    ui->totalLiquidityValueLabel->setText(QString::asprintf("0.0 %s\n\r0.0 %s",
+                                                            ui->tokenSentComboBox->currentText().toUtf8().data(),
+                                                            ui->tokenReceiveComboBox->currentText().toUtf8().data()));
+    ui->amountReceiveLineEdit->setText("");
+    showPoolCalculateData(false);
+    poolThread = new WalletRpc::Pool;
+    poolWorkerThread = new QThread;
+    poolThread->moveToThread(poolWorkerThread);
+    connect(poolWorkerThread, &QThread::finished, poolThread, &QObject::deleteLater);
+    connect(this, &PageSwap::poolStartFetch, poolThread, &WalletRpc::Pool::doWork);
+    connect(poolThread, &WalletRpc::Pool::resultReady, this, [=](const QString d, QList<QString> userData) {
+        RpcClass::Pool poolInstance = RpcClass::Pool(d);
+        if(poolInstance.getValid()) {
+            ui->totalLiquidityValueLabel->setText(QString::asprintf("%s %s\n\r%s %s",
+                                                                    Global::Util::normaliseNumber(poolInstance.getBalanceToken0()).toUtf8().data(),
+                                                                    Global::Util::tickerToSign(poolInstance.getToken0()).toUtf8().data(),
+                                                                    Global::Util::normaliseNumber(poolInstance.getBalanceToken1()).toUtf8().data(),
+                                                                    Global::Util::tickerToSign(poolInstance.getToken1()).toUtf8().data()));
+            fetchPoolCalculate(poolInstance.getPoolId(), userData[0], userData[1], userData[2].toDouble(), userData[3].toDouble());
+        }
+    });
+    poolWorkerThread->start();
+    emit poolStartFetch(Global::Util::signToTicker(ui->tokenSentComboBox->currentText()),
+                        Global::Util::signToTicker(ui->tokenReceiveComboBox->currentText()),
+                        new QList<QString>({Global::Util::signToTicker(ui->tokenSentComboBox->currentText()),
+                                            Global::Util::signToTicker(ui->tokenReceiveComboBox->currentText()),
+                                            ui->amountSentLineEdit->text().remove(','),
+                                            "0.0001"})
+                        );
+}
+
+void PageSwap::fetchPoolCalculate(QString poolId, QString tickerFrom, QString tickerTo, double amount, double slippage) {
+    if(amount == 0)
+        return;
+    poolCalculateThread = new WalletRpc::PoolCalculate;
+    poolCalculateWorkerThread = new QThread;
+    poolCalculateThread->moveToThread(poolCalculateWorkerThread);
+    connect(poolCalculateWorkerThread, &QThread::finished, poolCalculateThread, &QObject::deleteLater);
+    connect(this, &PageSwap::poolCalculateStartFetch, poolCalculateThread, &WalletRpc::PoolCalculate::doWork);
+    connect(poolCalculateThread, &WalletRpc::PoolCalculate::resultReady, this, [=](const QString d) {
+        RpcClass::PoolCalculate poolInstance = RpcClass::PoolCalculate(d);
+        if(poolInstance.getValid()) {
+            ui->tokenPairValueLabel->setText(QString::asprintf("%s vs %s",
+                                                               poolInstance.getSwapInToken().toUtf8().data(),
+                                                               poolInstance.getSwapOutToken().toUtf8().data())
+                                             );
+            ui->estimatedRatioValueLabel->setText(QString::asprintf("%s %s per %s",
+                                                                    Global::Util::normaliseNumber(poolInstance.getPrice()).toUtf8().data(),
+                                                                    poolInstance.getSwapInToken().toUtf8().data(),
+                                                                    poolInstance.getSwapOutToken().toUtf8().data())
+                                                  );
+            ui->youWillSellValueLabel->setText(QString::asprintf("%s %s",
+                                                                 Global::Util::normaliseNumber(poolInstance.getSwapInAmount()).toUtf8().data(),
+                                                                 poolInstance.getSwapInToken().toUtf8().data())
+                                               );
+            ui->youWillGetValueLabel->setText(QString::asprintf("%s %s",
+                                                                 Global::Util::normaliseNumber(poolInstance.getSwapOutAmount()).toUtf8().data(),
+                                                                 poolInstance.getSwapOutToken().toUtf8().data())
+                                               );
+            ui->priceImpactValueLabel->setText(QString::asprintf("%s%%",
+                                                                 Global::Util::normaliseNumber(poolInstance.getPriceImpact() * 100).toUtf8().data())
+                                               );
+            ui->poolFeeValueLabel->setText(QString::asprintf("%s %s",
+                                                             Global::Util::normaliseNumber(poolInstance.getPayToProvider()).toUtf8().data(),
+                                                             poolInstance.getSwapInToken().toUtf8().data())
+                                           );
+            ui->networkFeeValueLabel->setText(QString::asprintf("%s LYR",
+                                                                Global::Util::normaliseNumber(poolInstance.getPayToAuthorizer()).toUtf8().data())
+                                              );
+            ui->amountReceiveLineEdit->setText(Global::Util::normaliseNumber(poolInstance.getSwapOutAmount()));
+            showPoolCalculateData(true);
+        }
+    });
+    poolCalculateWorkerThread->start();
+    emit poolCalculateStartFetch(poolId, tickerFrom, amount, slippage);
+}
+
+void PageSwap::showPoolCalculateData(bool show) {
+    ui->tokenPairLabel->setVisible(show);
+    ui->tokenPairValueLabel->setVisible(show);
+
+    ui->estimatedRatioLabel->setVisible(show);
+    ui->estimatedRatioValueLabel->setVisible(show);
+
+    ui->youWillSellLabel->setVisible(show);
+    ui->youWillSellValueLabel->setVisible(show);
+
+    ui->youWillGetLabel->setVisible(show);
+    ui->youWillGetValueLabel->setVisible(show);
+
+    ui->priceImpactLabel->setVisible(show);
+    ui->priceImpactValueLabel->setVisible(show);
+
+    ui->poolFeeLabel->setVisible(show);
+    ui->poolFeeValueLabel->setVisible(show);
+
+    ui->networkFeeLabel->setVisible(show);
+    ui->networkFeeValueLabel->setVisible(show);
 }
 
 void PageSwap::on_swapSelectPushButton_clicked() {
@@ -294,6 +408,9 @@ void PageSwap::on_amountSentLineEdit_textChanged(const QString &arg1) {
             ui->amountSentLineEdit->setText(Global::Util::normaliseNumber(s.remove(','), false));
         }
     }
+    editTimeoutTimer.stop();
+    editTimeoutTimer.setInterval(2500);
+    editTimeoutTimer.start();
 }
 
 void PageSwap::on_tokenSentComboBox_currentTextChanged(const QString &arg1) {
@@ -354,6 +471,11 @@ void PageSwap::on_tokenReceiveComboBox_currentTextChanged(const QString &arg1) {
         }
     }
     populatingTickers = false;
+}
+
+void PageSwap::on_editTimeoutTimer() {
+    editTimeoutTimer.stop();
+    fetchPool();
 }
 
 void PageSwap::on_swapPushButton_clicked() {

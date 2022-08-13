@@ -30,7 +30,7 @@ namespace RpcClass{
             QString AccountName;
             QList<entry_t> History;
             QString HistoryData;
-            bool Valid;
+            bool Valid = false;
         }Account;
 
         networkName_e getNetwork() { return Account.NetworkName; }
@@ -51,7 +51,59 @@ namespace RpcClass{
         QList<QPair<QString, double>> Balances;
         qint64 height = 0;
         bool unreceived = false;
-        bool valid;
+        bool valid = false;
+    };
+    class Pool {
+    public:
+        Pool(QString data);
+        ~Pool();
+        qint64 getHeight() { return height;}
+        QString getPoolId() { return poolId;};
+        QString getToken0() { return token0;};
+        QString getToken1() { return token1;};
+        double getBalanceToken0() { return balanceToken0;};
+        double getBalanceToken1() { return balanceToken1;};
+        bool getValid() { return valid;};
+    private:
+        qint64 height = 0;
+        QString poolId;
+        QString token0;
+        QString token1;
+        double balanceToken0 = 0.0;
+        double balanceToken1 = 0.0;
+        bool valid = false;
+    };
+    class PoolCalculate {
+    public:
+        PoolCalculate(QString data);
+        ~PoolCalculate();
+        qint64 getHeight() { return height;}
+        double getProviderFee() { return providerFee;}
+        double getProtocolFee() { return protocolFee;}
+        QString getSwapInToken() { return swapInToken;}
+        double getSwapInAmount() { return swapInAmount;}
+        QString getSwapOutToken() { return swapOutToken;}
+        double getSwapOutAmount() { return swapOutAmount;}
+        double getPrice() { return price;}
+        double getPriceImpact() { return priceImpact;}
+        double getMinimumReceived() { return minimumReceived;}
+        double getPayToProvider() { return payToProvider;}
+        double getPayToAuthorizer() { return payToAuthorizer;}
+        bool getValid() { return valid;}
+    private:
+        qint64 height = 0;
+        double providerFee = 0.0;
+        double protocolFee = 0.0;
+        QString swapInToken;
+        double swapInAmount = 0.0;
+        QString swapOutToken;
+        double swapOutAmount = 0.0;
+        double price = 0.0;
+        double priceImpact = 0.0;
+        double minimumReceived = 0.0;
+        double payToProvider = 0.0;
+        double payToAuthorizer = 0.0;
+        bool valid = false;
     };
 };
 
