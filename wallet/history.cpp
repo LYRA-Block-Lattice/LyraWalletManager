@@ -67,6 +67,38 @@ Wallet::History::HistoryEntry_t *Wallet::History::get() {
     return nullptr;
 }
 
+double Wallet::History::getTickerBalance(QString ticker) {
+    Wallet::History::HistoryEntry_t *historyEntry = Wallet::History::get();
+    if(historyEntry) {
+        RpcClass::History *historyInst = historyEntry->history;
+        RpcClass::History::entry_t hEntry;
+        QList<RpcClass::History::entry_t> tmpListEntrys = historyInst->getHistory();
+        QList<QPair<QString, double>> balances = tmpListEntrys.last().Balances;
+        QPair<QString, double> balance;
+        foreach(balance, balances) {
+            if(!balance.first.compare(ticker))
+                return balance.second;
+        }
+    }
+    return 0.0;
+}
+
+QList<QString> Wallet::History::getAvailableTikers() {
+    Wallet::History::HistoryEntry_t *historyEntry = Wallet::History::get();
+    QList<QString> tickers;
+    if(historyEntry) {
+        RpcClass::History *historyInst = historyEntry->history;
+        RpcClass::History::entry_t hEntry;
+        QList<RpcClass::History::entry_t> tmpListEntrys = historyInst->getHistory();
+        QList<QPair<QString, double>> balances = tmpListEntrys.last().Balances;
+        QPair<QString, double> balance;
+        foreach(balance, balances) {
+            tickers.append(balance.first);
+        }
+    }
+    return tickers;
+}
+
 int Wallet::History::getChangeCount() {
     return changeCount;
 }

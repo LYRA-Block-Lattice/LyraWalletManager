@@ -23,6 +23,8 @@ namespace Wallet {
         static Wallet::History::HistoryEntry_e set(QString data);
         static Wallet::History::HistoryEntry_e set(RpcClass::History *history);
         static Wallet::History::HistoryEntry_t *get();
+        static double getTickerBalance(QString ticker);
+        static QList<QString> getAvailableTikers();
         static int getChangeCount();
     private:
     };

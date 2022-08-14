@@ -105,6 +105,86 @@ static QString composeSign(int id, QString sig);
         void resultError();
     };
 
+    class Swap : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString token0, QString token1, QString tokenToSwap, double amountToSwap, double amountToGet);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
+    class CreatePool : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString token0, QString token1);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
+    class AddLiquidity : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString token0, double token0Amount, QString token1, double token1Amount);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
+    class RemoveLiquidity : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString token0, QString token1);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
 };
 
 #endif // WALLETRPC_H

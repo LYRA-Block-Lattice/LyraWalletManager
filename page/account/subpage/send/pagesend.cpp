@@ -18,9 +18,7 @@
 #include "crypto/signatures.h"
 #include "wallet/history.h"
 
-#define FADE_COUNT_START_VALE   150
-
-QTimer fadeTimer;
+static QTimer fadeTimer;
 static int fadeCount;
 
 PageSend::PageSend(QWidget *parent) :

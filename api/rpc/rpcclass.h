@@ -105,6 +105,59 @@ namespace RpcClass{
         double payToAuthorizer = 0.0;
         bool valid = false;
     };
+
+    class CreatePool {
+    public:
+        CreatePool(QString data);
+        ~CreatePool();
+        qint64 getHeight() { return height; }
+        QString getPoolId() { return poolId; }
+        QString getToken0() { return token0; }
+        QString getToken1() { return token1; }
+        QList<QPair<QString, double>> getBalances() { return balances; }
+        bool getValid() { return valid;};
+    private:
+        qint64 height = 0;
+        QString poolId;
+        QString token0;
+        QString token1;
+        QList<QPair<QString, double>> balances;
+        bool valid = false;
+    };
+
+    class AddLiquidity {
+    public:
+        AddLiquidity(QString data);
+        ~AddLiquidity();
+        qint64 getHeight() { return height; }
+        QString getPoolId() { return poolId; }
+        QString getToken0() { return token0; }
+        QString getToken1() { return token1; }
+        QList<QPair<QString, double>> getBalances() { return balances; }
+        bool getValid() { return valid;};
+    private:
+        qint64 height = 0;
+        QString poolId;
+        QString token0;
+        QString token1;
+        QList<QPair<QString, double>> balances;
+        bool valid = false;
+    };
+
+    class RemoveLiquidity {
+    public:
+        RemoveLiquidity(QString data);
+        ~RemoveLiquidity();
+        QList<QPair<QString, double>> getBalances() { return Balances; }
+        qint64 getHeight() { return height; }
+        bool getUnreceived() { return unreceived; }
+        bool getValid() { return valid; }
+    private:
+        QList<QPair<QString, double>> Balances;
+        qint64 height = 0;
+        bool unreceived = false;
+        bool valid = false;
+    };
 };
 
 #endif // RPCCLASS_H

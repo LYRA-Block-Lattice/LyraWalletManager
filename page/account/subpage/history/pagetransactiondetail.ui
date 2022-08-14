@@ -206,7 +206,7 @@ QPushButton:pressed {
     </rect>
    </property>
    <property name="text">
-    <string>Amount transfred:</string>
+    <string>Amount transfered:</string>
    </property>
   </widget>
   <widget class="QLabel" name="receiveAccountIdLabel">

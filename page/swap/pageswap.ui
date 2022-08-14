@@ -20,7 +20,8 @@
    <string>Swap</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #FFFFFF</string>
+   <string notr="true">background: #FFFFFF;
+color:black;</string>
   </property>
   <widget class="QFrame" name="headerFrame">
    <property name="geometry">
@@ -763,7 +764,7 @@ border-color: transparent;
       <property name="flat">
        <bool>true</bool>
       </property>
-      <widget class="QLabel" name="availableSentLabel">
+      <widget class="QLabel" name="availableSendLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -796,7 +797,7 @@ border-color: transparent;
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QComboBox" name="tokenSentComboBox">
+      <widget class="QComboBox" name="tokenSendComboBox">
        <property name="geometry">
         <rect>
          <x>142</x>
@@ -892,7 +893,7 @@ QListView::item::hover {
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="amountSentLineEdit">
+      <widget class="QLineEdit" name="amountSendLineEdit">
        <property name="geometry">
         <rect>
          <x>4</x>
@@ -1059,7 +1060,7 @@ QLineEdit{
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="placeholderText">
         <string/>
@@ -1269,6 +1270,41 @@ QPushButton:disabled {
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="statusLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>320</y>
+     <width>231</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-style: solid;
+border-radius: 5px;
+border-width: 1px;
+border-color: lightgrey;
+background-color: rgb(255, 254, 173);</string>
+   </property>
+   <property name="text">
+    <string>Swapping</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="textInteractionFlags">
+    <set>Qt::NoTextInteraction</set>
+   </property>
   </widget>
  </widget>
  <resources/>

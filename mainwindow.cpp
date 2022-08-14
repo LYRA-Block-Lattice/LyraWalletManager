@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent) ,
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    qSetRealNumberPrecision(LYRA_DECIMALS);
     switchTranslator("ro");
     mainTabWidget = ui->mainTabWidget;
     this->setWindowFlags(( windowFlags() & ~(Qt::WindowFullscreenButtonHint | Qt::WindowMaximizeButtonHint)) | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint);
@@ -304,12 +305,16 @@ void MainWindow::fetchCoingecko() {
 }
 
 void MainWindow::on_coingeckoFetchDone(QString data) {
-    qDebug() << data;
+    //qDebug() << data;
     WebClass::CoinGecko coinGecko(data);
     //coinGecckoFetchWorkerThread->exit(0);
 
     if(!priceToRetriveList)
         getPoolPairPrice();
+}
+
+void MainWindow::on_coingeckoFetchError(QString err) {
+    qDebug() << err;
 }
 
 void MainWindow::getPoolPairPrice() {
@@ -348,9 +353,5 @@ void MainWindow::getPoolPairPrice() {
     });
     poolWorkerThread->start();
     emit poolStartFetch(priceToRetriveList->at(0).second, priceToRetriveList->at(0).first, new QList<QString>());
-}
-
-void MainWindow::on_coingeckoFetchError(QString err) {
-    qDebug() << err;
 }
 

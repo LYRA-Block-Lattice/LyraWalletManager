@@ -28,23 +28,23 @@ networkName_e Net = networkName_e::TESTNET;
 
 QList<QList<QPair<QString,QString>>> NodeList = {
     {// Testnet
-        QPair<QString,QString>("Seed1","wss://seed.testnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed2","wss://seed2.testnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed3","wss://seed3.testnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed4","wss://seed4.testnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Morgoth1","wss://173.212.228.110:4504/api/v1/socket")
+        QPair<QString,QString>("Seed1","seed.testnet.lyra.live:443"),
+        QPair<QString,QString>("Seed2","seed2.testnet.lyra.live:443"),
+        QPair<QString,QString>("Seed3","seed3.testnet.lyra.live:443"),
+        QPair<QString,QString>("Seed4","seed4.testnet.lyra.live:443"),
+        QPair<QString,QString>("Morgoth1","173.212.228.110:4504")
     }, { // Mainnet
-        QPair<QString,QString>("Seed1","wss://seed1.mainnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed2","wss://seed2.mainnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed3","wss://seed3.mainnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Seed4","wss://seed4.mainnet.lyra.live:443/api/v1/socket"),
-        QPair<QString,QString>("Morgoth1","wss://173.212.228.110:5504/api/v1/socket")
+        QPair<QString,QString>("Seed1","seed1.mainnet.lyra.live:443"),
+        QPair<QString,QString>("Seed2","seed2.mainnet.lyra.live:443"),
+        QPair<QString,QString>("Seed3","seed3.mainnet.lyra.live:443"),
+        QPair<QString,QString>("Seed4","seed4.mainnet.lyra.live:443"),
+        QPair<QString,QString>("Morgoth1","173.212.228.110:5504")
     }, { // Devnet
-        QPair<QString,QString>("Seed1","wss://173.212.228.110:443/api/v1/socket"),
-        QPair<QString,QString>("Seed2","wss://173.212.228.110:443/api/v1/socket"),
-        QPair<QString,QString>("Seed3","wss://173.212.228.110:443/api/v1/socket"),
-        QPair<QString,QString>("Seed4","wss://173.212.228.110:443/api/v1/socket"),
-        QPair<QString,QString>("Morgoth1","wss://173.212.228.110:3504/api/v1/socket")
+        QPair<QString,QString>("Seed1","173.212.228.110:443"),
+        QPair<QString,QString>("Seed2","173.212.228.110:443"),
+        QPair<QString,QString>("Seed3","173.212.228.110:443"),
+        QPair<QString,QString>("Seed4","173.212.228.110:443"),
+        QPair<QString,QString>("Morgoth1","173.212.228.110:3504")
     }
 };
 
@@ -361,6 +361,20 @@ int Global::TickerPrice::getModifyCount() {
 
 QList<QPair<int, QPair<QString, double>>> Global::TickerPrice::getList() {
     return TickerPriceList;
+}
+/**********************************************************************************/
+QList<QPair<networkName_e, QList<QString>>> swapTokensAvailableList = QList<QPair<networkName_e, QList<QString>>>(
+       {{QPair<networkName_e, QList<QString>>(TESTNET, {"LYR", "Tester/Coin", "$ETH", "$LTT", "$TLYR", "$TRX", "$USDT", "STOKEN/STOKEN"})},
+        {QPair<networkName_e, QList<QString>>(MAINNET, {"LYR", "$ETH", "$TRX", "$USDT"})},
+        });
+QList<QString> Global::Swap::getAvailableTickers() {
+    QPair<networkName_e, QList<QString>> list;
+    foreach(list, swapTokensAvailableList) {
+        if(Net == list.first) {
+            return list.second;
+        }
+    }
+    return QList<QString>();
 }
 /**********************************************************************************/
 QList<QPair<QString, QString>> tickerToTokenNameList = {

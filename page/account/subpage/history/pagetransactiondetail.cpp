@@ -9,8 +9,6 @@
 #include "style.h"
 #include "global.h"
 
-#define FADE_COUNT_START_VALE   150
-
 PageTransactionDetail::PageTransactionDetail(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageTransactionDetail) {

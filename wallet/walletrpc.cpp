@@ -54,8 +54,13 @@ void WalletRpc::History::doWork() {
         connect(this, &WalletRpc::History::socketDisconnect, worker, &RpcSocket::socketDisconnect);
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(1, "History", QList<QString>({Global::Account::getAccountPublicId(), "0", QString::number(QDateTime::currentMSecsSinceEpoch()), "0"})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "History", QList<QString>({
+                                                                     Global::Account::getAccountPublicId(),
+                                                                     "0",
+                                                                     QString::number(QDateTime::currentMSecsSinceEpoch()),
+                                                                     "0"
+                                                                 })));
 }
 
 void WalletRpc::Balance::doWork() {
@@ -77,8 +82,10 @@ void WalletRpc::Balance::doWork() {
         connect(this, &WalletRpc::Balance::socketDisconnect, worker, &RpcSocket::socketDisconnect);
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(1, "Balance", QList<QString>({Global::Account::getAccountPublicId()})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "Balance", QList<QString>({
+                                                                     Global::Account::getAccountPublicId()
+                                                                 })));
 }
 
 void WalletRpc::Receive::doWork() {
@@ -127,8 +134,10 @@ void WalletRpc::Receive::doWork() {
         id = 1;
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(id, "Receive", QList<QString>({Global::Account::getAccountPublicId()})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(id, "Receive", QList<QString>({
+                                                                      Global::Account::getAccountPublicId()
+                                                                  })));
 }
 
 void WalletRpc::Send::doWork(QString amount, QString destAccount, QString ticker) {
@@ -175,8 +184,13 @@ void WalletRpc::Send::doWork(QString amount, QString destAccount, QString ticker
         connect(this, &WalletRpc::Send::socketDisconnect, worker, &RpcSocket::socketDisconnect);
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(1, "Send", QList<QString>({Global::Account::getAccountPublicId(), amount, destAccount, ticker})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "Send", QList<QString>({
+                                                                  Global::Account::getAccountPublicId(),
+                                                                  amount,
+                                                                  destAccount,
+                                                                  ticker
+                                                              })));
 }
 
 void WalletRpc::Pool::doWork(QString token1, QString token0, QList<QString> *userData) {
@@ -196,8 +210,11 @@ void WalletRpc::Pool::doWork(QString token1, QString token0, QList<QString> *use
         connect(this, &WalletRpc::Pool::socketDisconnect, worker, &RpcSocket::socketDisconnect);
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(1, "Pool", QList<QString>({token0, token1})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "Pool", QList<QString>({
+                                                                  token0,
+                                                                  token1
+                                                              })));
 }
 
 void WalletRpc::PoolCalculate::doWork(QString poolId, QString swapFrom, double amount, double slippage) {
@@ -215,8 +232,226 @@ void WalletRpc::PoolCalculate::doWork(QString poolId, QString swapFrom, double a
         connect(this, &WalletRpc::PoolCalculate::socketDisconnect, worker, &RpcSocket::socketDisconnect);
         workerThread->start();
     }
-    emit startFetch(Global::Network::getNodeAddress().second,
-                 WalletRpc::compose(1, "PoolCalculate", QList<QString>({poolId, swapFrom, QString::number(amount), QString::number(slippage)})));
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "PoolCalculate", QList<QString>({
+                                                                           poolId,
+                                                                           swapFrom,
+                                                                           QString::number(amount),
+                                                                           QString::number(slippage)
+                                                                       })));
+}
+
+void WalletRpc::Swap::doWork(QString token0, QString token1, QString tokenToSwap, double amountToSwap, double amountToGet) {
+    if(Global::Account::getAccountPublicId().length() == 0) {
+        emit resultError("EmptyResponse");
+        return;
+    }
+    if(!worker) {
+        worker = new RpcSocket;
+        workerThread= new QThread;
+        worker->moveToThread(workerThread);
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(this, &WalletRpc::Swap::startFetch, worker, &RpcSocket::doWork);
+        connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
+            QJsonDocument jsonWalletFile = QJsonDocument::fromJson(s.toLocal8Bit());
+            if(!jsonWalletFile.isObject()) {
+                emit resultError("EmptyResponse");
+                this->thread()->exit();
+                return;
+            }
+            QJsonObject jsonObject = jsonWalletFile.object();
+            id = jsonObject["id"].toInt();
+            if(!jsonObject["error"].isNull()) {
+                emit socketDisconnect();
+                QJsonObject jsonDataObject = jsonObject["error"].toObject();
+                emit resultError(jsonDataObject["message"].toString());
+            } else if(!jsonObject["method"].isNull()) {
+                if(!jsonObject["method"].toString().compare("Sign")) {
+                    QJsonArray arrayObject = jsonObject["params"].toArray();
+                    if(!arrayObject.at(0).toString().compare("hash")) {
+                        QString hash = arrayObject.at(1).toString();
+                        //QString accId = arrayObject.at(2).toString();
+                        QString signature = signatures::getSignature(Global::Account::getAccountPrivateKey(), hash);
+                        emit sendMessage(WalletRpc::composeSign(id, signature));
+                    }
+                }
+            } else if(!jsonObject["result"].isNull()) {
+                emit socketDisconnect();
+                emit resultReady(s);
+                this->thread()->exit();
+            }
+        });
+        connect(this, &WalletRpc::Swap::sendMessage, worker, &RpcSocket::sendMessage);
+        connect(this, &WalletRpc::Swap::socketDisconnect, worker, &RpcSocket::socketDisconnect);
+        workerThread->start();
+    }
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "Swap", QList<QString>({
+                                                                  Global::Account::getAccountPublicId(),
+                                                                  token0,
+                                                                  token1,
+                                                                  tokenToSwap,
+                                                                  QString::number(amountToSwap),
+                                                                  QString::number(amountToGet)
+                                                              })));
+}
+
+void WalletRpc::CreatePool::doWork(QString token0, QString token1) {
+    if(Global::Account::getAccountPublicId().length() == 0) {
+        emit resultError("EmptyResponse");
+        return;
+    }
+    if(!worker) {
+        worker = new RpcSocket;
+        workerThread= new QThread;
+        worker->moveToThread(workerThread);
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(this, &WalletRpc::CreatePool::startFetch, worker, &RpcSocket::doWork);
+        connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
+            QJsonDocument jsonWalletFile = QJsonDocument::fromJson(s.toLocal8Bit());
+            if(!jsonWalletFile.isObject()) {
+                emit resultError("EmptyResponse");
+                this->thread()->exit();
+                return;
+            }
+            QJsonObject jsonObject = jsonWalletFile.object();
+            id = jsonObject["id"].toInt();
+            if(!jsonObject["error"].isNull()) {
+                emit socketDisconnect();
+                QJsonObject jsonDataObject = jsonObject["error"].toObject();
+                emit resultError(jsonDataObject["message"].toString());
+            } else if(!jsonObject["method"].isNull()) {
+                if(!jsonObject["method"].toString().compare("Sign")) {
+                    QJsonArray arrayObject = jsonObject["params"].toArray();
+                    if(!arrayObject.at(0).toString().compare("hash")) {
+                        QString hash = arrayObject.at(1).toString();
+                        //QString accId = arrayObject.at(2).toString();
+                        QString signature = signatures::getSignature(Global::Account::getAccountPrivateKey(), hash);
+                        emit sendMessage(WalletRpc::composeSign(id, signature));
+                    }
+                }
+            } else if(!jsonObject["result"].isNull()) {
+                emit socketDisconnect();
+                emit resultReady(s);
+                this->thread()->exit();
+            }
+        });
+        connect(this, &WalletRpc::CreatePool::sendMessage, worker, &RpcSocket::sendMessage);
+        connect(this, &WalletRpc::CreatePool::socketDisconnect, worker, &RpcSocket::socketDisconnect);
+        workerThread->start();
+    }
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "CreatePool", QList<QString>({
+                                                                      Global::Account::getAccountPublicId(),
+                                                                      token0,
+                                                                      token1
+                                                                    })));
+}
+
+void WalletRpc::AddLiquidity::doWork(QString token0, double token0Amount, QString token1, double token1Amount) {
+    if(Global::Account::getAccountPublicId().length() == 0) {
+        emit resultError("EmptyResponse");
+        return;
+    }
+    if(!worker) {
+        worker = new RpcSocket;
+        workerThread= new QThread;
+        worker->moveToThread(workerThread);
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(this, &WalletRpc::AddLiquidity::startFetch, worker, &RpcSocket::doWork);
+        connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
+            QJsonDocument jsonWalletFile = QJsonDocument::fromJson(s.toLocal8Bit());
+            if(!jsonWalletFile.isObject()) {
+                emit resultError("EmptyResponse");
+                this->thread()->exit();
+                return;
+            }
+            QJsonObject jsonObject = jsonWalletFile.object();
+            id = jsonObject["id"].toInt();
+            if(!jsonObject["error"].isNull()) {
+                emit socketDisconnect();
+                QJsonObject jsonDataObject = jsonObject["error"].toObject();
+                emit resultError(jsonDataObject["message"].toString());
+            } else if(!jsonObject["method"].isNull()) {
+                if(!jsonObject["method"].toString().compare("Sign")) {
+                    QJsonArray arrayObject = jsonObject["params"].toArray();
+                    if(!arrayObject.at(0).toString().compare("hash")) {
+                        QString hash = arrayObject.at(1).toString();
+                        //QString accId = arrayObject.at(2).toString();
+                        QString signature = signatures::getSignature(Global::Account::getAccountPrivateKey(), hash);
+                        emit sendMessage(WalletRpc::composeSign(id, signature));
+                    }
+                }
+            } else if(!jsonObject["result"].isNull()) {
+                emit socketDisconnect();
+                emit resultReady(s);
+                this->thread()->exit();
+            }
+        });
+        connect(this, &WalletRpc::AddLiquidity::sendMessage, worker, &RpcSocket::sendMessage);
+        connect(this, &WalletRpc::AddLiquidity::socketDisconnect, worker, &RpcSocket::socketDisconnect);
+        workerThread->start();
+    }
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "AddLiquidaty", QList<QString>({
+                                                                        Global::Account::getAccountPublicId(),
+                                                                        token0,
+                                                                        QString::number(token0Amount),
+                                                                        token1,
+                                                                        QString::number(token1Amount)
+                                                                    })));
+}
+
+void WalletRpc::RemoveLiquidity::doWork(QString token0, QString token1) {
+    if(Global::Account::getAccountPublicId().length() == 0) {
+        emit resultError("EmptyResponse");
+        return;
+    }
+    if(!worker) {
+        worker = new RpcSocket;
+        workerThread= new QThread;
+        worker->moveToThread(workerThread);
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(this, &WalletRpc::RemoveLiquidity::startFetch, worker, &RpcSocket::doWork);
+        connect(worker, &RpcSocket::resultReady, this, [=](const QString s) {
+            QJsonDocument jsonWalletFile = QJsonDocument::fromJson(s.toLocal8Bit());
+            if(!jsonWalletFile.isObject()) {
+                emit resultError("EmptyResponse");
+                this->thread()->exit();
+                return;
+            }
+            QJsonObject jsonObject = jsonWalletFile.object();
+            id = jsonObject["id"].toInt();
+            if(!jsonObject["error"].isNull()) {
+                emit socketDisconnect();
+                QJsonObject jsonDataObject = jsonObject["error"].toObject();
+                emit resultError(jsonDataObject["message"].toString());
+            } else if(!jsonObject["method"].isNull()) {
+                if(!jsonObject["method"].toString().compare("Sign")) {
+                    QJsonArray arrayObject = jsonObject["params"].toArray();
+                    if(!arrayObject.at(0).toString().compare("hash")) {
+                        QString hash = arrayObject.at(1).toString();
+                        //QString accId = arrayObject.at(2).toString();
+                        QString signature = signatures::getSignature(Global::Account::getAccountPrivateKey(), hash);
+                        emit sendMessage(WalletRpc::composeSign(id, signature));
+                    }
+                }
+            } else if(!jsonObject["result"].isNull()) {
+                emit socketDisconnect();
+                emit resultReady(s);
+                this->thread()->exit();
+            }
+        });
+        connect(this, &WalletRpc::RemoveLiquidity::sendMessage, worker, &RpcSocket::sendMessage);
+        connect(this, &WalletRpc::RemoveLiquidity::socketDisconnect, worker, &RpcSocket::socketDisconnect);
+        workerThread->start();
+    }
+    emit startFetch("wss://" + Global::Network::getNodeAddress().second + LYRA_RPC_API_URL,
+                 WalletRpc::compose(1, "RemoveLiquidaty", QList<QString>({
+                                                                        Global::Account::getAccountPublicId(),
+                                                                        token0,
+                                                                        token1,
+                                                                    })));
 }
 
 /*

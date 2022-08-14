@@ -22,6 +22,7 @@ void WebGet::doWork(QString url) {
     );
     connect(reply, &QNetworkReply::finished,
             this, [=] {
+        qDebug() << "WEB GET 2 :" << read;
         emit resultReady(read);
         read.clear();
         timeoutTimer->stop();
@@ -29,21 +30,28 @@ void WebGet::doWork(QString url) {
     });
     connect(reply, &QNetworkReply::errorOccurred,
             this, [=] {
-        emit resultError("WEB GET 2: " + QString::number(reply->error()));
+        emit resultError("WEB GET 3: " + QString::number(reply->error()));
         timeoutTimer->stop();
         this->thread()->exit();
+    });
+    connect(reply, QOverload<const QList<QSslError>&>::of(&QNetworkReply::sslErrors),this, [=] {
+        // WARNING: Never ignore SSL errors in production code.
+        // The proper way to handle self-signed certificates is to add a custom root
+        // to the CA store.
+        reply->ignoreSslErrors();
+        qDebug() << "WEB GET 4 : SSL Error";
     });
 
     timeoutTimer = new QTimer();
     timeoutTimer->setInterval(10000);
     connect(timeoutTimer, &QTimer::timeout, this, [=]{
         timeoutTimer->stop();
-        emit resultError("WEB GET 3: Timeout");
+        emit resultError("WEB GET 5: Timeout");
         this->thread()->exit();
     });
     //qDebug() << m_webGet->errorString();
     timeoutTimer->start();
-    qDebug() << url;
+    qDebug() << "WEB GET 6: " << url;
 }
 
 /*

@@ -9,8 +9,6 @@
 #include "global.h"
 #include "extensions/qrcodegen.h"
 
-#define FADE_COUNT_START_VALE   150
-
 PageReceive::PageReceive(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageReceive)

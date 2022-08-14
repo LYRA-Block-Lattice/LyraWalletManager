@@ -358,6 +358,52 @@ QPushButton:pressed {
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="advancedFunctionsPushButton">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <bold>true</bold>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 8);
+	border-width: 1px;
+	border-color: lightgrey;
+	text-align:left;
+    padding-right: 3px;
+    padding-left: 3px;
+	color:black;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 16);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 64);
+}</string>
+      </property>
+      <property name="text">
+       <string>ADVANCED FUNCTIONS</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../../res.qrc">
+        <normaloff>:/res/ic/res/ic/aboutUs.png</normaloff>:/res/ic/res/ic/aboutUs.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>

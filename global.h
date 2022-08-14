@@ -41,6 +41,8 @@
 #define FONT_OFFSET     0.8
 #endif
 
+#define FADE_COUNT_START_VALE   250
+
 extern QTabWidget *mainTabWidget;
 
 extern PageImportWallet *pageImportWallet;
@@ -252,6 +254,11 @@ namespace Global {
         static QList<QPair<int, QPair<QString, double>>> getList();
     };
     /**********************************************************************************/
+    class Swap {
+    public:
+        static QList<QString> getAvailableTickers();
+    };
+
     /**********************************************************************************/
     /**********************************************************************************/
     /**********************************************************************************/
@@ -276,13 +283,13 @@ namespace Global {
                 return "";
             return idHash.left((len / 2) - 1) + "..." + idHash.right((len / 2) - 1);
         }
-        static QString normaliseNumber(QString nr) {
-            if(nr.indexOf('.') != -1) {
-                while ( nr.at(nr.length() - 1) == '0' && nr.at(nr.length() - 1) != '.') {
-                    nr.remove(nr.length() - 1, 1);
+        static QString normaliseNumber(QString snr) {
+            if(snr.indexOf('.') != -1) {
+                while ( snr.at(snr.length() - 1) == '0' && snr.at(snr.length() - 1) != '.') {
+                    snr.remove(snr.length() - 1, 1);
                 }
             }
-            return nr;
+            return snr;
         }
         static QString normaliseNumber(double nr, int decimals = 8) {
             QString expression = "%." + QString::number(decimals) + "f";

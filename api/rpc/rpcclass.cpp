@@ -90,9 +90,9 @@ RpcClass::Balance::Balance(QString data) {
         QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
         QJsonObject jsonObject = jsonResponse.object();
         QJsonObject resultObject = jsonObject["result"].toObject();
-        QJsonObject o = resultObject["balance"].toObject();
-        foreach (QString key, o.keys()) {
-            Balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), o[key].toVariant().toDouble()));
+        QJsonObject balanceObject = resultObject["balance"].toObject();
+        foreach (QString key, balanceObject.keys()) {
+            Balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceObject[key].toVariant().toDouble()));
         }
         if (Balances.size() > 1) {
             for (int i = 1; i < Balances.size(); i++) {
@@ -107,6 +107,7 @@ RpcClass::Balance::Balance(QString data) {
         }
         height = resultObject["height"].toVariant().toLongLong();
         unreceived = resultObject["unreceived"].toBool();
+        valid = true;
     } catch (const std::exception& ex) {
         qDebug() << ex.what();
     }
@@ -160,7 +161,87 @@ RpcClass::PoolCalculate::PoolCalculate(QString data) {
         valid = true;
     }
 }
-
 RpcClass::PoolCalculate::~PoolCalculate() {
 }
+/******************************************************************************/
+RpcClass::CreatePool::CreatePool(QString data) {
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(!jsonResponse.isObject())
+        return;
+    QJsonObject jsonObject = jsonResponse.object();
+    if(!jsonObject["result"].isNull()) {
+        QJsonObject resultJsonObject = jsonObject["result"].toObject();
+        if(resultJsonObject["balance"].isNull())
+            return;
+        height = resultJsonObject["height"].toVariant().toLongLong();
+        poolId = resultJsonObject["poolId"].toString();
+        token0 = resultJsonObject["token0"].toString();
+        token1 = resultJsonObject["token1"].toString();
+        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+        foreach (QString key, balanceJsonObject.keys()) {
+            balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+        }
+        valid = true;
+    }
+}
 
+RpcClass::CreatePool::~CreatePool() {
+}
+/******************************************************************************/
+RpcClass::AddLiquidity::AddLiquidity(QString data) {
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(!jsonResponse.isObject())
+        return;
+    QJsonObject jsonObject = jsonResponse.object();
+    if(!jsonObject["result"].isNull()) {
+        QJsonObject resultJsonObject = jsonObject["result"].toObject();
+        if(resultJsonObject["balance"].isNull())
+            return;
+        height = resultJsonObject["height"].toVariant().toLongLong();
+        poolId = resultJsonObject["poolId"].toString();
+        token0 = resultJsonObject["token0"].toString();
+        token1 = resultJsonObject["token1"].toString();
+        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+        foreach (QString key, balanceJsonObject.keys()) {
+            balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+        }
+        valid = true;
+    }
+}
+
+RpcClass::AddLiquidity::~AddLiquidity() {
+}
+/******************************************************************************/
+RpcClass::RemoveLiquidity::RemoveLiquidity(QString data) {
+    if (data.count() == 0)
+        return;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+        QJsonObject resultObject = jsonObject["result"].toObject();
+        QJsonObject balanceObject = resultObject["balance"].toObject();
+        foreach (QString key, balanceObject.keys()) {
+            Balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceObject[key].toVariant().toDouble()));
+        }
+        if (Balances.size() > 1) {
+            for (int i = 1; i < Balances.size(); i++) {
+                QPair<QString, double> p = Balances[i];
+                if (!p.first.compare("LYR")) {
+                    // Make sure LYR is on position 0
+                    Balances.removeAt(i);
+                    Balances.insert(0, p);
+                    break;
+                }
+            }
+        }
+        height = resultObject["height"].toVariant().toLongLong();
+        unreceived = resultObject["unreceived"].toBool();
+        valid = true;
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
+    }
+}
+
+RpcClass::RemoveLiquidity::~RemoveLiquidity() {
+}
+/******************************************************************************/
