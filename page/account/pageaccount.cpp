@@ -36,8 +36,8 @@ PageAccount::PageAccount(QWidget *parent) :
     }
 
     // Backup items geometry, size and font.
-    lyraLogoPushButtonQRectBack = ui->lyraLogoPushButton->geometry();
-    lyraLogoPushButtonQSizeBack = ui->lyraLogoPushButton->iconSize();
+    lyraLogoLabelQRectBack = ui->lyraLogoLabel->geometry();
+    //lyraLogoLabelQSizeBack = ui->lyraLogoLabel->pixmap().size();
     accountValueLyrLabelQRectBack = ui->accountValueLyrLabel->geometry();
     accountValueLyrLabelQFontBack = ui->accountValueLyrLabel->font();
     accountValueUsdLabelQRectBack = ui->accountValueUsdLabel->geometry();
@@ -88,8 +88,8 @@ void PageAccount::close() {
 
 void PageAccount::setScale() {
     this->setGeometry(Global::Layout::getTabLayoutGeometryScaled());
-    ui->lyraLogoPushButton->setGeometry(Global::Layout::scaleRect(lyraLogoPushButtonQRectBack));
-    ui->lyraLogoPushButton->setIconSize(Global::Layout::scaleSize(lyraLogoPushButtonQSizeBack));
+    ui->lyraLogoLabel->setGeometry(Global::Layout::scaleRect(lyraLogoLabelQRectBack));
+    //ui->lyraLogoLabel->setIconSize(Global::Layout::scaleSize(lyraLogoLabelQSizeBack));
     ui->accountValueLyrLabel->setGeometry(Global::Layout::scaleRect(accountValueLyrLabelQRectBack));
     ui->accountValueLyrLabel->setFont(Global::Layout::scaleFontOffset(accountValueLyrLabelQFontBack));
     ui->accountValueUsdLabel->setGeometry(Global::Layout::scaleRect(accountValueUsdLabelQRectBack));
@@ -109,14 +109,14 @@ void PageAccount::setScale() {
 }
 
 void PageAccount::setStyle() {
-    Style::setButtonTransparentStyle(ui->lyraLogoPushButton);
+    /*//Style::setButtonTransparentStyle(ui->lyraLogoLabel);
     Style::setLabelStyle(ui->accountValueLyrLabel);
     Style::setLabelStyle(ui->accountValueUsdLabel);
     Style::setLabelStyle(ui->accountTotalValueUsdLabel);
     Style::setButtonRoundStyle(ui->sendPushButton);
     Style::setButtonTransparentStyle(ui->historyPushButton);
     Style::setButtonRoundStyle(ui->receivePushButton);
-    Style::setLabelStyle(ui->historyLabel);
+    Style::setLabelStyle(ui->historyLabel);*/
 }
 
 void PageAccount::loop() {

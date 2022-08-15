@@ -54,8 +54,8 @@ private:
     WalletRpc::Receive *receiveThread = nullptr;
     QThread *receiveWorkerThread = nullptr;
 
-    QRect lyraLogoPushButtonQRectBack;
-    QSize lyraLogoPushButtonQSizeBack;
+    QRect lyraLogoLabelQRectBack;
+    QSize lyraLogoLabelQSizeBack;
     QRect accountValueLyrLabelQRectBack;
     QFont accountValueLyrLabelQFontBack;
     QRect accountValueUsdLabelQRectBack;
