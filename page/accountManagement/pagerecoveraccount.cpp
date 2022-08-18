@@ -64,13 +64,14 @@ void PageRecoverAccount::setScale() {
 }
 
 void PageRecoverAccount::setStyle() {
-    /*Style::setButtonStyle(ui->backPushButton);
+    Style::setButtonManagerPageStyle(ui->backPushButton);
     Style::setLabelStyle(ui->headerLabel);
-    Style::setLineEditlStyle(ui->accountNameLineEdit);
-    Style::setLineEditlStyle(ui->walletPasswordLineEdit);
-    Style::setLineEditlStyle(ui->privateKeyLineEdit);
-    Style::setButtonStyle(ui->showHidePushButton);
-    Style::setButtonStyle(ui->recoverAccountPushButton);*/
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setLineEditManagerPageStyle(ui->accountNameLineEdit);
+    Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
+    Style::setLineEditManagerPageStyle(ui->privateKeyLineEdit);
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setButtonManagerPageStyle(ui->recoverAccountPushButton);
 }
 
 void PageRecoverAccount::setVisibility(bool v) {

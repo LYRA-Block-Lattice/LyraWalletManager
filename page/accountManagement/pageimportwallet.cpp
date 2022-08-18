@@ -52,10 +52,10 @@ void PageImportWallet::setScale() {
 }
 
 void PageImportWallet::setStyle() {
-    /*Style::setButtonStyle(ui->backPushButton);
+    Style::setButtonManagerPageStyle(ui->backPushButton);
     Style::setLabelStyle(ui->headerLabel);
-    Style::setLineEditlStyle(ui->walletNameLineEdit);
-    Style::setButtonStyle(ui->importWalletPushButton);*/
+    Style::setLineEditManagerPageStyle(ui->walletNameLineEdit);
+    Style::setButtonManagerPageStyle(ui->importWalletPushButton);
 }
 
 void PageImportWallet::setVisibility(bool v) {

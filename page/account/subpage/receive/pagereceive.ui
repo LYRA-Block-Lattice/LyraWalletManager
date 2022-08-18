@@ -292,7 +292,7 @@ QPushButton:pressed {
      <x>40</x>
      <y>370</y>
      <width>231</width>
-     <height>41</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="font">

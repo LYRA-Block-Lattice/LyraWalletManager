@@ -124,6 +124,18 @@ QPushButton:pressed {
      <height>31</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>119</width>
+     <height>31</height>
+    </size>
+   </property>
    <property name="styleSheet">
     <string notr="true">QComboBox {
     border: 1px solid lightgray;
@@ -177,8 +189,17 @@ QListView::item::hover {
 }
 </string>
    </property>
+   <property name="insertPolicy">
+    <enum>QComboBox::NoInsert</enum>
+   </property>
    <property name="sizeAdjustPolicy">
     <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
    </property>
    <property name="frame">
     <bool>false</bool>
@@ -208,11 +229,17 @@ QLineEdit{
 }
 </string>
    </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhLatinOnly|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhPreferLatin</set>
+   </property>
    <property name="maxLength">
     <number>256</number>
    </property>
    <property name="frame">
     <bool>false</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
    <property name="placeholderText">
     <string>Recipient address</string>
@@ -250,6 +277,9 @@ QLineEdit{
    </property>
    <property name="frame">
     <bool>false</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
    <property name="placeholderText">
     <string>Amount</string>
@@ -348,7 +378,7 @@ QPushButton:pressed {
      <x>40</x>
      <y>230</y>
      <width>231</width>
-     <height>41</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="font">
@@ -394,7 +424,7 @@ QPushButton:pressed {
      <x>40</x>
      <y>290</y>
      <width>231</width>
-     <height>41</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="font">

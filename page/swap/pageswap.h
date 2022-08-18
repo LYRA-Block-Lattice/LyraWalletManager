@@ -112,8 +112,8 @@ private:
     QRect availableReceiveLabelQRectBack;
     QFont availableReceiveLabelQFontBack;
 
-    QRect statucGridWidgetQRectBack;
-    QFont statucGridWidgetQFontBack;
+    QRect statusGridWidgetQRectBack;
+    QFont statusGridWidgetQFontBack;
 
     QFont externalPriceLabelQFontBack;
     QFont externalPriceValueLabelQFontBack;

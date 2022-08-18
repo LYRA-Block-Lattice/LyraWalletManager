@@ -26,7 +26,10 @@ typedef enum {
     DEVNET = 2
 } networkName_e;
 
-static QList<QString> networkNameList = QList<QString>({"TESTNET", "MAINNET"/*, "DEVNET"*/});
+extern QList<QString> networkNameList;
+
+
+extern QList<QString> profitingAccountTypesList;
 
 /*class GlobalLyra {
     static double getAmount(long long amount) {

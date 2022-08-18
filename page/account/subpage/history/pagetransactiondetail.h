@@ -44,8 +44,8 @@ private:
 
     QRect backPushButtonQRectBack;
     QSize backPushButtonQSizeBack;
-    QRect lyraLogoPushButtonQRectBack;
-    QSize lyraLogoPushButtonQSizeBack;
+    QRect lyraLogoLabelQRectBack;
+    //QSize lyraLogoLabelQSizeBack;
     QRect label1QRectBack;
     QFont label1QFontBack;
 

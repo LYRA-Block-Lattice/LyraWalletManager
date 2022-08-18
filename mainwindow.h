@@ -19,6 +19,8 @@
 #include "page/account/pageaccount.h"
 #include "page/dex/pagedex.h"
 #include "page/more/pagemore.h"
+#include "page/more/subpage/settings/pagesettings.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,12 +36,6 @@ public:
     void setScale();
     static void setPage(int index);
 private:
-    PageStaking *pageStaking;
-    PageSwap *pageSwap;
-    PageAccount *pageAccount;
-    PageDex *pageDex;
-    PageMore *pageMore;
-
     QRect walletNetworkNameLabelQRectBack;
     QFont walletNetworkNameLabelQFontBack;
 

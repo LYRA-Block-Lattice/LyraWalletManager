@@ -17,6 +17,8 @@
 #include "globallyra.h"
 #include "crypto/signatures.h"
 #include "wallet/history.h"
+#include "translate/translate.h"
+
 
 static QTimer fadeTimer;
 static int fadeCount;
@@ -25,7 +27,6 @@ PageSend::PageSend(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageSend) {
     ui->setupUi(this);
-    setStyle();
 
     ui->sendingLabel->setVisible(false);
     fadeCount = 0;
@@ -40,8 +41,9 @@ PageSend::PageSend(QWidget *parent) :
     titleLabelQRectBack = ui->titleLabel->geometry();
     titleLabelQFontBack = ui->titleLabel->font();
 
-    tokenSelectComboBoxQRectBack = ui->tokenComboBox->geometry();
-    tokenSelectComboBoxQFontBack = ui->tokenComboBox->font();
+    tokenComboBoxQRectBack = ui->tokenComboBox->geometry();
+    tokenComboBoxQSizeBack = ui->tokenComboBox->iconSize();
+    tokenComboBoxQFontBack = ui->tokenComboBox->font();
     recipientAddressLineEditQRectBack = ui->recipientAddressLineEdit->geometry();
     recipientAddressLineEditQFontBack = ui->recipientAddressLineEdit->font();
     amountLineEditQRectBack = ui->amountLineEdit->geometry();
@@ -58,12 +60,16 @@ PageSend::PageSend(QWidget *parent) :
     sendingLabelQRectBack = ui->sendingLabel->geometry();
     sendingLabelQFontBack = ui->sendingLabel->font();
 
+    ui->tokenComboBox->setIconSize(QSize(20, 20));
+    ui->tokenComboBox->setView(new QListView);
+    QListView *list = (QListView *)ui->tokenComboBox->view();
+    list->setIconSize(QSize(20, 20));
+    //ui->tokenComboBox->addItem(QPixmap(), "");
+    setStyle();
     setScale();
 
-    ui->amountLineEdit->setValidator(new QDoubleValidator(0, 10000000000, 8));
+    //ui->amountLineEdit->setValidator(new QDoubleValidator(0, 10000000000, 8));
 
-    ui->tokenComboBox->setView(new QListView);
-    //ui->tokenComboBox->addItem(QPixmap(), "");
 
     fadeTimer.setInterval(20);
     fadeTimer.stop();
@@ -126,8 +132,12 @@ void PageSend::setScale() {
     ui->titleLabel->setGeometry(Global::Layout::scaleRect(titleLabelQRectBack));
     ui->titleLabel->setFont(Global::Layout::scaleFontOffset(titleLabelQFontBack));
 
-    ui->tokenComboBox->setGeometry(Global::Layout::scaleRect(tokenSelectComboBoxQRectBack));;
-    ui->tokenComboBox->setFont(Global::Layout::scaleFontOffset(tokenSelectComboBoxQFontBack, scale));;
+    ui->tokenComboBox->setGeometry(Global::Layout::scaleRect(tokenComboBoxQRectBack));;
+    ui->tokenComboBox->setFont(Global::Layout::scaleFontOffset(tokenComboBoxQFontBack));;
+    ui->tokenComboBox->setIconSize(Global::Layout::scaleSize(tokenComboBoxQSizeBack));
+    QListView *list = (QListView *)ui->tokenComboBox->view();
+    list->setIconSize(Global::Layout::scaleSize(tokenComboBoxQSizeBack));
+    list->update();
     ui->recipientAddressLineEdit->setGeometry(Global::Layout::scaleRect(recipientAddressLineEditQRectBack));;
     ui->recipientAddressLineEdit->setFont(Global::Layout::scaleFontOffset(recipientAddressLineEditQFontBack, scale));
     ui->amountLineEdit->setGeometry(Global::Layout::scaleRect(amountLineEditQRectBack));;
@@ -143,12 +153,17 @@ void PageSend::setScale() {
 
     ui->sendingLabel->setGeometry(Global::Layout::scaleRect(sendingLabelQRectBack));;
     ui->sendingLabel->setFont(Global::Layout::scaleFontOffset(sendingLabelQFontBack));
+
 }
 
 void PageSend::setStyle() {
-    Style::setComboBoxStyle(ui->tokenComboBox);
+    Style::setButtontOnHeaderStyle(ui->backPushButton);
+    Style::setComboBoxStyle(ui->tokenComboBox, tokenComboBoxQFontBack);
     Style::setLineEditlWhiteStyle(ui->recipientAddressLineEdit);
     Style::setLineEditlWhiteStyle(ui->amountLineEdit);
+    Style::setButtonDefaultStyle(ui->sendPushButton);
+    Style::setButtonTransparentStyle(ui->qrPushButton);
+    Style::setButtonTransparentStyle(ui->pastePushButton);
 }
 
 void PageSend::loop() {
@@ -168,7 +183,7 @@ void PageSend::checkIntegrityOfInputs() {
         return;
     }
     bool validate;
-    ui->amountLineEdit->text().toDouble(&validate);
+    ui->amountLineEdit->text().remove(',').toDouble(&validate);
     if(!validate) {
         ui->sendPushButton->setEnabled(false);
         return;
@@ -178,9 +193,9 @@ void PageSend::checkIntegrityOfInputs() {
 
 bool PageSend::checkEnoughFunds() {
     bool validate;
-    double amount = ui->amountLineEdit->text().toDouble(&validate);
+    double amount = ui->amountLineEdit->text().remove(',').toDouble(&validate);
     if(!validate) {
-        ui->sendingLabel->setText("Invalid amount");
+        ui->sendingLabel->setText(Tr("Invalid amount"));
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
         return false;
@@ -199,7 +214,7 @@ bool PageSend::checkEnoughFunds() {
             }
         }
         if(lyrAmount < LYRA_TX_FEE) {
-            ui->sendingLabel->setText("Not enough funds for fee");
+            ui->sendingLabel->setText(Tr("Not enough funds for fee"));
             fadeCount = FADE_COUNT_START_VALE;
             fadeTimer.start();
             return false;
@@ -217,12 +232,12 @@ bool PageSend::checkEnoughFunds() {
                 }
             }
         }
-        ui->sendingLabel->setText("Not enough funds");
+        ui->sendingLabel->setText(Tr("Not enough funds"));
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
         return false;
     }
-    ui->sendingLabel->setText("Account is empty");
+    ui->sendingLabel->setText(Tr("Account is empty"));
     fadeCount = FADE_COUNT_START_VALE;
     fadeTimer.start();
     return false;
@@ -248,11 +263,14 @@ void PageSend::on_recipientAddressLineEdit_textChanged(const QString &arg1) {
 
 void PageSend::on_amountLineEdit_textChanged(const QString &arg1) {
     ui->amountLineEdit->style()->polish(ui->amountLineEdit);
+    QString s = arg1;
     bool validate;
-    arg1.toDouble(&validate);
-    if(arg1.length() > 0) {
+    s.remove(',').toDouble(&validate);
+    if(s.length() > 0) {
         if(!validate) {
-            ui->amountLineEdit->setText(arg1.left(arg1.length() - 1));
+            ui->amountLineEdit->setText(Global::Util::normaliseNumber(s.left(s.length() - 1), false));
+        } else {
+            ui->amountLineEdit->setText(Global::Util::normaliseNumber(s.remove(','), false));
         }
     }
     checkIntegrityOfInputs();
@@ -267,7 +285,7 @@ void PageSend::on_qrPushButton_clicked() {
         camera->show();
         ui->qrPushButton->setEnabled(false);
     } else {
-        QMessageBox::critical(this, "ERROR", "No camera device detected");
+        QMessageBox::critical(this, "ERROR", Tr("No camera device detected"));
     }
 }
 
@@ -284,9 +302,9 @@ void PageSend::on_sendPushButton_clicked() {
     if(!checkEnoughFunds()) {
         return;
     }
-    QString sendreview = tr("Do you want to send") + ":\n" +
+    QString sendreview = Tr("Do you want to send") + ":\n" +
             ui->amountLineEdit->text() + " " + ui->tokenComboBox->currentText() + "\n" +
-            tr("to address") + "\n" +
+            Tr("to address") + "\n" +
             Global::Util::truncateIdHash(ui->recipientAddressLineEdit->text(), 23);
     QMessageBox* const message = new QMessageBox(QMessageBox::Icon::Question, tr("Send") + "?",
         sendreview, QMessageBox::Button::Yes | QMessageBox::Button::No, this);
@@ -295,7 +313,7 @@ void PageSend::on_sendPushButton_clicked() {
     connect(message, &QDialog::finished, this, [message, this] {
         message->deleteLater();
         if (message->result() == QMessageBox::Button::Yes) {
-            ui->sendingLabel->setText("Sending");
+            ui->sendingLabel->setText(Tr("Sending"));
             fadeCount = FADE_COUNT_START_VALE;
             fadeTimer.start();
             sendThread = new WalletRpc::Send;
@@ -306,14 +324,14 @@ void PageSend::on_sendPushButton_clicked() {
             connect(sendThread, &WalletRpc::Send::resultReady, this, &PageSend::on_SendRetriveDone);
             connect(sendThread, &WalletRpc::Send::resultError, this, &PageSend::on_SendRetriveError);
             sendWorkerThread->start();
-            emit sendOperate(ui->amountLineEdit->text(), ui->recipientAddressLineEdit->text(), Global::Util::signToTicker(ui->tokenComboBox->currentText()));
+            emit sendOperate(ui->amountLineEdit->text().remove(','), ui->recipientAddressLineEdit->text(), Global::Util::signToTicker(ui->tokenComboBox->currentText()));
         }
     });
 }
 
 void PageSend::on_SendRetriveDone(const QString &s) {
     Q_UNUSED(s)
-    ui->sendingLabel->setText("Sent");
+    ui->sendingLabel->setText(Tr("Sent"));
     fadeCount = FADE_COUNT_START_VALE;
     fadeTimer.start();
     ui->amountLineEdit->setText("");

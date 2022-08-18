@@ -89,8 +89,6 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     // Draw bottom line
     painter->setPen(lastIndex ? palette.dark().color()
                               : palette.mid().color());
-    painter->setPen(lastIndex ? palette.dark().color()
-                              : palette.mid().color());
     painter->drawLine(lastIndex ? rect.left() : m_ptr->margins.left(),
                       bottomEdge,
                       lastIndex ? rect.right() : contentRect.right(),
@@ -108,7 +106,7 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     tickerRect.moveTo(m_ptr->margins.left() + m_ptr->iconSize.width()
                          + m_ptr->spacingHorizontal, contentRect.top());
 
-    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    //f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
     painter->drawText(tickerRect, Qt::TextSingleLine,
@@ -126,7 +124,7 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     amountRect.moveTo(m_ptr->margins.left() + m_ptr->iconSize.width()
                       + m_ptr->spacingHorizontal, tickerRect.bottom() + verticalSpacing());
 
-    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    //f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
     painter->drawText(amountRect, Qt::TextSingleLine, txt);
@@ -137,7 +135,7 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
     valueRect.moveTo(contentRect.right() - valueRect.width(), contentRect.top());
 
-    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    //f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
     painter->drawText(valueRect, Qt::TextSingleLine, txt);
@@ -148,7 +146,7 @@ void PageAccountItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
     tokenValueRect.moveTo(contentRect.right() - tokenValueRect.width(), valueRect.bottom() + verticalSpacing());
 
-    f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
+    //f.setPointSizeF(PageAccountItemDelegatePrivate::timestampFontPointSize(option.font));
     painter->setFont(f);
     painter->setPen(palette.text().color());
     painter->drawText(tokenValueRect, Qt::TextSingleLine, txt);

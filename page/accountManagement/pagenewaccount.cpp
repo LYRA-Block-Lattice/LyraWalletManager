@@ -69,13 +69,14 @@ void PageNewAccount::setScale() {
 }
 
 void PageNewAccount::setStyle() {
-    /*Style::setButtonStyle(ui->backPushButton);
+    Style::setButtonManagerPageStyle(ui->backPushButton);
     Style::setLabelStyle(ui->headerLabel);
-    Style::setLineEditlStyle(ui->accountNameLineEdit);
-    Style::setLineEditlStyle(ui->walletPasswordLineEdit);
-    Style::setButtonStyle(ui->showHidePushButton);
-    Style::setButtonStyle(ui->createAccountPushButton);
-    Style::setButtonStyle(ui->recoverAccountPushButton);*/
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setLineEditManagerPageStyle(ui->accountNameLineEdit);
+    Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setButtonManagerPageStyle(ui->createAccountPushButton);
+    Style::setButtonManagerPageStyle(ui->recoverAccountPushButton);
 }
 
 

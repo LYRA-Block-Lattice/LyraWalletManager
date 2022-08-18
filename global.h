@@ -11,6 +11,12 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 
+#include "page/account/pageaccount.h"
+#include "page/dex/pagedex.h"
+#include "page/more/pagemore.h"
+#include "page/staking/pagestaking.h"
+#include "page/swap/pageswap.h"
+
 #include "page/accountManagement/pageimportwallet.h"
 #include "page/accountManagement/pagenewaccount.h"
 #include "page/accountManagement/pagenewwallet.h"
@@ -21,6 +27,7 @@
 #include "page/account/subpage/history/pagetransactiondetail.h"
 #include "page/account/subpage/send/pagesend.h"
 #include "page/account/subpage/receive/pagereceive.h"
+#include "page/staking/subpage/pageaddstakingaccount.h"
 
 #include "page/more/subpage/settings/pagesettings.h"
 
@@ -34,16 +41,22 @@
 #define MENU_BAR_HEIGHT 30
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#define FONT_OFFSET     0.60
+#define FONT_OFFSET     1
 #elif __linux__
-#define FONT_OFFSET     0.60
+#define FONT_OFFSET     1
 #else
-#define FONT_OFFSET     0.8
+#define FONT_OFFSET     1
 #endif
 
 #define FADE_COUNT_START_VALE   250
 
 extern QTabWidget *mainTabWidget;
+
+extern PageStaking *pageStaking;
+extern PageSwap *pageSwap;
+extern PageAccount *pageAccount;
+extern PageDex *pageDex;
+extern PageMore *pageMore;
 
 extern PageImportWallet *pageImportWallet;
 extern PageNewAccount *pageNewAccount;
@@ -55,12 +68,15 @@ extern PageHistory *pageHistory;
 extern PageTransactionDetail *pageTransactionDetail;
 extern PageSend *pageSend;
 extern PageReceive *pageReceive;
+extern PageAddStakingAccount *pageAddStakingAccount;
 
 extern PageSettings *pageSettings;
 
 extern double yScale;
 extern double xScale;
 extern int headerHeight;
+extern int ScreenWidth;
+extern int ScreenHeight;
 
 extern networkName_e Net;
 extern QList<QList<QPair<QString,QString>>> NodeList;
@@ -69,6 +85,16 @@ extern QList<QList<QPair<QString,QString>>> NodeList;
 #define COMPOSE_WALLET_NAME     COMPOSE_WALLET_PARH + QDir::separator() + Global::Wallet::Name::get() + ".lyr"
 #define COMPOSE_SETTINGS_PARH     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
 #define COMPOSE_SETTINGS_NAME     COMPOSE_SETTINGS_PARH + QDir::separator() + Global::Wallet::Name::get() + "_settings.cfg"
+
+#if defined(__APPLE__) || defined(Q_OS_ANDROID)
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || defined(Q_OS_ANDROID)
+#define SCREEN_WIDTH_DIFFERENCE ((getScreenWidth() / getLayoutGeometry().width()) * 0.4)
+#else
+#define SCREEN_WIDTH_DIFFERENCE 1
+#endif
+#else
+#define SCREEN_WIDTH_DIFFERENCE 1
+#endif
 
 namespace Global {
     class Page{
@@ -91,6 +117,7 @@ namespace Global {
             TRANSACTION_DETAIL,
             SEND,
             RECEIVE,
+            ADD_STAKING_ACCOUNT,
 
             SETTINGS = 30,
         }PAGE;
@@ -109,6 +136,11 @@ namespace Global {
         static QRect getTabLayoutGeometryScaled() { return QRect(0, 0, (int)((double)PAGE_WIDTH * xScale),
                                                                  (int)((double)getTabLayoutGeometry().height() * yScale)); }
 
+        static void setScreenWidth( int screenWidth) { ScreenWidth = screenWidth; }
+        static int getScreenWidth() { return ScreenWidth; }
+        static void setScreenHeight( int screenHeight) { ScreenWidth = screenHeight; }
+        static int getScreenHeight() { return ScreenHeight; }
+
         static void setXScale(double sc) { xScale = sc; }
         static void setYScale(double sc) { yScale = sc; }
 
@@ -123,10 +155,10 @@ namespace Global {
         static int scaleValueY(double value) { return (int)((double)value * yScale); }
         static int scaleValueX(double value) { return scaleValue(value); }
 
-        static QFont scaleFont(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale)); return font; }
-        static QFont scaleFont(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * (xScale / scale))); return font; }
-        static QFont scaleFontOffset(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale * FONT_OFFSET)); return font; }
-        static QFont scaleFontOffset(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale * scale)); return font; }
+        static QFont scaleFont(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale/* * FONT_OFFSET * xScale * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
+        static QFont scaleFont(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale/* * FONT_OFFSET * (xScale / scale) * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
+        static QFont scaleFontOffset(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale * FONT_OFFSET * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
+        static QFont scaleFontOffset(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale * FONT_OFFSET * scale * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
 
         static QRect scaleRect(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale),
                                                           (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale)); }
@@ -144,9 +176,9 @@ namespace Global {
             double scale = 1.0;
 #if defined(__APPLE__) || defined(Q_OS_ANDROID)
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || defined(Q_OS_ANDROID)
-            scale = 0.70;
+            scale = 1;
 #else
-            scale = 0.9;
+            scale = 1;
 #endif
 #endif
         return scale;

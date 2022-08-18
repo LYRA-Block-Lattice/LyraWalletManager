@@ -110,6 +110,9 @@ QLineEdit[text=&quot;&quot;]{
  }
 </string>
     </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhLatinOnly|Qt::ImhNoAutoUppercase|Qt::ImhSensitiveData</set>
+    </property>
     <property name="placeholderText">
      <string>Type wallet name</string>
     </property>
@@ -198,6 +201,9 @@ QLineEdit[text=&quot;&quot;]{
 	color:gray;
  }
 </string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhPreferLowercase|Qt::ImhSensitiveData</set>
     </property>
     <property name="inputMask">
      <string/>
@@ -312,6 +318,9 @@ QLineEdit[text=&quot;&quot;]{
 	color:gray;
  }
 </string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhPreferLowercase|Qt::ImhSensitiveData</set>
     </property>
     <property name="inputMask">
      <string/>

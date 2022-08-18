@@ -8,6 +8,7 @@
 
 /******************************************************************************/
 RpcClass::History::History(QString data) {
+    Account.Valid = false;
     if (data.count() == 0)
         return;
     Account.AccountName = Global::Account::getSelectedAccountName();
@@ -80,10 +81,10 @@ RpcClass::History::History(RpcClass::History *history) {
     Account = history->Account;
 }
 
-RpcClass::History::~History() {
-}
+RpcClass::History::~History() {}
 /******************************************************************************/
 RpcClass::Balance::Balance(QString data) {
+    Valid = false;
     if (data.count() == 0)
         return;
     try {
@@ -105,114 +106,130 @@ RpcClass::Balance::Balance(QString data) {
                 }
             }
         }
-        height = resultObject["height"].toVariant().toLongLong();
-        unreceived = resultObject["unreceived"].toBool();
-        valid = true;
+        Height = resultObject["height"].toVariant().toLongLong();
+        Unreceived = resultObject["unreceived"].toBool();
+        Valid = true;
     } catch (const std::exception& ex) {
         qDebug() << ex.what();
     }
 }
 
-RpcClass::Balance::~Balance() {
-}
+RpcClass::Balance::~Balance() {}
 /******************************************************************************/
 RpcClass::Pool::Pool(QString data) {
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-    if(!jsonResponse.isObject())
-        return;
-    QJsonObject jsonObject = jsonResponse.object();
-    if(!jsonObject["result"].isNull()) {
-        QJsonObject resultJsonObject = jsonObject["result"].toObject();
-        if(resultJsonObject["balance"].isNull())
+    Valid = false;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        if(!jsonResponse.isObject())
             return;
-        height = resultJsonObject["height"].toVariant().toLongLong();
-        poolId = resultJsonObject["poolId"].toString();
-        token0 = resultJsonObject["token0"].toString();
-        token1 = resultJsonObject["token1"].toString();
-        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
-        balanceToken0 = balanceJsonObject[token0].toDouble();
-        balanceToken1 = balanceJsonObject[token1].toDouble();
-        valid = true;
+        QJsonObject jsonObject = jsonResponse.object();
+        if(!jsonObject["result"].isNull()) {
+            QJsonObject resultJsonObject = jsonObject["result"].toObject();
+            if(resultJsonObject["balance"].isNull())
+                return;
+            Height = resultJsonObject["height"].toVariant().toLongLong();
+            PoolId = resultJsonObject["poolId"].toString();
+            Token0 = resultJsonObject["token0"].toString();
+            Token1 = resultJsonObject["token1"].toString();
+            QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+            BalanceToken0 = balanceJsonObject[Token0].toDouble();
+            BalanceToken1 = balanceJsonObject[Token1].toDouble();
+            Valid = true;
+        }
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
     }
 }
 
-RpcClass::Pool::~Pool() {
-}
+RpcClass::Pool::~Pool() {}
 /******************************************************************************/
 RpcClass::PoolCalculate::PoolCalculate(QString data) {
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-    if(!jsonResponse.isObject())
-        return;
-    QJsonObject jsonObject = jsonResponse.object();
-    if(!jsonObject["result"].isNull()) {
-        QJsonObject resultJsonObject = jsonObject["result"].toObject();
-        height = resultJsonObject["Height"].toVariant().toLongLong();
-        providerFee = resultJsonObject["ProviderFee"].toDouble();
-        protocolFee = resultJsonObject["ProtocolFee"].toDouble();
-        swapInToken = resultJsonObject["SwapInToken"].toString();
-        swapInAmount = resultJsonObject["SwapInAmount"].toDouble();
-        swapOutToken = resultJsonObject["SwapOutToken"].toString();
-        swapOutAmount = resultJsonObject["SwapOutAmount"].toDouble();
-        price = resultJsonObject["Price"].toDouble();
-        priceImpact = resultJsonObject["PriceImpact"].toDouble();
-        minimumReceived = resultJsonObject["MinimumReceived"].toDouble();
-        payToProvider = resultJsonObject["PayToProvider"].toDouble();
-        payToAuthorizer = resultJsonObject["PayToAuthorizer"].toDouble();
-        valid = true;
+    Valid = false;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        if(!jsonResponse.isObject())
+            return;
+        QJsonObject jsonObject = jsonResponse.object();
+        if(!jsonObject["result"].isNull()) {
+            QJsonObject resultJsonObject = jsonObject["result"].toObject();
+            Height = resultJsonObject["Height"].toVariant().toLongLong();
+            ProviderFee = resultJsonObject["ProviderFee"].toDouble();
+            ProtocolFee = resultJsonObject["ProtocolFee"].toDouble();
+            SwapInToken = resultJsonObject["SwapInToken"].toString();
+            SwapInAmount = resultJsonObject["SwapInAmount"].toDouble();
+            SwapOutToken = resultJsonObject["SwapOutToken"].toString();
+            SwapOutAmount = resultJsonObject["SwapOutAmount"].toDouble();
+            Price = resultJsonObject["Price"].toDouble();
+            PriceImpact = resultJsonObject["PriceImpact"].toDouble();
+            MinimumReceived = resultJsonObject["MinimumReceived"].toDouble();
+            PayToProvider = resultJsonObject["PayToProvider"].toDouble();
+            PayToAuthorizer = resultJsonObject["PayToAuthorizer"].toDouble();
+            Valid = true;
+        }
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
     }
 }
-RpcClass::PoolCalculate::~PoolCalculate() {
-}
+RpcClass::PoolCalculate::~PoolCalculate() {}
 /******************************************************************************/
 RpcClass::CreatePool::CreatePool(QString data) {
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-    if(!jsonResponse.isObject())
-        return;
-    QJsonObject jsonObject = jsonResponse.object();
-    if(!jsonObject["result"].isNull()) {
-        QJsonObject resultJsonObject = jsonObject["result"].toObject();
-        if(resultJsonObject["balance"].isNull())
+    Valid = false;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        if(!jsonResponse.isObject())
             return;
-        height = resultJsonObject["height"].toVariant().toLongLong();
-        poolId = resultJsonObject["poolId"].toString();
-        token0 = resultJsonObject["token0"].toString();
-        token1 = resultJsonObject["token1"].toString();
-        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
-        foreach (QString key, balanceJsonObject.keys()) {
-            balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+        QJsonObject jsonObject = jsonResponse.object();
+        if(!jsonObject["result"].isNull()) {
+            QJsonObject resultJsonObject = jsonObject["result"].toObject();
+            if(resultJsonObject["balance"].isNull())
+                return;
+            Height = resultJsonObject["height"].toVariant().toLongLong();
+            PoolId = resultJsonObject["poolId"].toString();
+            Token0 = resultJsonObject["token0"].toString();
+            Token1 = resultJsonObject["token1"].toString();
+            QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+            foreach (QString key, balanceJsonObject.keys()) {
+                Balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+            }
+            Valid = true;
         }
-        valid = true;
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
     }
 }
 
-RpcClass::CreatePool::~CreatePool() {
-}
+RpcClass::CreatePool::~CreatePool() {}
 /******************************************************************************/
 RpcClass::AddLiquidity::AddLiquidity(QString data) {
-    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
-    if(!jsonResponse.isObject())
-        return;
-    QJsonObject jsonObject = jsonResponse.object();
-    if(!jsonObject["result"].isNull()) {
-        QJsonObject resultJsonObject = jsonObject["result"].toObject();
-        if(resultJsonObject["balance"].isNull())
+    Valid = false;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        if(!jsonResponse.isObject())
             return;
-        height = resultJsonObject["height"].toVariant().toLongLong();
-        poolId = resultJsonObject["poolId"].toString();
-        token0 = resultJsonObject["token0"].toString();
-        token1 = resultJsonObject["token1"].toString();
-        QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
-        foreach (QString key, balanceJsonObject.keys()) {
-            balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+        QJsonObject jsonObject = jsonResponse.object();
+        if(!jsonObject["result"].isNull()) {
+            QJsonObject resultJsonObject = jsonObject["result"].toObject();
+            if(resultJsonObject["balance"].isNull())
+                return;
+            Height = resultJsonObject["height"].toVariant().toLongLong();
+            PoolId = resultJsonObject["poolId"].toString();
+            Token0 = resultJsonObject["token0"].toString();
+            Token1 = resultJsonObject["token1"].toString();
+            QJsonObject balanceJsonObject = resultJsonObject["balance"].toObject();
+            foreach (QString key, balanceJsonObject.keys()) {
+                Balances.append(QPair<QString, double>(Global::Util::tickerToSign(key), balanceJsonObject[key].toVariant().toDouble()));
+            }
+            Valid = true;
         }
-        valid = true;
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
     }
 }
 
-RpcClass::AddLiquidity::~AddLiquidity() {
-}
+RpcClass::AddLiquidity::~AddLiquidity() {}
 /******************************************************************************/
 RpcClass::RemoveLiquidity::RemoveLiquidity(QString data) {
+    Valid = false;
     if (data.count() == 0)
         return;
     try {
@@ -234,14 +251,118 @@ RpcClass::RemoveLiquidity::RemoveLiquidity(QString data) {
                 }
             }
         }
-        height = resultObject["height"].toVariant().toLongLong();
-        unreceived = resultObject["unreceived"].toBool();
-        valid = true;
+        Height = resultObject["height"].toVariant().toLongLong();
+        Unreceived = resultObject["unreceived"].toBool();
+        Valid = true;
     } catch (const std::exception& ex) {
         qDebug() << ex.what();
     }
 }
 
-RpcClass::RemoveLiquidity::~RemoveLiquidity() {
+RpcClass::RemoveLiquidity::~RemoveLiquidity() {}
+/******************************************************************************/
+RpcClass::GetBrokerAccounts::GetBrokerAccounts(QString data) {
+    Valid = false;
+    if (data.count() == 0)
+        return;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+        QJsonObject resultObject = jsonObject["result"].toObject();
+        QJsonArray profitsArray = resultObject["profits"].toArray();
+        for(int i = 0; i < profitsArray.count(); i++) {
+            QJsonObject profitObject = profitsArray[i].toObject();
+            profitsEntry_t profitEntry;
+            profitEntry.name = profitObject["name"].toString();
+            profitEntry.type = profitObject["type"].toString();
+            profitEntry.shareRatio = profitObject["shareratio"].toDouble();
+            profitEntry.seats = profitObject["seats"].toInt();
+            profitEntry.pftid = profitObject["pftid"].toString();
+            profitEntry.owner = profitObject["owner"].toString();
+            Profits.append(profitEntry);
+        }
+        QJsonArray stakingsArray = resultObject["stakings"].toArray();
+        for(int i = 0; i < stakingsArray.count(); i++) {
+            QJsonObject stakingObject = stakingsArray[i].toObject();
+            stakingsEntry_t stakingEntry;
+            stakingEntry.name = stakingObject["name"].toString();
+            stakingEntry.voting = stakingObject["voting"].toString();
+            stakingEntry.owner = stakingObject["owner"].toString();
+            stakingEntry.stkid = stakingObject["stkid"].toString();
+            stakingEntry.days = stakingObject["days"].toInt();
+            stakingEntry.start = stakingObject["start"].toString();
+            stakingEntry.amount = stakingObject["amount"].toDouble();
+            Stakings.append(stakingEntry);
+        }
+        Valid = true;
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
+    }
 }
+
+RpcClass::GetBrokerAccounts::~GetBrokerAccounts() {}
+/******************************************************************************/
+RpcClass::AddStaking::AddStaking(QString data) {
+    Valid = false;
+    if (data.count() == 0)
+        return;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+        if(jsonObject["result"].isObject()) {
+            QJsonObject resultQjsonObject = jsonObject["result"].toObject();
+            Valid = resultQjsonObject["success"].toBool();
+            Message = resultQjsonObject["message"].toString();
+        }
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
+    }
+}
+
+RpcClass::AddStaking::~AddStaking() {}
+/******************************************************************************/
+RpcClass::UnStaking::UnStaking(QString data) {
+    Valid = false;
+    if (data.count() == 0)
+        return;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+        if(jsonObject["result"].isObject()) {
+            QJsonObject resultQjsonObject = jsonObject["result"].toObject();
+            Valid = resultQjsonObject["success"].toBool();
+            Message = resultQjsonObject["message"].toString();
+        }
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
+    }
+}
+
+RpcClass::UnStaking::~UnStaking() {}
+/******************************************************************************/
+RpcClass::CreateStakingAccount::CreateStakingAccount(QString data) {
+    Valid = false;
+    if (data.count() == 0)
+        return;
+    try {
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+        if(jsonObject["result"].isObject()) {
+            QJsonObject resultQjsonObject = jsonObject["result"].toObject();
+            Name = resultQjsonObject["name"].toString();
+            Voting = resultQjsonObject["voting"].toString();
+            Owner = resultQjsonObject["owner"].toString();
+            Stkid = resultQjsonObject["stkid"].toString();
+            Days = resultQjsonObject["days"].toInt();
+            Start = resultQjsonObject["start"].toString();
+            Amount = resultQjsonObject["amount"].toDouble();
+            Compound = resultQjsonObject["compound"].toBool();
+            Valid = true;
+        }
+    } catch (const std::exception& ex) {
+        qDebug() << ex.what();
+    }
+}
+
+RpcClass::CreateStakingAccount::~CreateStakingAccount() {}
 /******************************************************************************/

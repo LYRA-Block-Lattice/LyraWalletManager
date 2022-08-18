@@ -17,44 +17,6 @@
    <string notr="true">background: #FFFFFF;
 color: rgb(0, 0, 0);</string>
   </property>
-  <widget class="QPushButton" name="lyraLogoPushButton">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>0</y>
-     <width>72</width>
-     <height>72</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <stylestrategy>PreferAntialias</stylestrategy>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-	background-color: transparent;
-	border-style: solid;
-	color: #474D57;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../../../../res.qrc">
-     <normaloff>:/res/ic/res/ic/ic_lyra_token_foreground.png</normaloff>:/res/ic/res/ic/ic_lyra_token_foreground.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>72</width>
-     <height>72</height>
-    </size>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="titleLabel">
    <property name="geometry">
     <rect>
@@ -137,6 +99,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -153,6 +120,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Direction:</string>
    </property>
@@ -165,6 +137,11 @@ QPushButton:pressed {
      <width>81</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Time stamp:</string>
@@ -179,6 +156,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Send account ID:</string>
    </property>
@@ -191,6 +173,11 @@ QPushButton:pressed {
      <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Send hash:</string>
@@ -205,6 +192,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Amount transfered:</string>
    </property>
@@ -217,6 +209,11 @@ QPushButton:pressed {
      <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Receive account ID:</string>
@@ -231,6 +228,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Receive hash:</string>
    </property>
@@ -243,6 +245,11 @@ QPushButton:pressed {
      <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Amount in account:</string>
@@ -631,6 +638,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -652,6 +664,11 @@ QPushButton:pressed {
      <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -675,6 +692,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -696,6 +718,11 @@ QPushButton:pressed {
      <width>141</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -719,6 +746,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -740,6 +772,11 @@ QPushButton:pressed {
      <width>141</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -763,6 +800,11 @@ QPushButton:pressed {
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
@@ -784,6 +826,11 @@ QPushButton:pressed {
      <width>251</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -947,6 +994,11 @@ border-color: lightgrey;</string>
      <height>132</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">text-align:right;
 border-style: solid;
@@ -970,7 +1022,7 @@ border-color: lightgrey;</string>
      <x>40</x>
      <y>230</y>
      <width>231</width>
-     <height>41</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -991,6 +1043,25 @@ background-color: rgb(255, 254, 173);</string>
    </property>
    <property name="textInteractionFlags">
     <set>Qt::NoTextInteraction</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lyraLogoLabel">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>0</y>
+     <width>72</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../../../res.qrc">:/res/ic/res/ic/ic_lyra_token_foreground.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

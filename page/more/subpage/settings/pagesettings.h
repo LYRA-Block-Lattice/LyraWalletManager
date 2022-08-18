@@ -36,8 +36,6 @@ private:
     QRect titleLabelQRectBack;
     QFont titleLabelQFontBack;
 
-    QRect settingsVerticalFrameQRectBack;
-
     QRect languageComboBoxQRectBack;
     QSize languageComboBoxQSizeBack;
     QFont languageComboBoxQFontBack;

@@ -102,13 +102,14 @@ void PageHistory::setScale() {
     ui->backPushButton->setIconSize(Global::Layout::scaleSize(backPushButtonQSizeBack));
     ui->headerFrame->setGeometry(Global::Layout::scaleRect(headerFrameQRectBack));
     ui->titleLabel->setGeometry(Global::Layout::scaleRect(titleLabelQRectBack));
+    ui->titleLabel->setFont(Global::Layout::scaleFontOffset(titleLabelQFontBack));
     //progressLabel->setGeometry(Global::Layout::scaleRect(progressMovieQRectBack));
     messageList->setGeometry(QRect(0, Global::Layout::scaleValueX(62), geometry().width(), Global::Layout::getLayoutGeometryScaled().height() - Global::Layout::scaleValueX(62)/* - Global::Layout::scaleValueX(MENU_BAR_HEIGHT + 10)*/));
     historyLoadProgressBar->setGeometry(Global::Layout::scaleRect(historyLoadProgressBarQRectBack));
 }
 
 void PageHistory::setStyle() {
-
+    Style::setButtonDefaultStyle(ui->backPushButton);
 }
 
 void PageHistory::loop() {

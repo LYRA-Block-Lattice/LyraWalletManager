@@ -5,6 +5,12 @@
 
 QTabWidget *mainTabWidget;
 
+PageStaking *pageStaking;
+PageSwap *pageSwap;
+PageAccount *pageAccount;
+PageDex *pageDex;
+PageMore *pageMore;
+
 PageImportWallet *pageImportWallet;
 PageNewAccount *pageNewAccount;
 PageNewWallet *pageNewWallet;
@@ -15,12 +21,15 @@ PageHistory *pageHistory;
 PageTransactionDetail *pageTransactionDetail;
 PageSend *pageSend;
 PageReceive *pageReceive;
+PageAddStakingAccount *pageAddStakingAccount;
 
 PageSettings *pageSettings;
 
 /**********************************************************************************/
 double yScale = 1.0;
 double xScale = 1.0;
+int ScreenWidth = 0;
+int ScreenHeight = 0;
 int headerHeight = 0.0;
 
 /**********************************************************************************/
@@ -87,6 +96,7 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
     pageSend->setVisible(false);
     pageReceive->setVisible(false);
     pageSettings->setVisible(false);
+    pageAddStakingAccount->setVisible(false);
     mainTabWidget->setVisible(false);
     switch(page) {
     case Global::Page::OPEN_WALLET:
@@ -129,10 +139,54 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
         pageSettings->setVisible(true);
         pageSettings->open();
         break;
+    case Global::Page::ADD_STAKING_ACCOUNT:
+        pageAddStakingAccount->setVisible(true);
+        pageAddStakingAccount->open();
+        break;
     default:
         mainTabWidget->setVisible(true);
         mainTabWidget->setCurrentIndex(page);
         break;
+    }
+    if(accountManagerPage != page) {
+        switch(accountManagerPage) {
+        case Global::Page::STAKING:
+            pageStaking->close();
+            break;
+        case Global::Page::SWAP:
+            pageSwap->close();
+            break;
+        case Global::Page::ACCOUNT:
+            pageAccount->close();
+            break;
+        case Global::Page::DEX:
+            pageDex->close();
+            break;
+        case Global::Page::MORE:
+            pageMore->close();
+            break;
+        default:
+            break;
+        }
+        switch(page) {
+        case Global::Page::STAKING:
+            pageStaking->open();
+            break;
+        case Global::Page::SWAP:
+            pageSwap->open();
+            break;
+        case Global::Page::ACCOUNT:
+            pageAccount->open();
+            break;
+        case Global::Page::DEX:
+            pageDex->open();
+            break;
+        case Global::Page::MORE:
+            pageMore->open();
+            break;
+        default:
+            break;
+        }
     }
     accountManagerPage = page;
     MainWindow::setPage(page);

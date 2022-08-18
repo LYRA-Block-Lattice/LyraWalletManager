@@ -37,8 +37,6 @@ private:
     QRect titleLabelQRectBack;
     QFont titleLabelQFontBack;
 
-    QRect moreVerticalFrameQRectBack;
-
     QRect accountsComboBoxQRectBack;
     QSize accountsComboBoxQSizeBack;
     QFont accountsComboBoxQFontBack;
@@ -54,6 +52,9 @@ private:
     QRect aboutUsPushButtonQRectBack;
     QSize aboutUsPushButtonQSizeBack;
     QFont aboutUsPushButtonQFontBack;
+    QRect advancedFunctionsPushButtonQRectBack;
+    QSize advancedFunctionsPushButtonQSizeBack;
+    QFont advancedFunctionsPushButtonQFontBack;
 
     int AccountListChangedCount = -1;
 

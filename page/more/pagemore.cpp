@@ -2,6 +2,7 @@
 #include "ui_pagemore.h"
 
 #include <QList>
+#include <QStyle>
 
 #include "global.h"
 #include "color.h"
@@ -18,8 +19,6 @@ PageMore::PageMore(QWidget *parent) :
     titleLabelQRectBack = ui->titleLabel->geometry();
     titleLabelQFontBack = ui->titleLabel->font();
 
-    moreVerticalFrameQRectBack = ui->moreVerticalFrame->geometry();
-
     accountsComboBoxQRectBack = ui->accountsComboBox->geometry();
     accountsComboBoxQSizeBack = ui->accountsComboBox->iconSize();
     accountsComboBoxQFontBack = ui->accountsComboBox->font();
@@ -35,6 +34,9 @@ PageMore::PageMore(QWidget *parent) :
     aboutUsPushButtonQRectBack = ui->aboutUsPushButton->geometry();
     aboutUsPushButtonQSizeBack = ui->aboutUsPushButton->iconSize();
     aboutUsPushButtonQFontBack = ui->aboutUsPushButton->font();
+    advancedFunctionsPushButtonQRectBack = ui->advancedFunctionsPushButton->geometry();
+    advancedFunctionsPushButtonQSizeBack = ui->advancedFunctionsPushButton->iconSize();
+    advancedFunctionsPushButtonQFontBack = ui->advancedFunctionsPushButton->font();
 
 
     setStyle();
@@ -72,27 +74,35 @@ void PageMore::setScale() {
     ui->titleLabel->setGeometry(Global::Layout::scaleRect(titleLabelQRectBack));
     ui->titleLabel->setFont(Global::Layout::scaleFontOffset(titleLabelQFontBack));
 
-    ui->moreVerticalFrame->setGeometry(Global::Layout::scaleRect(moreVerticalFrameQRectBack));
-
-    //ui->accountsComboBox->setGeometry(Global::Layout::scaleRect(accountsComboBoxQRectBack));
+    ui->accountsComboBox->setGeometry(Global::Layout::scaleRect(accountsComboBoxQRectBack));
     ui->accountsComboBox->setIconSize(Global::Layout::scaleSize(accountsComboBoxQSizeBack));
     ui->accountsComboBox->setFont(Global::Layout::scaleFontOffset(accountsComboBoxQFontBack));
-    //ui->explorerPushButton->setGeometry(Global::Layout::scaleRect(explorerPushButtonQRectBack));
+    ui->explorerPushButton->setGeometry(Global::Layout::scaleRect(explorerPushButtonQRectBack));
     ui->explorerPushButton->setIconSize(Global::Layout::scaleSize(explorerPushButtonQSizeBack));
     ui->explorerPushButton->setFont(Global::Layout::scaleFontOffset(explorerPushButtonQFontBack));
-    //ui->newAccountPushButton->setGeometry(Global::Layout::scaleRect(newAccountPushButtonQRectBack));
+    ui->newAccountPushButton->setGeometry(Global::Layout::scaleRect(newAccountPushButtonQRectBack));
     ui->newAccountPushButton->setIconSize(Global::Layout::scaleSize(newAccountPushButtonQSizeBack));
     ui->newAccountPushButton->setFont(Global::Layout::scaleFontOffset(newAccountPushButtonQFontBack));
-    //ui->settingsPushButton->setGeometry(Global::Layout::scaleRect(settingsPushButtonQRectBack));
+    ui->settingsPushButton->setGeometry(Global::Layout::scaleRect(settingsPushButtonQRectBack));
     ui->settingsPushButton->setIconSize(Global::Layout::scaleSize(settingsPushButtonQSizeBack));
     ui->settingsPushButton->setFont(Global::Layout::scaleFontOffset(settingsPushButtonQFontBack));
-    //ui->aboutUsPushButton->setGeometry(Global::Layout::scaleRect(aboutUsPushButtonQRectBack));
+    ui->aboutUsPushButton->setGeometry(Global::Layout::scaleRect(aboutUsPushButtonQRectBack));
     ui->aboutUsPushButton->setIconSize(Global::Layout::scaleSize(aboutUsPushButtonQSizeBack));
     ui->aboutUsPushButton->setFont(Global::Layout::scaleFontOffset(aboutUsPushButtonQFontBack));
+    ui->advancedFunctionsPushButton->setGeometry(Global::Layout::scaleRect(advancedFunctionsPushButtonQRectBack));
+    ui->advancedFunctionsPushButton->setIconSize(Global::Layout::scaleSize(advancedFunctionsPushButtonQSizeBack));
+    ui->advancedFunctionsPushButton->setFont(Global::Layout::scaleFontOffset(advancedFunctionsPushButtonQFontBack));
+
+    //listView->setFont(Global::Layout::scaleFontOffset(accountsComboBoxQFontBack));
 }
 
 void PageMore::setStyle() {
-
+    Style::setComboBoxStyle(ui->accountsComboBox, accountsComboBoxQFontBack);
+    Style::setButtonTransparentAlignLeftStyle(ui->newAccountPushButton);
+    Style::setButtonTransparentAlignLeftStyle(ui->explorerPushButton);
+    Style::setButtonTransparentAlignLeftStyle(ui->settingsPushButton);
+    Style::setButtonTransparentAlignLeftStyle(ui->aboutUsPushButton);
+    Style::setButtonTransparentAlignLeftStyle(ui->advancedFunctionsPushButton);
 }
 
 void PageMore::loop() {

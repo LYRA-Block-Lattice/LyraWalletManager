@@ -105,18 +105,19 @@ void PageAccount::setScale() {
     ui->historyLabel->setGeometry(Global::Layout::scaleRect(historyLabelQRectBack));
     ui->historyLabel->setFont(Global::Layout::scaleFontOffset(historyLabelQFontBack, Global::Layout::labelFontScale()));
     progressLabel->setGeometry(Global::Layout::scaleRect(progressMovieQRectBack));
-    messageList->setGeometry(QRect(0, Global::Layout::scaleValueX(220), parent->geometry().width(), parent->geometry().height() - Global::Layout::scaleValueX(220) - Global::Layout::scaleValueX(MENU_BAR_HEIGHT + 6)));
+    messageList->setGeometry(QRect(0, Global::Layout::scaleValueX(220), parent->geometry().width(),
+                                   parent->geometry().height() - Global::Layout::scaleValueX(220) - Global::Layout::scaleValueX(MENU_BAR_HEIGHT + 6)));
 }
 
 void PageAccount::setStyle() {
-    /*//Style::setButtonTransparentStyle(ui->lyraLogoLabel);
+    //Style::setButtonTransparentStyle(ui->lyraLogoLabel);
     Style::setLabelStyle(ui->accountValueLyrLabel);
     Style::setLabelStyle(ui->accountValueUsdLabel);
     Style::setLabelStyle(ui->accountTotalValueUsdLabel);
-    Style::setButtonRoundStyle(ui->sendPushButton);
+    Style::setButtonSendReceiveStyle(ui->sendPushButton);
     Style::setButtonTransparentStyle(ui->historyPushButton);
-    Style::setButtonRoundStyle(ui->receivePushButton);
-    Style::setLabelStyle(ui->historyLabel);*/
+    Style::setButtonSendReceiveStyle(ui->receivePushButton);
+    Style::setLabelStyle(ui->historyLabel);
 }
 
 void PageAccount::loop() {
@@ -216,7 +217,6 @@ void PageAccount::getBalance() {
             }
         }
         delete balanceInst;
-
         progressMovie->start();
         progressLabel->setVisible(true);
         fetchHistory();
@@ -244,10 +244,6 @@ void PageAccount::fetchHistory() {
         }
         messageList->clearAll();
         refreshBalances(historyInst);
-    });
-    connect(historyThread, &WalletRpc::History::resultError, this, [=] {
-        progressLabel->setVisible(false);
-        progressMovie->stop();
     });
     historyWorkerThread->start();
     emit historyStartFetch();

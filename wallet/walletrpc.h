@@ -185,6 +185,80 @@ static QString composeSign(int id, QString sig);
         void resultError(const QString &s);
     };
 
+    class GetBrokerAccounts : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+    public slots:
+        void doWork();
+    signals:
+        void startFetch(QString url, QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError();
+    };
+
+    class AddStaking : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString stakingAccountId, double amount);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
+    class UnStaking : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString stakingAccountId);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
+    class CreateStakingAccount : public QObject {
+        Q_OBJECT
+    private:
+        RpcSocket *worker = nullptr;
+        QThread *workerThread = nullptr;
+
+        QString Amount;
+        QString DestAccount;
+        QString Ticker;
+        int id = 1;
+    public slots:
+        void doWork(QString name, QString voteFor, int days);
+    signals:
+        void startFetch(QString url, QString message);
+        void sendMessage(QString message);
+        void socketDisconnect();
+        void resultReady(const QString &s);
+        void resultError(const QString &s);
+    };
+
 };
 
 #endif // WALLETRPC_H

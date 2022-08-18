@@ -21,8 +21,6 @@ PageSettings::PageSettings(QWidget *parent) :
     titleLabelQRectBack = ui->titleLabel->geometry();
     titleLabelQFontBack = ui->titleLabel->font();
 
-    settingsVerticalFrameQRectBack = ui->settingsVerticalFrame->geometry();
-
     languageComboBoxQRectBack = ui->languageComboBox->geometry();
     languageComboBoxQSizeBack = ui->languageComboBox->iconSize();
     languageComboBoxQFontBack = ui->languageComboBox->font();
@@ -33,13 +31,17 @@ PageSettings::PageSettings(QWidget *parent) :
     backupWalletPushButtonQSizeBack = ui->backupWalletPushButton->iconSize();
     backupWalletPushButtonQFontBack = ui->backupWalletPushButton->font();
 
-    setStyle();
-    setScale();
-
+    ui->languageComboBox->setIconSize(QSize(20, 20));
     ui->languageComboBox->setView(new QListView);
+    QListView *list = (QListView *)ui->languageComboBox->view();
+    list->setIconSize(QSize(20, 20));
     ui->languageComboBox->addItem(QPixmap(":/flag/res/flag/us.png"), "ENG");
     ui->networkComboBox->setView(new QListView);
     ui->networkComboBox->addItems(networkNameList);
+
+    setStyle();
+    setScale();
+
     /*QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->networkComboBox->model());
     if(model) {
         QStandardItem *item = model->item(2);
@@ -70,21 +72,26 @@ void PageSettings::setScale() {
     ui->titleLabel->setGeometry(Global::Layout::scaleRect(titleLabelQRectBack));
     ui->titleLabel->setFont(Global::Layout::scaleFontOffset(titleLabelQFontBack));
 
-    ui->settingsVerticalFrame->setGeometry(Global::Layout::scaleRect(settingsVerticalFrameQRectBack));
-
-    //ui->languageComboBox->setGeometry(Global::Layout::scaleRect(languageComboBoxQRectBack));
+    ui->languageComboBox->setGeometry(Global::Layout::scaleRect(languageComboBoxQRectBack));
     ui->languageComboBox->setIconSize(Global::Layout::scaleSize(languageComboBoxQSizeBack));
     ui->languageComboBox->setFont(Global::Layout::scaleFontOffset(languageComboBoxQFontBack));
-    //ui->networkComboBox->setGeometry(Global::Layout::scaleRect(networkComboBoxQRectBack));
+    QListView *list = (QListView *)ui->languageComboBox->view();
+    list->setIconSize(Global::Layout::scaleSize(languageComboBoxQSizeBack));
+    list->update();
+    ui->networkComboBox->setGeometry(Global::Layout::scaleRect(networkComboBoxQRectBack));
     ui->networkComboBox->setIconSize(Global::Layout::scaleSize(networkComboBoxQSizeBack));
     ui->networkComboBox->setFont(Global::Layout::scaleFontOffset(networkComboBoxQFontBack));
-    //ui->backupWalletPushButton->setGeometry(Global::Layout::scaleRect(backupWalletPushButtonQRectBack));
+    ui->backupWalletPushButton->setGeometry(Global::Layout::scaleRect(backupWalletPushButtonQRectBack));
     ui->backupWalletPushButton->setIconSize(Global::Layout::scaleSize(backupWalletPushButtonQSizeBack));
     ui->backupWalletPushButton->setFont(Global::Layout::scaleFontOffset(backupWalletPushButtonQFontBack));
+
 }
 
 void PageSettings::setStyle() {
-
+    Style::setComboBoxStyle(ui->languageComboBox, languageComboBoxQFontBack);
+    Style::setComboBoxStyle(ui->networkComboBox, networkComboBoxQFontBack);
+    Style::setButtontOnHeaderStyle(ui->backPushButton);
+    Style::setButtonTransparentAlignLeftStyle(ui->backupWalletPushButton);
 }
 
 void PageSettings::loop() {

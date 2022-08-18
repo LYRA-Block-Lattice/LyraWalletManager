@@ -64,6 +64,9 @@ QLineEdit[text=&quot;&quot;]{
  }
 </string>
     </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhLatinOnly|Qt::ImhNoAutoUppercase|Qt::ImhSensitiveData</set>
+    </property>
     <property name="placeholderText">
      <string>Type wallet name</string>
     </property>

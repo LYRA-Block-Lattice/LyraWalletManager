@@ -110,6 +110,9 @@ QLineEdit[text=&quot;&quot;]{
  }
 </string>
     </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhLatinOnly|Qt::ImhNoAutoUppercase|Qt::ImhSensitiveData</set>
+    </property>
     <property name="placeholderText">
      <string>Type account name</string>
     </property>
@@ -312,6 +315,9 @@ QLineEdit[text=&quot;&quot;]{
 	color:gray;
  }
 </string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
     </property>
     <property name="placeholderText">
      <string>Type private key</string>

@@ -10,8 +10,6 @@
 #include "api/rpc/rpcclass.h"
 #include "extensions/QZXing/QZXing.h"
 
-
-
 namespace Ui {
 class PageReceive;
 }

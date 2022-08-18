@@ -20,8 +20,8 @@ PageTransactionDetail::PageTransactionDetail(QWidget *parent) :
     // Backup items geometry, size and font.
     backPushButtonQRectBack = ui->backPushButton->geometry();
     backPushButtonQSizeBack = ui->backPushButton->iconSize();
-    lyraLogoPushButtonQRectBack = ui->lyraLogoPushButton->geometry();
-    lyraLogoPushButtonQSizeBack = ui->lyraLogoPushButton->iconSize();
+    lyraLogoLabelQRectBack = ui->lyraLogoLabel->geometry();
+    //lyraLogoLabelQSizeBack = ui->lyraLogoLabel->iconSize();
     label1QRectBack = ui->titleLabel->geometry();
     label1QFontBack = ui->titleLabel->font();
 
@@ -105,7 +105,7 @@ PageTransactionDetail::~PageTransactionDetail() {
 
 void PageTransactionDetail::open(RpcClass::History::entry_t *entry) {
     this->entry = entry;
-    ui->lyraLogoPushButton->setIcon(QPixmap(Global::TickerIcon::get(entry->Changes[0].first)));
+    ui->lyraLogoLabel->setPixmap(QPixmap(Global::TickerIcon::get(entry->Changes[0].first)));
     ui->heightValueLabel->setText(QString::number(entry->Height));
     ui->directionValueLabel->setText(entry->IsReceive ? "Receive" : "Send");
     ui->directionPushButton->setIcon(QPixmap(entry->IsReceive ? ":/res/ic/res/ic/arrowLeftDown.png" : ":/res/ic/res/ic/arrowRightUp.png"));
@@ -117,13 +117,13 @@ void PageTransactionDetail::open(RpcClass::History::entry_t *entry) {
     QString tmp;
     QPair<QString, double>tmpPair;
     foreach(tmpPair, entry->Changes) {
-        tmp.append(QString::asprintf("%.8f ", tmpPair.second) + tmpPair.first + "\n");
+        tmp.append(QString::asprintf("%s %s\n", Global::Util::normaliseNumber(tmpPair.second).toUtf8().data(), tmpPair.first.toUtf8().data()));
     }
     if(tmp.length() > 1)
         ui->amountTransferedValueLabel->setText(tmp.left(tmp.length() - 1));
     tmp.clear();
     foreach(tmpPair, entry->Balances) {
-        tmp.append(QString::asprintf("%.8f ", tmpPair.second) + tmpPair.first + "\n");
+        tmp.append(QString::asprintf("%s %s\n", Global::Util::normaliseNumber(tmpPair.second).toUtf8().data(), tmpPair.first.toUtf8().data()));
     }
     if(tmp.length() > 1)
         ui->amountInAccountValueLabel->setText(tmp.left(tmp.length() - 1));
@@ -138,8 +138,8 @@ void PageTransactionDetail::setScale() {
     this->setGeometry(Global::Layout::getLayoutGeometryScaled());
     ui->backPushButton->setGeometry(Global::Layout::scaleRect(backPushButtonQRectBack));
     ui->backPushButton->setIconSize(Global::Layout::scaleSize(backPushButtonQSizeBack));
-    ui->lyraLogoPushButton->setGeometry(Global::Layout::scaleRect(lyraLogoPushButtonQRectBack));
-    ui->lyraLogoPushButton->setIconSize(Global::Layout::scaleSize(lyraLogoPushButtonQSizeBack));
+    ui->lyraLogoLabel->setGeometry(Global::Layout::scaleRect(lyraLogoLabelQRectBack));
+    //ui->lyraLogoLabel->setIconSize(Global::Layout::scaleSize(lyraLogoLabelQSizeBack));
     ui->titleLabel->setGeometry(Global::Layout::scaleRect(label1QRectBack));
     ui->titleLabel->setFont(Global::Layout::scaleFontOffset(label1QFontBack));
 
@@ -211,8 +211,16 @@ void PageTransactionDetail::setScale() {
 }
 
 void PageTransactionDetail::setStyle() {
-    Style::setButtonTransparentStyle(ui->lyraLogoPushButton);
     Style::setLabelStyle(ui->titleLabel);
+
+    Style::setButtonTransparentStyle(ui->backPushButton);
+    Style::setButtonTransparentStyle(ui->copyTimeStampPushButton);
+    Style::setButtonTransparentStyle(ui->openSendAccountIdPushButton);
+    Style::setButtonTransparentStyle(ui->openSendHashPushButton);
+    Style::setButtonTransparentStyle(ui->openReceiveAccountIdPushButton);
+    Style::setButtonTransparentStyle(ui->openReceiveHashPushButton);
+    Style::setButtonTransparentStyle(ui->copyAmountTransferedPushButton);
+    Style::setButtonTransparentStyle(ui->copyAmountInAccountPushButton);
 }
 
 void PageTransactionDetail::loop() {

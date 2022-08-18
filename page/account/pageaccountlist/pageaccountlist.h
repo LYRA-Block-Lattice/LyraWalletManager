@@ -3,9 +3,7 @@
 
 #include <QListView>
 
-class PageAccountList : public QListView
-{
-public:
+class PageAccountList : public QListView {
     Q_OBJECT
 public:
     explicit PageAccountList(QWidget *parent = nullptr);

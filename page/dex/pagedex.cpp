@@ -12,6 +12,9 @@ PageDex::PageDex(QWidget *parent) :
 
     // Backup items geometry, size and font.
     headerFrameQRectBack = ui->headerFrame->geometry();
+    titleLabelQRectBack = ui->titleLabel->geometry();
+    titleLabelQFontBack = ui->titleLabel->font();
+
 
     setScale();
     setStyle();
@@ -32,6 +35,9 @@ void PageDex::close() {
 void PageDex::setScale() {
     this->setGeometry(Global::Layout::getTabLayoutGeometryScaled());
     ui->headerFrame->setGeometry(Global::Layout::scaleRect(headerFrameQRectBack));
+    ui->titleLabel->setGeometry(Global::Layout::scaleRect(titleLabelQRectBack));
+    ui->titleLabel->setFont(Global::Layout::scaleFontOffset(titleLabelQFontBack));
+
 }
 
 void PageDex::setStyle() {

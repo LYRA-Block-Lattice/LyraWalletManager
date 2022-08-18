@@ -63,8 +63,8 @@ PageSwap::PageSwap(QWidget *parent) :
     availableReceiveLabelQRectBack = ui->availableReceiveLabel->geometry();
     availableReceiveLabelQFontBack = ui->availableReceiveLabel->font();
 
-    statucGridWidgetQRectBack = ui->statucGridWidget->geometry();
-    statucGridWidgetQFontBack = ui->statucGridWidget->font();
+    statusGridWidgetQRectBack = ui->statusGridWidget->geometry();
+    statusGridWidgetQFontBack = ui->statusGridWidget->font();
 
     externalPriceLabelQFontBack = ui->externalPriceLabel->font();
     externalPriceValueLabelQFontBack = ui->externalPriceValueLabel->font();
@@ -94,11 +94,18 @@ PageSwap::PageSwap(QWidget *parent) :
     statusLabelQRectBack = ui->statusLabel->geometry();
     statusLabelQFontBack = ui->statusLabel->font();
 
-    setScale();
-    setStyle();
-
+    ui->tokenSendComboBox->setIconSize(QSize(20, 20));
     ui->tokenSendComboBox->setView(new QListView);
+    QListView *list = (QListView *)ui->tokenSendComboBox->view();
+    list->setIconSize(QSize(20, 20));
+
+    ui->tokenReceiveComboBox->setIconSize(QSize(20, 20));
     ui->tokenReceiveComboBox->setView(new QListView);
+    list = (QListView *)ui->tokenReceiveComboBox->view();
+    list->setIconSize(QSize(20, 20));
+
+    setStyle();
+    setScale();
 
     ui->statusLabel->setVisible(false);
     fadeCount = 0;
@@ -159,8 +166,10 @@ void PageSwap::setScale() {
     ui->poolSelectPushButton->setGeometry(Global::Layout::scaleRect(poolSelectPushButtonQRectBack));
     ui->poolSelectPushButton->setFont(Global::Layout::scaleFontOffset(poolSelectPushButtonQFontBack));
     ui->swapPushButton->setGeometry(Global::Layout::scaleRect(swapPushButtonQRectBack));
+    ui->swapPushButton->setMinimumHeight(Global::Layout::scaleRect(swapPushButtonQRectBack).height());
     ui->swapPushButton->setFont(Global::Layout::scaleFontOffset(swapPushButtonQFontBack));
     ui->removeSharePushButton->setGeometry(Global::Layout::scaleRect(removeSharePushButtonQRectBack));
+    ui->removeSharePushButton->setMinimumHeight(Global::Layout::scaleRect(removeSharePushButtonQRectBack).height());
     ui->removeSharePushButton->setFont(Global::Layout::scaleFontOffset(removeSharePushButtonQFontBack));
 
     ui->amountSendLineEdit->setGeometry(Global::Layout::scaleRect(amountSendLineEditQRectBack));
@@ -168,6 +177,9 @@ void PageSwap::setScale() {
     ui->tokenSendComboBox->setGeometry(Global::Layout::scaleRect(tokenSendComboBoxQRectBack));
     ui->tokenSendComboBox->setFont(Global::Layout::scaleFontOffset(tokenSendComboBoxQFontBack));
     ui->tokenSendComboBox->setIconSize(Global::Layout::scaleSize(tokenSendComboBoxQSizeBack));
+    QListView *list = (QListView *)ui->tokenSendComboBox->view();
+    list->setIconSize(Global::Layout::scaleSize(tokenSendComboBoxQSizeBack));
+    list->update();
     ui->availableSendLabel->setGeometry(Global::Layout::scaleRect(availableSendLabelQRectBack));
     ui->availableSendLabel->setFont(Global::Layout::scaleFontOffset(availableSendLabelQFontBack));
 
@@ -176,11 +188,14 @@ void PageSwap::setScale() {
     ui->tokenReceiveComboBox->setGeometry(Global::Layout::scaleRect(tokenReceiveComboBoxQRectBack));
     ui->tokenReceiveComboBox->setFont(Global::Layout::scaleFontOffset(tokenReceiveComboBoxQFontBack));
     ui->tokenReceiveComboBox->setIconSize(Global::Layout::scaleSize(tokenReceiveComboBoxQSizeBack));
+    list = (QListView *)ui->tokenReceiveComboBox->view();
+    list->setIconSize(Global::Layout::scaleSize(tokenReceiveComboBoxQSizeBack));
+    list->update();
     ui->availableReceiveLabel->setGeometry(Global::Layout::scaleRect(availableReceiveLabelQRectBack));
     ui->availableReceiveLabel->setFont(Global::Layout::scaleFontOffset(availableReceiveLabelQFontBack));
 
-    ui->statucGridWidget->setGeometry(Global::Layout::scaleRect(statucGridWidgetQRectBack));
-    ui->statucGridWidget->setFont(Global::Layout::scaleFontOffset(statucGridWidgetQFontBack));
+    ui->statusGridWidget->setGeometry(Global::Layout::scaleRect(statusGridWidgetQRectBack));
+    ui->statusGridWidget->setFont(Global::Layout::scaleFontOffset(statusGridWidgetQFontBack));
 
     ui->externalPriceLabel->setFont(Global::Layout::scaleFontOffset(externalPriceLabelQFontBack));
     ui->externalPriceValueLabel->setFont(Global::Layout::scaleFontOffset(externalPriceValueLabelQFontBack));
@@ -209,10 +224,22 @@ void PageSwap::setScale() {
 
     ui->statusLabel->setGeometry(Global::Layout::scaleRect(statusLabelQRectBack));
     ui->statusLabel->setFont(Global::Layout::scaleFontOffset(statusLabelQFontBack));
+
 }
 
 void PageSwap::setStyle() {
-
+    Style::setComboBoxSmallStyle(ui->tokenSendComboBox, tokenSendComboBoxQFontBack);
+    Style::setComboBoxSmallStyle(ui->tokenReceiveComboBox, tokenReceiveComboBoxQFontBack);
+    Style::setLineEditlWhiteStyle(ui->amountSendLineEdit);
+    Style::setLineEditlWhiteStyle(ui->amountReceiveLineEdit);
+    Style::setButtontOnHeaderStyle(ui->poolSelectPushButton);
+    Style::setButtontOnHeaderStyle(ui->swapSelectPushButton);
+    Style::setButtonDefaultStyle(ui->swapPushButton);
+    Style::setButtonDefaultStyle(ui->removeSharePushButton);
+    Style::setGroupBoxStyle(ui->sendGroupBox);
+    Style::setGroupBoxStyle(ui->receiveGroupBox);
+    Style::setWidgetStyle(ui->statusGridWidget);
+    Style::setWidgetStyle(ui->valuesVerticalWidget);
 }
 
 void PageSwap::loop() {
@@ -309,6 +336,13 @@ void PageSwap::fetchPool() {
             }
         }
     });
+    connect(poolThread, &WalletRpc::Pool::resultError, this, [=] {
+        ui->statusLabel->setText(Tr("Error fetch pool"));
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
+        progressLabel->setVisible(false);
+        progressMovie->stop();
+    });
     poolWorkerThread->start();
     emit poolStartFetch(Global::Util::signToTicker(ui->tokenSendComboBox->currentText()),
                         Global::Util::signToTicker(ui->tokenReceiveComboBox->currentText()),
@@ -375,6 +409,13 @@ void PageSwap::fetchPoolCalculate(QString poolId, QString tickerFrom, double amo
             progressLabel->setVisible(false);
         }
     });
+    connect(poolCalculateThread, &WalletRpc::PoolCalculate::resultError, this, [=] {
+        ui->statusLabel->setText(Tr("Error fetch pool calculate"));
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
+        progressLabel->setVisible(false);
+        progressMovie->stop();
+    });
     poolCalculateWorkerThread->start();
     emit poolCalculateStartFetch(poolId, tickerFrom, amount, slippage);
 }
@@ -394,6 +435,9 @@ void PageSwap::fetchHistory() {
         }
     });
     connect(historyThread, &WalletRpc::History::resultError, this, [=] {
+        ui->statusLabel->setText(Tr("Error fetch history"));
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
         progressLabel->setVisible(false);
         progressMovie->stop();
     });
@@ -423,8 +467,10 @@ void PageSwap::fetchYourShare() {
             progressLabel->setVisible(false);
         }
     });
-    connect(yourShareFetchWorker, &WebGet::resultError, this, [=](QString err) {
-        Q_UNUSED(err)
+    connect(yourShareFetchWorker, &WebGet::resultError, this, [=](QString message) {
+        ui->statusLabel->setText(message);
+        fadeCount = FADE_COUNT_START_VALE;
+        fadeTimer.start();
     });
     connect(yourShareFetchWorkerThread, &QThread::finished, yourShareFetchWorker, &QObject::deleteLater);
     connect(this, &PageSwap::yourShareStartFetch, yourShareFetchWorker, &WebGet::doWork);
@@ -455,8 +501,8 @@ void PageSwap::createPool() {
             addLiquidity();
         }
     });
-    connect(createPoolThread, &WalletRpc::CreatePool::resultError, this, [=] {
-        ui->statusLabel->setText(Tr("Creating pool failed"));
+    connect(createPoolThread, &WalletRpc::CreatePool::resultError, this, [=](QString message) {
+        ui->statusLabel->setText(message);
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
     });
@@ -488,8 +534,8 @@ void PageSwap::addLiquidity() {
             ui->amountReceiveLineEdit->setText("");
         }
     });
-    connect(addLiquidityThread, &WalletRpc::AddLiquidity::resultError, this, [=] {
-        ui->statusLabel->setText(Tr("Adding liquidity failed"));
+    connect(addLiquidityThread, &WalletRpc::AddLiquidity::resultError, this, [=](const QString message) {
+        ui->statusLabel->setText(message);
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
     });
@@ -523,8 +569,8 @@ void PageSwap::removeLiquidity() {
             ui->amountReceiveLineEdit->setText("");
         }
     });
-    connect(removeLiquidityThread, &WalletRpc::RemoveLiquidity::resultError, this, [=] {
-        ui->statusLabel->setText(Tr("Removing liquidity failed"));
+    connect(removeLiquidityThread, &WalletRpc::RemoveLiquidity::resultError, this, [=](const QString message) {
+        ui->statusLabel->setText(message);
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
     });
@@ -552,8 +598,8 @@ void PageSwap::swap() {
         ui->amountSendLineEdit->setText("");
         ui->amountReceiveLineEdit->setText("");
     });
-    connect(swapThread, &WalletRpc::Swap::resultError, this, [=](QString d) {
-        ui->statusLabel->setText(d);
+    connect(swapThread, &WalletRpc::Swap::resultError, this, [=](QString message) {
+        ui->statusLabel->setText(message);
         fadeCount = FADE_COUNT_START_VALE;
         fadeTimer.start();
     });
@@ -629,11 +675,13 @@ void PageSwap::showSwapData() {
 }
 
 void PageSwap::on_swapSelectPushButton_clicked() {
+    ui->titleLabel->setText(Tr("SWAP"));
     showSwapData();
     fetchPool();
 }
 
 void PageSwap::on_poolSelectPushButton_clicked() {
+    ui->titleLabel->setText(Tr("POOL"));
     ui->poolSelectPushButton->setEnabled(false);
     ui->swapSelectPushButton->setEnabled(true);
 

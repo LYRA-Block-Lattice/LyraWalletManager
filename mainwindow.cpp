@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     switchTranslator("ro");
     mainTabWidget = ui->mainTabWidget;
     this->setWindowFlags(( windowFlags() & ~(Qt::WindowFullscreenButtonHint | Qt::WindowMaximizeButtonHint)) | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint);
-    Global::Layout::setYScale(1.2);
-    Global::Layout::setXScale(1.1);
+    Global::Layout::setYScale(1);
+    Global::Layout::setXScale(1);
     Global::Layout::setHeaderHeight(0);
 
 
@@ -37,10 +37,13 @@ MainWindow::MainWindow(QWidget *parent) :
     walletNetworkNameLabelQRectBack = ui->walletNetworkNameLabel->geometry();
     walletNetworkNameLabelQFontBack = ui->walletNetworkNameLabel->font();
 
+    const QScreen* screen = qApp->primaryScreen();
+    Global::Layout::setScreenWidth(screen->availableSize().width());
+    Global::Layout::setScreenHeight(screen->availableSize().height());
+
     // On mobile we need the actually available application window
 #if defined(__APPLE__) || defined(Q_OS_ANDROID)
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || defined(Q_OS_ANDROID)
-    const QScreen* screen = qApp->primaryScreen();
     Global::Layout::setXScale((double)screen->availableSize().width() / (double)Global::Layout::getLayoutGeometry().width());
     Global::Layout::setYScale((double)(screen->availableSize().height()) / (double)Global::Layout::getLayoutGeometry().height());
     Global::Layout::setHeaderHeight(screen->availableVirtualGeometry().y());
@@ -100,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pageSend = new PageSend(this);
     pageReceive = new PageReceive(this);
     pageSettings = new PageSettings(this);
+    pageAddStakingAccount = new PageAddStakingAccount(this);
 
     pageImportWallet->setVisible(false);
     pageNewAccount->setVisible(false);
@@ -111,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pageSend->setVisible(false);
     pageReceive->setVisible(false);
     pageSettings->setVisible(false);
+    pageAddStakingAccount->setVisible(false);
     ui->mainTabWidget->setVisible(false);
 
 
@@ -253,6 +258,9 @@ void MainWindow::on_timerLoopTick() {
         break;
     case Global::Page::SETTINGS:
         pageSettings->loop();
+        break;
+    case Global::Page::ADD_STAKING_ACCOUNT:
+        pageAddStakingAccount->loop();
         break;
     default:
         break;

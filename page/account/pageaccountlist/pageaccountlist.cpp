@@ -49,7 +49,7 @@ void PageAccountList::setScale() {
     delegate->setHorizontalSpacing(Global::Layout::scaleValue(8));
     delegate->setVerticalSpacing(Global::Layout::scaleValue(8));
     //setFont(Global::scaleFont(this->font(), 0.2));
-    setFont(QFont("MSShellDlg 2", Global::Layout::scaleValue(14)));
+    setFont(QFont("MSShellDlg 2", Global::Layout::scaleValue(12)));
     setFont(Global::Layout::scaleFontOffset(font()));
 }
 
@@ -95,10 +95,10 @@ void PageAccountList::setTokenValue(QString ticker, double tokenValue) {
             if(values[2].remove(',').toDouble() != tokenValue) {
                 QString svalue = Global::Util::normaliseNumber(values[0].remove(',').toDouble() * tokenValue);
                 item->setData(QString::asprintf("%s\r%s USD\r%s USD\r%s",
-                                                values.at(0).toUtf8().data(),
+                                                Global::Util::normaliseNumber(values[0]).toUtf8().data(),
                                                 svalue.toUtf8().data(),
                                                 stokenValue.toUtf8().data(),
-                                                values.at(3).toUtf8().data()),
+                                                values[3].toUtf8().data()),
                               Qt::UserRole);
             }
         }

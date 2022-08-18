@@ -28,6 +28,9 @@ private:
     Ui::PageDex *ui;
 
     QRect headerFrameQRectBack;
+    QRect titleLabelQRectBack;
+    QFont titleLabelQFontBack;
+
 
     int AccountListChangedCount = -1;
 

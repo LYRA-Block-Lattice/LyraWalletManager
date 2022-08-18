@@ -38,6 +38,9 @@
         <file>res/ic/newAccount.png</file>
         <file>res/ic/icon.icns</file>
         <file>res/ic/aboutUs.png</file>
+        <file>res/ic/notDolar.png</file>
+        <file>res/ic/dolar.png</file>
+        <file>res/ic/advanced.png</file>
     </qresource>
     <qresource prefix="/flag">
         <file>res/flag/tj.png</file>

@@ -97,6 +97,9 @@ void PageReceive::setScale() {
 }
 
 void PageReceive::setStyle() {
+    Style::setGroupBoxStyle(ui->addressGroupBox);
+    Style::setButtontOnHeaderStyle(ui->backPushButton);
+    Style::setButtonTransparentStyle(ui->copyAddressPushButton);
 }
 
 void PageReceive::loop() {

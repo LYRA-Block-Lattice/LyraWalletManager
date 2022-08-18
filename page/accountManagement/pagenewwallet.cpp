@@ -70,13 +70,14 @@ void PageNewWallet::setScale() {
 }
 
 void PageNewWallet::setStyle() {
-    /*Style::setButtonStyle(ui->backPushButton);
+    Style::setButtonManagerPageStyle(ui->backPushButton);
     Style::setLabelStyle(ui->headerLabel);
-    Style::setLineEditlStyle(ui->walletNameLineEdit);
-    Style::setLineEditlStyle(ui->walletPasswordLineEdit);
-    Style::setLineEditlStyle(ui->walletPasswordLineEdit_2);
-    Style::setButtonStyle(ui->showHidePushButton);
-    Style::setButtonStyle(ui->createWalletPushButton);*/
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setLineEditManagerPageStyle(ui->walletNameLineEdit);
+    Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
+    Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit_2);
+    Style::setButtonManagerPageStyle(ui->showHidePushButton);
+    Style::setButtonManagerPageStyle(ui->createWalletPushButton);
 }
 
 void PageNewWallet::setVisibility(bool v) {

@@ -28,7 +28,7 @@
      <x>0</x>
      <y>0</y>
      <width>311</width>
-     <height>61</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -46,7 +46,7 @@
       <x>10</x>
       <y>9</y>
       <width>131</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -72,54 +72,245 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="moreVerticalFrame">
+  <widget class="QPushButton" name="advancedFunctionsPushButton">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>60</y>
-     <width>311</width>
-     <height>471</height>
+     <x>10</x>
+     <y>260</y>
+     <width>287</width>
+     <height>35</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: transparent;</string>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>35</height>
+    </size>
    </property>
-   <layout class="QVBoxLayout" name="moreVerticalLayout">
-    <property name="spacing">
-     <number>6</number>
-    </property>
-    <property name="leftMargin">
-     <number>12</number>
-    </property>
-    <property name="topMargin">
-     <number>12</number>
-    </property>
-    <property name="rightMargin">
-     <number>12</number>
-    </property>
-    <property name="bottomMargin">
-     <number>12</number>
-    </property>
-    <item>
-     <widget class="QComboBox" name="accountsComboBox">
-      <property name="minimumSize">
-       <size>
-        <width>119</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QComboBox {
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 8);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: lightgrey;
+	text-align:left;
+    padding-right: 3px;
+    padding-left: 3px;
+	color:black;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 16);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>ADVANCED FUNCTIONS</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/advanced.png</normaloff>:/res/ic/res/ic/advanced.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="newAccountPushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>287</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 8);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: lightgrey;
+	text-align:left;
+    padding-right: 3px;
+    padding-left: 3px;
+	color:black;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 16);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>NEW ACCOUNT</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/newAccount.png</normaloff>:/res/ic/res/ic/newAccount.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="explorerPushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>287</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 8);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: lightgrey;
+	text-align:left;
+    padding-right: 3px;
+    padding-left: 3px;
+	color:black;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 16);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>EXPLORER</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/magnify.png</normaloff>:/res/ic/res/ic/magnify.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="settingsPushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>287</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 8);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: lightgrey;
+	text-align:left;
+    padding-right: 3px;
+    padding-left: 3px;
+	color:black;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 16);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>SETTINGS</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/settings.png</normaloff>:/res/ic/res/ic/settings.png</iconset>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="accountsComboBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>287</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>119</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
     border: 1px solid lightgray;
     padding: 1px 18px 1px 3px;
     min-width: 6em; 
@@ -170,32 +361,39 @@ QListView::item::hover {
 	color: black;
 }
 </string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="newAccountPushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
+   </property>
+  </widget>
+  <widget class="QPushButton" name="aboutUsPushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>287</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <bold>true</bold>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
 	border-style: solid;
 	background-color: rgba(0, 0, 0, 8);
 	border-width: 1px;
+	border-radius: 5px;
 	border-color: lightgrey;
 	text-align:left;
     padding-right: 3px;
@@ -209,214 +407,14 @@ QPushButton:hover {
 QPushButton:pressed {
     background-color: rgba(0, 0, 0, 64);
 }</string>
-      </property>
-      <property name="text">
-       <string>NEW ACCOUNT</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/res/ic/res/ic/newAccount.png</normaloff>:/res/ic/res/ic/newAccount.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="explorerPushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-style: solid;
-	background-color: rgba(0, 0, 0, 8);
-	border-width: 1px;
-	border-color: lightgrey;
-	text-align:left;
-    padding-right: 3px;
-    padding-left: 3px;
-	color:black;
-}
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 16);
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 64);
-}</string>
-      </property>
-      <property name="text">
-       <string>EXPLORER</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/res/ic/res/ic/magnify.png</normaloff>:/res/ic/res/ic/magnify.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="settingsPushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-style: solid;
-	background-color: rgba(0, 0, 0, 8);
-	border-width: 1px;
-	border-color: lightgrey;
-	text-align:left;
-    padding-right: 3px;
-    padding-left: 3px;
-	color:black;
-}
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 16);
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 64);
-}</string>
-      </property>
-      <property name="text">
-       <string>SETTINGS</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/res/ic/res/ic/settings.png</normaloff>:/res/ic/res/ic/settings.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="aboutUsPushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-style: solid;
-	background-color: rgba(0, 0, 0, 8);
-	border-width: 1px;
-	border-color: lightgrey;
-	text-align:left;
-    padding-right: 3px;
-    padding-left: 3px;
-	color:black;
-}
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 16);
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 64);
-}</string>
-      </property>
-      <property name="text">
-       <string>ABOUT US</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/res/ic/res/ic/aboutUs.png</normaloff>:/res/ic/res/ic/aboutUs.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="advancedFunctionsPushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <bold>true</bold>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-style: solid;
-	background-color: rgba(0, 0, 0, 8);
-	border-width: 1px;
-	border-color: lightgrey;
-	text-align:left;
-    padding-right: 3px;
-    padding-left: 3px;
-	color:black;
-}
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 16);
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 64);
-}</string>
-      </property>
-      <property name="text">
-       <string>ADVANCED FUNCTIONS</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/res/ic/res/ic/aboutUs.png</normaloff>:/res/ic/res/ic/aboutUs.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-   </layout>
+   </property>
+   <property name="text">
+    <string>ABOUT US</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../res.qrc">
+     <normaloff>:/res/ic/res/ic/aboutUs.png</normaloff>:/res/ic/res/ic/aboutUs.png</iconset>
+   </property>
   </widget>
  </widget>
  <resources>

@@ -15,7 +15,8 @@ macx: {
     CONFIG += app_bundle
     CONFIG += sdk_no_version_check
     MACDEPLOY = `echo $$QMAKE_QMAKE | sed 's/qmake/macdeployqt/g'`
-    QMAKE_POST_LINK = $$MACDEPLOY $$OUT_PWD/$$TARGET\.app -qmldir=$$PWD -verbose=1
+    #QMAKE_POST_LINK = $$MACDEPLOY $$OUT_PWD/$$TARGET\.app -qmldir=$$PWD -verbose=1
+    QMAKE_INFO_PLIST = macos/Info.plist
 }
 ios {
     TARGET = ../LyraWalletManager_iOS/LyraWalletManager_iOS
@@ -46,6 +47,7 @@ SOURCES += \
     crypto/signatures.cpp \
     extensions/qrcodegen.cpp \
     global.cpp \
+    globallyra.cpp \
     main.cpp \
     mainwindow.cpp \
     api/rpc/rpcclass.cpp \
@@ -67,7 +69,12 @@ SOURCES += \
     page/dex/pagedex.cpp \
     page/more/pagemore.cpp \
     page/more/subpage/settings/pagesettings.cpp \
+    page/staking/pagestackinglist/pagestakingitemdelegate.cpp \
+    page/staking/pagestackinglist/pagestakinglist.cpp \
     page/staking/pagestaking.cpp \
+    page/staking/subpage/pageaddstakingaccount.cpp \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegate.cpp \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountlist.cpp \
     page/swap/pageswap.cpp \
     storage/storagecommon.cpp \
     storage/storageinternal.cpp \
@@ -110,7 +117,14 @@ HEADERS += \
     page/dex/pagedex.h \
     page/more/pagemore.h \
     page/more/subpage/settings/pagesettings.h \
+    page/staking/pagestackinglist/pagestakingitemdelegate.h \
+    page/staking/pagestackinglist/pagestakingitemdelegateprivate.h \
+    page/staking/pagestackinglist/pagestakinglist.h \
     page/staking/pagestaking.h \
+    page/staking/subpage/pageaddstakingaccount.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegate.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegateprivate.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountlist.h \
     page/swap/pageswap.h \
     storage/storagecommon.h \
     storage/storageinternal.h \
@@ -137,6 +151,7 @@ FORMS += \
     page/more/pagemore.ui \
     page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \
+    page/staking/subpage/pageaddstakingaccount.ui \
     page/swap/pageswap.ui
 
 CONFIG += lrelease

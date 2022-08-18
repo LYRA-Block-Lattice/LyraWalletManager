@@ -79,6 +79,64 @@ namespace WebClass {
 
         bool getValid() { return valid; }
     };
+
+    class AllProfitingAccounts {
+    public:
+        typedef struct {
+            int AccountType;
+            QString PType;
+            double ShareRatio;
+            int Seats;
+            QString ProfitHash;
+            QString Name;
+            QString OwnerAccountId ;
+            QString RelatedTx;
+            QString SourceHash;
+            QString AccountId;
+            QList<QPair<QString, double>> Balances;
+            double Fee;
+            QString FeeCode;
+            int FeeType;
+            QString NonFungibleToken;
+            QString VoteFor;
+            qint64 Height ;
+            QString TimeStamp;
+            int Version;
+            int BlockType;
+            QString PreviousHash;
+            QString ServiceHash;
+            QList<QPair<QString, QString>> Tags;
+            QString Hash;
+            QString Signature;
+            double TotalProfit;
+        } entry_t;
+    private:
+        QList<entry_t> AccountList;
+        bool Valid = false;
+    public:
+
+        AllProfitingAccounts(QString data);
+        QList<entry_t> getAccountList() { return AccountList; }
+        bool getValid() { return Valid; }
+    };
+    class AllStakings {
+    public:
+        typedef struct {
+            QString StkAccount;
+            QString OwnerAccount;
+            QString Time;
+            int Days;
+            double Amount;
+            bool CompoundMode;
+        } entry_t;
+    private:
+        QList<entry_t> StakingList;
+        bool Valid = false;
+    public:
+        AllStakings(QString data);
+        QList<entry_t> getStakingList() { return StakingList; }
+        bool getValid() { return Valid; }
+    };
 };
 
 #endif // WEBCLASS_H

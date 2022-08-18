@@ -54,8 +54,9 @@ private:
     QRect titleLabelQRectBack;
     QFont titleLabelQFontBack;
 
-    QRect tokenSelectComboBoxQRectBack;
-    QFont tokenSelectComboBoxQFontBack;
+    QRect tokenComboBoxQRectBack;
+    QSize tokenComboBoxQSizeBack;
+    QFont tokenComboBoxQFontBack;
     QRect recipientAddressLineEditQRectBack;
     QFont recipientAddressLineEditQFontBack;
     QRect amountLineEditQRectBack;
