@@ -141,18 +141,18 @@ void PageOpenWallet::on_importWalletPushButton_clicked() {
 void PageOpenWallet::on_walletNameLineEdit_textChanged(const QString &arg1) {
     ui->walletNameLineEdit->style()->polish(ui->walletNameLineEdit);
     if(Global::Check::checkWalletFileNameValid(arg1))
-        Style::setLineEditlWhiteStyle(ui->walletNameLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletNameLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletNameLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletNameLineEdit, "red");
 }
 
 void PageOpenWallet::on_walletPasswordLineEdit_textChanged(const QString &arg1) {
     Q_UNUSED(arg1)
     ui->walletPasswordLineEdit->style()->polish(ui->walletPasswordLineEdit);
     if(Global::Check::password(ui->walletPasswordLineEdit->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit, "red");
 }
 
 

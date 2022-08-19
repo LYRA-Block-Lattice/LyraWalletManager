@@ -42,8 +42,8 @@ PageAddStakingAccount::PageAddStakingAccount(QWidget *parent) :
     AmountLineEditQFontBack = ui->amountLineEdit->font();
     MaxPushButtonQRectBack = ui->maxPushButton->geometry();
     MaxPushButtonQSizeBack = ui->maxPushButton->iconSize();
-    AvailableLabelQRectBack = ui->availableLabel->geometry();
-    AvailableLabelQFontBack = ui->availableLabel->font();
+    AvailablePushButtonQRectBack = ui->availablePushButton->geometry();
+    AvailablePushButtonQFontBack = ui->availablePushButton->font();
 
     StakeForGroupBoxQRectBack = ui->stakeForGroupBox->geometry();
 
@@ -116,7 +116,7 @@ void PageAddStakingAccount::open() {
     ui->nameLineEdit->clear();
     ui->daysLineEdit->clear();
     double balance = Wallet::History::getTickerBalance("LYR");
-    ui->availableLabel->setText(QString::asprintf("%s: %s LYR", Tr("Available").toUtf8().data(), Global::Util::normaliseNumber(balance).toUtf8().data()));
+    ui->availablePushButton->setText(QString::asprintf("%s: %s LYR", Tr("Available").toUtf8().data(), Global::Util::normaliseNumber(balance).toUtf8().data()));
     findAllProfitingAccounts();
 }
 
@@ -137,8 +137,8 @@ void PageAddStakingAccount::setScale() {
     ui->amountLineEdit->setFont(Global::Layout::scaleFontOffset(AmountLineEditQFontBack));
     ui->maxPushButton->setGeometry(Global::Layout::scaleRect(MaxPushButtonQRectBack));
     ui->maxPushButton->setIconSize(Global::Layout::scaleSize(MaxPushButtonQSizeBack));
-    ui->availableLabel->setGeometry(Global::Layout::scaleRect(AvailableLabelQRectBack));
-    ui->availableLabel->setFont(Global::Layout::scaleFontOffset(AvailableLabelQFontBack));
+    ui->availablePushButton->setGeometry(Global::Layout::scaleRect(AvailablePushButtonQRectBack));
+    ui->availablePushButton->setFont(Global::Layout::scaleFontOffset(AvailablePushButtonQFontBack));
 
     ui->stakeForGroupBox->setGeometry(Global::Layout::scaleRect(StakeForGroupBoxQRectBack));
 

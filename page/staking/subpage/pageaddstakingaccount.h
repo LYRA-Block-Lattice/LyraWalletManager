@@ -74,8 +74,8 @@ private:
     QFont AmountLineEditQFontBack;
     QRect MaxPushButtonQRectBack;
     QSize MaxPushButtonQSizeBack;
-    QRect AvailableLabelQRectBack;
-    QFont AvailableLabelQFontBack;
+    QRect AvailablePushButtonQRectBack;
+    QFont AvailablePushButtonQFontBack;
 
     QRect StakeForGroupBoxQRectBack;
 

@@ -21,11 +21,12 @@ PageSwap::PageSwap(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageSwap) {
     ui->setupUi(this);
+    Parent = parent;
 
     progressMovie = new QMovie(":/res/ic/res/ic/waiting_light.gif");
     if (progressMovie->isValid()) {
         progressLabel = new QLabel(this);
-        progressLabel->setGeometry(135,400,40,40);
+        progressLabel->setGeometry(135,380,40,40);
         progressLabel->setScaledContents(true);
         progressLabel->setMovie(progressMovie);
         progressLabel->setVisible(false);
@@ -52,8 +53,8 @@ PageSwap::PageSwap(QWidget *parent) :
     tokenSendComboBoxQRectBack = ui->tokenSendComboBox->geometry();
     tokenSendComboBoxQFontBack = ui->tokenSendComboBox->font();
     tokenSendComboBoxQSizeBack = ui->tokenSendComboBox->iconSize();
-    availableSendLabelQRectBack = ui->availableSendLabel->geometry();
-    availableSendLabelQFontBack = ui->availableSendLabel->font();
+    availableSendPushButtonQRectBack = ui->availableSendPushButton->geometry();
+    availableSendPushButtonQFontBack = ui->availableSendPushButton->font();
 
     amountReceiveLineEditQRectBack = ui->amountReceiveLineEdit->geometry();
     amountReceiveLineEditQFontBack = ui->amountReceiveLineEdit->font();
@@ -180,8 +181,8 @@ void PageSwap::setScale() {
     QListView *list = (QListView *)ui->tokenSendComboBox->view();
     list->setIconSize(Global::Layout::scaleSize(tokenSendComboBoxQSizeBack));
     list->update();
-    ui->availableSendLabel->setGeometry(Global::Layout::scaleRect(availableSendLabelQRectBack));
-    ui->availableSendLabel->setFont(Global::Layout::scaleFontOffset(availableSendLabelQFontBack));
+    ui->availableSendPushButton->setGeometry(Global::Layout::scaleRect(availableSendPushButtonQRectBack));
+    ui->availableSendPushButton->setFont(Global::Layout::scaleFontOffset(availableSendPushButtonQFontBack));
 
     ui->amountReceiveLineEdit->setGeometry(Global::Layout::scaleRect(amountReceiveLineEditQRectBack));
     ui->amountReceiveLineEdit->setFont(Global::Layout::scaleFontOffset(amountReceiveLineEditQFontBack));
@@ -194,7 +195,8 @@ void PageSwap::setScale() {
     ui->availableReceiveLabel->setGeometry(Global::Layout::scaleRect(availableReceiveLabelQRectBack));
     ui->availableReceiveLabel->setFont(Global::Layout::scaleFontOffset(availableReceiveLabelQFontBack));
 
-    ui->statusGridWidget->setGeometry(Global::Layout::scaleRect(statusGridWidgetQRectBack));
+    //ui->statusGridWidget->setGeometry(Global::Layout::scaleRect(statusGridWidgetQRectBack));
+    ui->statusGridWidget->setGeometry(QRect(10, Global::Layout::scaleValueX(300), Parent->geometry().width() - 20, Parent->geometry().height() - Global::Layout::scaleValueX(300) - Global::Layout::scaleValueX(MENU_BAR_HEIGHT + 10)));
     ui->statusGridWidget->setFont(Global::Layout::scaleFontOffset(statusGridWidgetQFontBack));
 
     ui->externalPriceLabel->setFont(Global::Layout::scaleFontOffset(externalPriceLabelQFontBack));
@@ -267,7 +269,7 @@ void PageSwap::loop() {
         Wallet::History::HistoryEntry_t *accountHistory = Wallet::History::get();
         if(accountHistoryCountChanged != accountHistory->ChangeCount) {
             accountHistoryCountChanged = accountHistory->ChangeCount;
-            ui->availableSendLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
+            ui->availableSendPushButton->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
             ui->availableReceiveLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenReceiveComboBox->currentText())).toUtf8().data()));
         }
     }
@@ -289,10 +291,10 @@ void PageSwap::populateSendTickers(QString txt) {
                 lastReceiveSelectedTicker = ui->tokenReceiveComboBox->currentText();
             }
         }
-        ui->availableSendLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
+        ui->availableSendPushButton->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
         ui->availableReceiveLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenReceiveComboBox->currentText())).toUtf8().data()));
     } else {
-        ui->availableSendLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(txt)).toUtf8().data()));
+        ui->availableSendPushButton->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(txt)).toUtf8().data()));
     }
     populatingTickers = false;
 }
@@ -782,7 +784,7 @@ void PageSwap::on_tokenReceiveComboBox_currentTextChanged(const QString &arg1) {
                 }
             }
         }
-        ui->availableSendLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
+        ui->availableSendPushButton->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenSendComboBox->currentText())).toUtf8().data()));
         ui->availableReceiveLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(ui->tokenReceiveComboBox->currentText())).toUtf8().data()));
     } else {
         ui->availableReceiveLabel->setText(QString::asprintf("%s: %s", Tr("Balance").toUtf8().data(), Global::Util::normaliseNumber(Wallet::History::getTickerBalance(arg1)).toUtf8().data()));
@@ -856,5 +858,10 @@ void PageSwap::on_removeSharePushButton_clicked() {
             removeLiquidity();
         }
     });
+}
+
+
+void PageSwap::on_availableSendPushButton_clicked() {
+
 }
 

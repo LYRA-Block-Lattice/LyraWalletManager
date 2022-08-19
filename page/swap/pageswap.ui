@@ -770,42 +770,6 @@ border-color: transparent;
       <property name="flat">
        <bool>true</bool>
       </property>
-      <widget class="QLabel" name="availableSendLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>251</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: transparent;
-color:green;
-border-color: transparent;
-</string>
-       </property>
-       <property name="text">
-        <string>Balance: 0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
       <widget class="QComboBox" name="tokenSendComboBox">
        <property name="geometry">
         <rect>
@@ -906,6 +870,37 @@ QLineEdit{
        </property>
        <property name="clearButtonEnabled">
         <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="availableSendPushButton">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>40</y>
+         <width>201</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: transparent;
+color:green;
+border-color: transparent;
+text-align: right;
+</string>
+       </property>
+       <property name="text">
+        <string>Balance: 0</string>
        </property>
       </widget>
      </widget>

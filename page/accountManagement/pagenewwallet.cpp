@@ -106,9 +106,9 @@ void PageNewWallet::on_backPushButton_clicked() {
 
 void PageNewWallet::on_walletNameLineEdit_textChanged(const QString &arg1) {
     if(Global::Check::checkWalletFileNameValid(arg1))
-        Style::setLineEditlWhiteStyle(ui->walletNameLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletNameLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletNameLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletNameLineEdit, "red");
     ui->walletNameLineEdit->style()->polish(ui->walletNameLineEdit);
 }
 
@@ -116,14 +116,14 @@ void PageNewWallet::on_walletNameLineEdit_textChanged(const QString &arg1) {
 void PageNewWallet::on_walletPasswordLineEdit_textChanged(const QString &arg1) {
     Q_UNUSED(arg1)
     if(Global::Check::password(ui->walletPasswordLineEdit->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit, "red");
 
     if(Global::Check::password(ui->walletPasswordLineEdit->text(), ui->walletPasswordLineEdit_2->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit_2);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit_2);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit_2, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit_2, "red");
     ui->walletPasswordLineEdit->style()->polish(ui->walletPasswordLineEdit);
 }
 
@@ -131,9 +131,9 @@ void PageNewWallet::on_walletPasswordLineEdit_textChanged(const QString &arg1) {
 void PageNewWallet::on_walletPasswordLineEdit_2_textChanged(const QString &arg1) {
     Q_UNUSED(arg1)
     if(Global::Check::password(ui->walletPasswordLineEdit->text(), ui->walletPasswordLineEdit_2->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit_2);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit_2);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit_2, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit_2, "red");
     ui->walletPasswordLineEdit_2->style()->polish(ui->walletPasswordLineEdit_2);
 }
 

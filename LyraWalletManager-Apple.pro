@@ -25,7 +25,7 @@ ios {
     QMAKE_BUNDLE_DATA += ios_icon
 }
 android: {
-    # TARGET = ../LyraWalletManager_Android/LyraWalletManager_Android
+    TARGET = ../LyraWalletManager_Android/LyraWalletManager_Android
     include(/Users/cry/Library/Android/sdk/android_openssl/openssl.pri)
 }
 win32: {
@@ -67,6 +67,8 @@ SOURCES += \
     page/accountManagement/pageopenwallet.cpp \
     page/accountManagement/pagerecoveraccount.cpp \
     page/dex/pagedex.cpp \
+    page/dex/pagedexlist/pagedexlist.cpp \
+    page/dex/pagedexlist/pagedexlistmain.cpp \
     page/more/pagemore.cpp \
     page/more/subpage/settings/pagesettings.cpp \
     page/staking/pagestackinglist/pagestakingitemdelegate.cpp \
@@ -115,6 +117,8 @@ HEADERS += \
     page/accountManagement/pageopenwallet.h \
     page/accountManagement/pagerecoveraccount.h \
     page/dex/pagedex.h \
+    page/dex/pagedexlist/pagedexlist.h \
+    page/dex/pagedexlist/pagedexlistmain.h \
     page/more/pagemore.h \
     page/more/subpage/settings/pagesettings.h \
     page/staking/pagestackinglist/pagestakingitemdelegate.h \
@@ -148,6 +152,8 @@ FORMS += \
     page/accountManagement/pageopenwallet.ui \
     page/accountManagement/pagerecoveraccount.ui \
     page/dex/pagedex.ui \
+    page/dex/pagedexlist/pagedexlist.ui \
+    page/dex/pagedexlist/pagedexlistmain.ui \
     page/more/pagemore.ui \
     page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \

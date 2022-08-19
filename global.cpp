@@ -353,16 +353,16 @@ int Global::Account::getSelectedAccountChangedCnt() {
 /**********************************************************************************/
 QList<QPair<QString,QString>> TickerIconList = {
     QPair<QString,QString>("LYR",":/res/ic/res/ic/ic_lyra_token_foreground.png"),
-    QPair<QString,QString>("$TLYR",":/res/ic/res/ic/ic_lyra_token_foreground.png"),
+    QPair<QString,QString>("TLYR",":/res/ic/res/ic/ic_lyra_token_foreground.png"),
     QPair<QString,QString>("MINT",":/res/ic/res/ic/ic_minted_token_foreground.png"),
-    QPair<QString,QString>("$USDT",":/res/ic/res/ic/ic_usdt_foreground.png"),
-    QPair<QString,QString>("$TRX",":/res/ic/res/ic/ic_tron_foreground.png"),
-    QPair<QString,QString>("$ETH",":/res/ic/res/ic/ic_eth_foreground.png")
+    QPair<QString,QString>("USDT",":/res/ic/res/ic/ic_usdt_foreground.png"),
+    QPair<QString,QString>("TRX",":/res/ic/res/ic/ic_tron_foreground.png"),
+    QPair<QString,QString>("ETH",":/res/ic/res/ic/ic_eth_foreground.png")
 };
 QString Global::TickerIcon::get(QString ticker) {
     QPair<QString,QString> p;
     foreach(p, TickerIconList) {
-        if(!p.first.compare(ticker))
+        if(!p.first.compare(ticker.remove('$')))
             return p.second;
     }
     return ":/res/ic/res/ic/ic_unknown_foreground.png";

@@ -42,6 +42,8 @@ private slots:
     void on_removeSharePushButton_clicked();
 
     void on_editTimeoutTimer();
+    void on_availableSendPushButton_clicked();
+
 private:
     void populateSendTickers(QString txt);
     bool populatingTickers = false;
@@ -60,6 +62,7 @@ private:
     void on_ourShareFetchError(QString err);
 
     Ui::PageSwap *ui;
+    QWidget *Parent;
 
     WalletRpc::Pool *poolThread = nullptr;
     QThread *poolWorkerThread = nullptr;
@@ -101,8 +104,8 @@ private:
     QRect tokenSendComboBoxQRectBack;
     QFont tokenSendComboBoxQFontBack;
     QSize tokenSendComboBoxQSizeBack;
-    QRect availableSendLabelQRectBack;
-    QFont availableSendLabelQFontBack;
+    QRect availableSendPushButtonQRectBack;
+    QFont availableSendPushButtonQFontBack;
 
     QRect amountReceiveLineEditQRectBack;
     QFont amountReceiveLineEditQFontBack;

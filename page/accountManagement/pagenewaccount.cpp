@@ -121,9 +121,9 @@ void PageNewAccount::on_recoverAccountPushButton_clicked() {
 void PageNewAccount::on_accountNameLineEdit_textChanged(const QString &arg1) {
     ui->accountNameLineEdit->style()->polish(ui->accountNameLineEdit);
     if(Global::Check::checkFileNameWithSpacesValid(arg1))
-        Style::setLineEditlWhiteStyle(ui->accountNameLineEdit);
+        Style::setLineEditManagerPageStyle(ui->accountNameLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->accountNameLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->accountNameLineEdit, "red");
 }
 
 
@@ -131,8 +131,8 @@ void PageNewAccount::on_walletPasswordLineEdit_textChanged(const QString &arg1) 
     Q_UNUSED(arg1)
     ui->walletPasswordLineEdit->style()->polish(ui->walletPasswordLineEdit);
     if(Global::Check::password(ui->walletPasswordLineEdit->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit, "red");
 }
 

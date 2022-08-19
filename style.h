@@ -179,7 +179,7 @@ public:
     static void setButtontOnHeaderStyle(QPushButton *button) {
         button->setStyleSheet(
                     "QPushButton { border-style: solid; background-color: rgba(255, 255, 255, 16); border-radius: " + DEFAULT_BORDER_RADIUS_STR + "px;"
-                    "border-width: 1px; border-color: rgb(235,235,235); color: " + DEFAULT_COLOR + "; }"
+                    "border-width: 1px; border-color: rgba(235, 235, 235, 128); color: " + DEFAULT_COLOR + "; }"
                     "QPushButton:hover { background-color: rgba(255, 255, 255, 64); }"
                     "QPushButton:pressed { background-color: rgba(255, 255, 255, 128); }"
                     "QPushButton:disabled { color: rgba(0, 0, 0, 128); }"
@@ -188,7 +188,7 @@ public:
     static void setButtonManagerPageStyle(QPushButton *button ) {
         button->setStyleSheet(
                     "QPushButton { border-style: solid; background-color: rgba(255, 255, 255, 16); border-radius: " + DEFAULT_BORDER_RADIUS_STR + "px;"
-                    "border-width: 1px; border-color: rgb(235, 235, 235); color: " + DEFAULT_COLOR + "; }"
+                    "border-width: 1px; border-color: rgba(235, 235, 235, 128); color: " + DEFAULT_COLOR + "; }"
                     "QPushButton:hover { background-color: rgba(255, 255, 255, 64); }"
                     "QPushButton:pressed { background-color: rgba(255, 255, 255, 128); }"
                     "QPushButton:disabled { color: rgba(0, 0, 0, 128); }"
@@ -202,10 +202,10 @@ public:
                     "}"
                     );
     }
-    static void setLineEditManagerPageStyle(QLineEdit *label) {
+    static void setLineEditManagerPageStyle(QLineEdit *label, QString textColor = DEFAULT_COLOR) {
         label->setStyleSheet(
             "QLineEdit { border-style: solid; background-color: rgba(255, 255, 255, 16); border-radius: " + DEFAULT_BORDER_RADIUS_STR + "px;"
-            "border-width: 1px; border-color: rgb(235, 235, 235); color: " + DEFAULT_COLOR + "; padding-left: " + DEFAULT_H_PADDING_STR + "px; padding-right: " + DEFAULT_H_PADDING_STR + "px; }"
+            "border-width: 1px; border-color: rgba(235, 235, 235, 128); color: " + textColor + "; padding-left: " + DEFAULT_H_PADDING_STR + "px; padding-right: " + DEFAULT_H_PADDING_STR + "px; }"
             "QLineEdit[text=\"\"]{ color:gray; }"
             );
     }

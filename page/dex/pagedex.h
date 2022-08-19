@@ -2,10 +2,12 @@
 #define PAGEDEX_H
 
 #include <QWidget>
-
+#include <QHBoxLayout>
 #include <QRect>
 #include <QFont>
 #include <QSize>
+
+#include "pagedexlist/pagedexlistmain.h"
 
 namespace Ui {
 class PageDex;
@@ -26,6 +28,8 @@ public:
 
 private:
     Ui::PageDex *ui;
+    QWidget *Parent;
+    PageDexListMain *page;
 
     QRect headerFrameQRectBack;
     QRect titleLabelQRectBack;
@@ -33,7 +37,6 @@ private:
 
 
     int AccountListChangedCount = -1;
-
 };
 
 #endif // PAGEDEX_H

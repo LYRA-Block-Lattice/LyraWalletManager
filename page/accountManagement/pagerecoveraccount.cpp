@@ -109,9 +109,9 @@ void PageRecoverAccount::on_recoverAccountPushButton_clicked() {
 void PageRecoverAccount::on_accountNameLineEdit_textChanged(const QString &arg1) {
     ui->accountNameLineEdit->style()->polish(ui->accountNameLineEdit);
     if(Global::Check::checkWalletFileNameValid(arg1))
-        Style::setLineEditlWhiteStyle(ui->accountNameLineEdit);
+        Style::setLineEditManagerPageStyle(ui->accountNameLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->accountNameLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->accountNameLineEdit, "red");
 }
 
 
@@ -119,9 +119,9 @@ void PageRecoverAccount::on_walletPasswordLineEdit_textChanged(const QString &ar
     Q_UNUSED(arg1)
     ui->walletPasswordLineEdit->style()->polish(ui->walletPasswordLineEdit);
     if(Global::Check::password(ui->walletPasswordLineEdit->text()))
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit);
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->walletPasswordLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->walletPasswordLineEdit, "red");
 }
 
 
@@ -129,8 +129,8 @@ void PageRecoverAccount::on_privateKeyLineEdit_textChanged(const QString &arg1) 
     Q_UNUSED(arg1)
     ui->privateKeyLineEdit->style()->polish(ui->privateKeyLineEdit);
     if(signatures::validatePrivateKey(ui->privateKeyLineEdit->text()))
-        Style::setLineEditlWhiteStyle(ui->privateKeyLineEdit);
+        Style::setLineEditManagerPageStyle(ui->privateKeyLineEdit);
     else
-        Style::setLineEditlWhiteStyle(ui->privateKeyLineEdit, "red");
+        Style::setLineEditManagerPageStyle(ui->privateKeyLineEdit, "red");
 }
 

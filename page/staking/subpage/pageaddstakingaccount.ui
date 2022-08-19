@@ -254,13 +254,13 @@ QLineEdit{
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="availableLabel">
+   <widget class="QPushButton" name="availablePushButton">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>50</y>
       <width>251</width>
-      <height>20</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="cursor">
@@ -270,6 +270,9 @@ QLineEdit{
      <string notr="true">background-color: transparent;
 color:green;
 border-color: transparent;
+text-align:right;
+padding-top:0px;
+padding-bottom:0px;
 </string>
     </property>
     <property name="text">

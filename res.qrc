@@ -41,6 +41,8 @@
         <file>res/ic/notDolar.png</file>
         <file>res/ic/dolar.png</file>
         <file>res/ic/advanced.png</file>
+        <file>res/ic/arrowUpCircle.png</file>
+        <file>res/ic/arrowDownCircle.png</file>
     </qresource>
     <qresource prefix="/flag">
         <file>res/flag/tj.png</file>

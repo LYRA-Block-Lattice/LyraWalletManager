@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageDexList</class>
+ <widget class="QWidget" name="PageDexList">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>310</width>
+    <height>251</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">	background: #FFFFFF;
+	color:#666666;
+</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>291</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">	border-style: solid;
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: lightgrey;
+    padding-left: 4px;
+    padding-right: 4px;
+	icon-size:24px;</string>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <widget class="QLabel" name="tickerIconLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+padding-left: 0px;
+padding-right: 0px;
+
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../../res.qrc">:/res/ic/res/ic/ic_tron_foreground.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tickerTextLabel">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>20</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>Tron</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="setupPushButton">
+    <property name="geometry">
+     <rect>
+      <x>239</x>
+      <y>10</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 0);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: transparent;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 8);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 16);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../res.qrc">
+      <normaloff>:/res/ic/res/ic/settings.png</normaloff>:/res/ic/res/ic/settings.png</iconset>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>22</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>Balances</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="spotLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>Spot:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="dexLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>DEX:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="spotToDexPushButton">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>90</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 0);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: transparent;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 8);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 16);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../res.qrc">
+      <normaloff>:/res/ic/res/ic/arrowDownCircle.png</normaloff>:/res/ic/res/ic/arrowDownCircle.png</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="dexToSpotPushButton">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>130</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 0);
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: transparent;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 8);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 16);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../res.qrc">
+      <normaloff>:/res/ic/res/ic/arrowUpCircle.png</normaloff>:/res/ic/res/ic/arrowUpCircle.png</iconset>
+    </property>
+   </widget>
+   <widget class="QLabel" name="spotAmountLabel">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>100</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>0 TRX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="dexAmountLabel">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>140</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: transparent;
+</string>
+    </property>
+    <property name="text">
+     <string>0 TRX</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="depositPushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>100</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(252, 213, 53, 255);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(252, 213, 53, 192);
+}
+
+QPushButton:pressed {
+    background-color: rgba(252, 213, 53, 128);
+}
+
+QPushButton:disabled {
+    color: rgba(0, 0, 0, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string>DEPOSIT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="withdrawPushButton">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>180</y>
+      <width>100</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-style: solid;
+	background-color: rgba(252, 213, 53, 255);
+	border-radius: 5px;
+	border-width: 1px;
+	border-color: rgb(235, 235, 235);
+	color: black;
+}
+QPushButton:hover {
+    background-color: rgba(252, 213, 53, 192);
+}
+
+QPushButton:pressed {
+    background-color: rgba(252, 213, 53, 128);
+}
+
+QPushButton:disabled {
+    color: rgba(0, 0, 0, 128);
+}</string>
+    </property>
+    <property name="text">
+     <string>WITHDRAW</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../../res.qrc"/>
+ </resources>
+ <connections/>
+</ui>
