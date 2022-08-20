@@ -20,13 +20,14 @@ public:
     explicit PageDexListMain(QWidget *parent = nullptr);
     explicit PageDexListMain(QList<entry_t> entrys, QWidget *parent = nullptr);
     ~PageDexListMain();
-    void append(QString ticker, double spotAmount, double dexAmount);
-    void insert(int index, QString ticker, double spotAmount, double dexAmount);
+    void append(QString ticker, QString tokenName, double spotAmount, double dexAmount);
+    void insert(int index, QString ticker, QString tokenName, double spotAmount, double dexAmount);
     void clear();
     void removeAt(int index);
     qsizetype count(){ return EntryList.count(); }
     void repaint();
     QList<PageDexList *> entryList() { return EntryList;}
+    void setWithdrawEnable(int index, bool enable);
     void setScale();
     void setStyle();
 

@@ -433,7 +433,8 @@ QList<QString> Global::Swap::getAvailableTickers() {
 /**********************************************************************************/
 QList<QPair<QString, QString>> tickerToTokenNameList = {
     QPair<QString, QString>("LYR", "Lyra"),
-    QPair<QString, QString>("TLYR", "Lyra"),
+    QPair<QString, QString>("TLYR", "Lyra tether on Ethereum"),
+    QPair<QString, QString>("LTT", "Lyra Test Token"),
     QPair<QString, QString>("BTC", "Bitcoin"),
     QPair<QString, QString>("ETH", "Ethereum"),
     QPair<QString, QString>("ETC", "ethereum-classic"),

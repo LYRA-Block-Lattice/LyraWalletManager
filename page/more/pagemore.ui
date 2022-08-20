@@ -84,7 +84,7 @@
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>0</height>
     </size>
    </property>
    <property name="font">
@@ -137,7 +137,7 @@ QPushButton:pressed {
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>0</height>
     </size>
    </property>
    <property name="font">
@@ -190,7 +190,7 @@ QPushButton:pressed {
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>0</height>
     </size>
    </property>
    <property name="font">
@@ -243,7 +243,7 @@ QPushButton:pressed {
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>0</height>
     </size>
    </property>
    <property name="font">
@@ -295,8 +295,8 @@ QPushButton:pressed {
    </property>
    <property name="minimumSize">
     <size>
-     <width>119</width>
-     <height>35</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="font">
@@ -375,7 +375,7 @@ QListView::item::hover {
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>0</height>
     </size>
    </property>
    <property name="font">

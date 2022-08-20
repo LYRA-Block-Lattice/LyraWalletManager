@@ -13,6 +13,7 @@ PageDexList::PageDexList(entry_t entry,QWidget *parent) :
     Parent = parent;
     Index = entry.Index;
     setTicker(entry.Ticker);
+    setTokenName(entry.TokenName);
     setSpotAmount(entry.SpotAmount);
     setDexAmount(entry.DexAmount);
 
@@ -96,7 +97,11 @@ void PageDexList::setStyle() {
 void PageDexList::setTicker(QString ticker) {
     Ticker = ticker;
     ui->tickerIconLabel->setPixmap(QPixmap(Global::TickerIcon::get(ticker)));
-    ui->tickerTextLabel->setText(Global::Util::tickerToTokenName(ticker));
+}
+
+void PageDexList::setTokenName(QString tokenName) {
+    TokenName = tokenName;
+    ui->tickerTextLabel->setText(tokenName);
 }
 
 void PageDexList::setSpotAmount(double amount) {
@@ -107,6 +112,10 @@ void PageDexList::setSpotAmount(double amount) {
 void PageDexList::setDexAmount(double amount) {
     DexAmount = amount;
     ui->dexAmountLabel->setText(QString::asprintf("%s %s", Global::Util::normaliseNumber(amount).toUtf8().data(), Ticker.toUtf8().data()));
+}
+
+void PageDexList::setWithdrawEnable(bool enable) {
+    ui->withdrawPushButton->setEnabled(enable);
 }
 
 void PageDexList::on_setupPushButton_clicked() {

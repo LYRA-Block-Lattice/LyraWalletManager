@@ -137,6 +137,75 @@ namespace WebClass {
         QList<entry_t> getStakingList() { return StakingList; }
         bool getValid() { return Valid; }
     };
+    class DexGetSuportedExtTokens {
+    public:
+        typedef struct {
+            QString Name;
+            QString CoinGeckoName;
+            QString Url;
+            QString Symbol;
+            QString NetworkProvider;
+            QString Contract;
+            double MinDeposit;
+            double DepositFee;
+            QString ConfirmationInfo;
+            double MinWithdraw;
+            double WithdrawFee;
+            double DailyWithdrawLimit;
+        }entry_t;
+    private:
+        QList<entry_t> EntryList;
+        bool Success = false;
+        QString Message = "";
+        bool Valid = false;
+    public:
+        DexGetSuportedExtTokens(QString data);
+        QList<entry_t> getEntryList() { return EntryList;}
+        bool getSuccess() { return Success;}
+        QString getMessage() { return Message;}
+        bool getValid() { return Valid;}
+    };
+    class DexGetAllWallets {
+    public:
+        typedef struct {
+            int AccountType;
+            QString IntSymbol;
+            QString ExtSymbol;
+            QString ExtProvider;
+            QString ExtAddress;
+            QString OwnerAccountId;
+            QString RelatedTx;
+            QString Name;
+            QString DestinationAccountId;
+            QString AccountID;
+            QList<QPair<QString, double>> Balances;
+            double Fee;
+            QString FeeCode;
+            int FeeType;
+            QString NonFungibleToken;
+            QString VoteFor;
+            long Height;
+            QString TimeStamp;
+            int Version;
+            int BlockType;
+            QString PreviousHash;
+            QString ServiceHash;
+            QList<QPair<QString, QString>> Tags;
+            QString Hash;
+            QString Signature;
+        }entry_t;
+    private:
+        QList<entry_t> EntryList;
+        int ResultCode = -1;
+        QString ResultMessage;
+        bool Valid = false;
+    public:
+        DexGetAllWallets(QString data);
+        QList<entry_t> getEntryList() { return EntryList;}
+        int getResultCode() { return ResultCode;}
+        QString getResultMessage() { return ResultMessage; }
+        bool getValid() { return Valid;}
+    };
 };
 
 #endif // WEBCLASS_H

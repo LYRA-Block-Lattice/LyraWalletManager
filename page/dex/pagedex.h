@@ -7,6 +7,11 @@
 #include <QFont>
 #include <QSize>
 
+#include "api/web/webget.h"
+#include "api/web/webclass.h"
+
+#include "wallet/walletrpc.h"
+
 #include "pagedexlist/pagedexlistmain.h"
 
 namespace Ui {
@@ -31,12 +36,29 @@ private:
     QWidget *Parent;
     PageDexListMain *page;
 
+    QMovie *progressMovie;
+    QLabel *progressLabel;
+
+    void dexGetSupportedTokens();
+    void dexGetAllWalles();
+
     QRect headerFrameQRectBack;
     QRect titleLabelQRectBack;
     QFont titleLabelQFontBack;
+    QRect progressMovieQRectBack;
 
+    WebGet *dexGetSupportedTokensFetchWorker = nullptr;
+    QThread *dexGetSupportedTokensFetchWorkerThread = nullptr;
+    WebGet *dexGetAllWalletsFetchWorker = nullptr;
+    QThread *dexGetAllWalletsFetchWorkerThread = nullptr;
 
     int AccountListChangedCount = -1;
+    int SelectedAccountChangedCount = -1;
+    networkName_e network = networkName_e::NONE;
+    QList<WebClass::DexGetSuportedExtTokens::entry_t> EntryList;
+signals:
+    void dexGetSupportedTokensStart(QString url);
+    void dexGetAllWalletsStart(QString url);
 };
 
 #endif // PAGEDEX_H

@@ -132,8 +132,8 @@ QPushButton:pressed {
    </property>
    <property name="minimumSize">
     <size>
-     <width>119</width>
-     <height>31</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -330,7 +330,7 @@ QPushButton:pressed {
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="pastePushButton">
+  <widget class="QPushButton" name="maximumPushButton">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -363,7 +363,7 @@ QPushButton:pressed {
    </property>
    <property name="icon">
     <iconset resource="../../../../res.qrc">
-     <normaloff>:/res/ic/res/ic/paste.png</normaloff>:/res/ic/res/ic/paste.png</iconset>
+     <normaloff>:/res/ic/res/ic/max.png</normaloff>:/res/ic/res/ic/max.png</iconset>
    </property>
    <property name="iconSize">
     <size>

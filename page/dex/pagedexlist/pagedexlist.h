@@ -20,6 +20,7 @@ public:
     typedef struct {
         int Index;
         QString Ticker;
+        QString TokenName;
         double SpotAmount;
         double DexAmount;
     }entry_t;
@@ -27,11 +28,13 @@ public:
     ~PageDexList();
     void setIndex(int index) { Index = index;}
     void setTicker(QString ticker);
+    void setTokenName(QString tokenName);
     QString ticker() { return Ticker;}
     void setSpotAmount(double amount);
     double spotAmount() { return SpotAmount;}
     void setDexAmount(double amount);
     double dexAmount() { return DexAmount;}
+    void setWithdrawEnable( bool enable);
     void setScale();
     void setStyle();
 
@@ -40,6 +43,7 @@ private:
     QWidget *Parent;
     int Index;
     QString Ticker;
+    QString TokenName;
     double SpotAmount;
     double DexAmount;
 

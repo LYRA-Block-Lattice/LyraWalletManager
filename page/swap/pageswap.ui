@@ -788,7 +788,7 @@ border-color: transparent;
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>31</height>
+         <height>0</height>
         </size>
        </property>
        <property name="font">
@@ -804,6 +804,9 @@ border-color: transparent;
        </property>
        <property name="insertPolicy">
         <enum>QComboBox::NoInsert</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
        </property>
        <property name="iconSize">
         <size>
@@ -826,8 +829,8 @@ border-color: transparent;
        </property>
        <property name="minimumSize">
         <size>
-         <width>31</width>
-         <height>31</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="font">
@@ -984,8 +987,8 @@ border-color: transparent;
        </property>
        <property name="minimumSize">
         <size>
-         <width>31</width>
-         <height>31</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="font">
@@ -1051,7 +1054,7 @@ QLineEdit{
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>31</height>
+         <height>0</height>
         </size>
        </property>
        <property name="font">
@@ -1067,6 +1070,9 @@ QLineEdit{
        </property>
        <property name="insertPolicy">
         <enum>QComboBox::NoInsert</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
        </property>
        <property name="iconSize">
         <size>

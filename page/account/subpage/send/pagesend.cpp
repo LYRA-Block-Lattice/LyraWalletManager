@@ -31,9 +31,6 @@ PageSend::PageSend(QWidget *parent) :
     ui->sendingLabel->setVisible(false);
     fadeCount = 0;
 
-    ui->pastePushButton->setVisible(false);
-    ui->sendPushButton->setEnabled(false);
-
     // Backup items geometry, size and font.
     backPushButtonQRectBack = ui->backPushButton->geometry();
     backPushButtonQSizeBack = ui->backPushButton->iconSize();
@@ -51,8 +48,8 @@ PageSend::PageSend(QWidget *parent) :
 
     qrPushButtonQRectBack = ui->qrPushButton->geometry();
     qrPushButtonQSizeBack = ui->qrPushButton->iconSize();
-    pastePushButtonQRectBack = ui->pastePushButton->geometry();
-    pastePushButtonQSizeBack = ui->pastePushButton->iconSize();
+    maximumPushButtonQRectBack = ui->maximumPushButton->geometry();
+    maximumPushButtonQSizeBack = ui->maximumPushButton->iconSize();
 
     sendPushButtonQRectBack = ui->sendPushButton->geometry();
     sendPushButtonQFontBack= ui->sendPushButton->font();
@@ -145,8 +142,8 @@ void PageSend::setScale() {
 
     ui->qrPushButton->setGeometry(Global::Layout::scaleRect(qrPushButtonQRectBack));
     ui->qrPushButton->setIconSize(Global::Layout::scaleSize(qrPushButtonQSizeBack));
-    ui->pastePushButton->setGeometry(Global::Layout::scaleRect(pastePushButtonQRectBack));
-    ui->pastePushButton->setIconSize(Global::Layout::scaleSize(pastePushButtonQSizeBack));
+    ui->maximumPushButton->setGeometry(Global::Layout::scaleRect(maximumPushButtonQRectBack));
+    ui->maximumPushButton->setIconSize(Global::Layout::scaleSize(maximumPushButtonQSizeBack));
 
     ui->sendPushButton->setGeometry(Global::Layout::scaleRect(sendPushButtonQRectBack));
     ui->sendPushButton->setFont(Global::Layout::scaleFontOffset(sendPushButtonQFontBack));
@@ -163,7 +160,7 @@ void PageSend::setStyle() {
     Style::setLineEditlWhiteStyle(ui->amountLineEdit);
     Style::setButtonDefaultStyle(ui->sendPushButton);
     Style::setButtonTransparentStyle(ui->qrPushButton);
-    Style::setButtonTransparentStyle(ui->pastePushButton);
+    Style::setButtonTransparentStyle(ui->maximumPushButton);
 }
 
 void PageSend::loop() {
@@ -342,5 +339,9 @@ void PageSend::on_SendRetriveError(const QString &s) {
     ui->sendingLabel->setText(s);
     fadeCount = FADE_COUNT_START_VALE;
     fadeTimer.start();
+}
+
+void PageSend::on_maximumPushButton_clicked() {
+
 }
 

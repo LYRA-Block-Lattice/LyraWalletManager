@@ -43,6 +43,8 @@
         <file>res/ic/advanced.png</file>
         <file>res/ic/arrowUpCircle.png</file>
         <file>res/ic/arrowDownCircle.png</file>
+        <file>res/ic/stars.png</file>
+        <file>res/ic/max.png</file>
     </qresource>
     <qresource prefix="/flag">
         <file>res/flag/tj.png</file>

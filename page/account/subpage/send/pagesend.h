@@ -41,6 +41,7 @@ private slots:
 
     void on_SendRetriveDone(const QString &s);
     void on_SendRetriveError(const QString &s);
+    void on_maximumPushButton_clicked();
 
 private:
     Ui::PageSend *ui;
@@ -64,8 +65,8 @@ private:
 
     QRect qrPushButtonQRectBack;
     QSize qrPushButtonQSizeBack;
-    QRect pastePushButtonQRectBack;
-    QSize pastePushButtonQSizeBack;
+    QRect maximumPushButtonQRectBack;
+    QSize maximumPushButtonQSizeBack;
 
     QRect sendPushButtonQRectBack;
     QFont sendPushButtonQFontBack;

@@ -228,6 +228,18 @@ namespace Global {
             }
         }
         static QPair<QString,QString> getNodeAddress() { return NodeList[Net][4]; }
+        static QString getDexAddress() {
+            switch(Global::Network::getNetwork()) {
+            case networkName_e::TESTNET:
+                return "https://dextestnet.lyra.live/api/Dex";
+            case networkName_e::MAINNET:
+                return "https://dex.lyra.live/api/Dex";
+            case networkName_e::DEVNET:
+                return "https://dexdevnet.lyra.live/api/Dex";
+            default:
+                return "";
+            }
+        }
     };
     /**********************************************************************************/
     namespace Wallet {

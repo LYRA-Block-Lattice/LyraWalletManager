@@ -24,7 +24,7 @@ PageDexListMain::PageDexListMain(QList<entry_t> entrys, QWidget *parent) :
 
     entry_t entry;
     foreach(entry, entrys) {
-        append(entry.Ticker, entry.SpotAmount, entry.DexAmount);
+        append(entry.Ticker, entry.TokenName, entry.SpotAmount, entry.DexAmount);
     }
     renumerotateEntrys();
     repaint();
@@ -55,9 +55,10 @@ void PageDexListMain::setStyle() {
     }
 }
 
-void PageDexListMain::append(QString ticker, double spotAmount, double dexAmount) {
+void PageDexListMain::append(QString ticker, QString tokenName, double spotAmount, double dexAmount) {
     entry_t entryData;
     entryData.Ticker = ticker;
+    entryData.TokenName = tokenName;
     entryData.SpotAmount = spotAmount;
     entryData.DexAmount = dexAmount;
     PageDexList *entry = new PageDexList(entryData, this);
@@ -72,9 +73,10 @@ void PageDexListMain::append(QString ticker, double spotAmount, double dexAmount
     connect(entry, &PageDexList::withdrawPushButton, this, &PageDexListMain::withdrawPushButton);
 }
 
-void PageDexListMain::insert(int index, QString ticker, double spotAmount, double dexAmount) {
+void PageDexListMain::insert(int index, QString ticker, QString tokenName, double spotAmount, double dexAmount) {
     entry_t entryData;
     entryData.Ticker = ticker;
+    entryData.TokenName = tokenName;
     entryData.SpotAmount = spotAmount;
     entryData.DexAmount = dexAmount;
     PageDexList *entry = new PageDexList(entryData, this);
@@ -95,6 +97,11 @@ void PageDexListMain::clear() {
         entry->setVisible(false);
         delete entry;
     }
+    EntryList.clear();
+    this->scroll(0, 0);
+    QRect thisRect = this->geometry();
+    thisRect.setBottom(1);
+    this->setGeometry(thisRect);
 }
 
 void PageDexListMain::removeAt(int index) {
@@ -116,6 +123,10 @@ void PageDexListMain::repaint() {
     QRect thisRect = this->geometry();
     thisRect.setBottom(posY);
     this->setGeometry(thisRect);
+}
+
+void PageDexListMain::setWithdrawEnable(int index, bool enable) {
+    EntryList[index]->setWithdrawEnable(enable);
 }
 
 void PageDexListMain::renumerotateEntrys() {

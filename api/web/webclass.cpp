@@ -160,3 +160,89 @@ WebClass::AllStakings::AllStakings(QString data) {
         Valid = true;
     }
 }
+
+WebClass::DexGetSuportedExtTokens::DexGetSuportedExtTokens(QString data)  {
+    Valid = false;
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(jsonResponse.isObject()) {
+        QJsonObject jsonObject = jsonResponse.object();
+        QJsonArray jsonArray = jsonObject["asserts"].toArray();
+        for( int i = 0; i < jsonArray.count(); i++) {
+            QJsonObject assertsJsonObject = jsonArray[i].toObject();
+            entry_t entry;
+            entry.Name = assertsJsonObject["name"].toString();
+            entry.CoinGeckoName = assertsJsonObject["coinGeckoName"].toString();
+            entry.Url = assertsJsonObject["url"].toString();
+            entry.Symbol = assertsJsonObject["symbol"].toString();
+            entry.NetworkProvider = assertsJsonObject["networkProvider"].toString();
+            entry.Contract = assertsJsonObject["contract"].toString();
+            entry.MinDeposit = assertsJsonObject["minDeposit"].toDouble();
+            entry.DepositFee = assertsJsonObject["depositFee"].toDouble();
+            entry.ConfirmationInfo = assertsJsonObject["confirmationInfo"].toString();
+            entry.MinWithdraw = assertsJsonObject["minWithdraw"].toDouble();
+            entry.WithdrawFee = assertsJsonObject["withdrawFee"].toDouble();
+            entry.DailyWithdrawLimit = assertsJsonObject["dailyWithdrawLimit"].toDouble();
+            EntryList.append(entry);
+        }
+        Success = jsonObject["success"].toBool();
+        Message = jsonObject["message"].toString();
+        Valid = true;
+    }
+}
+
+WebClass::DexGetAllWallets::DexGetAllWallets(QString data) {
+    Valid = false;
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(data.toUtf8());
+    if(jsonResponse.isObject()) {
+        QJsonObject jsonObject = jsonResponse.object();
+        QJsonArray jsonArray = jsonObject["blockDatas"].toArray();
+        for( int i = 0; i < jsonArray.count(); i++) {
+            QJsonObject assertsJsonObject = jsonArray[i].toObject();
+            QString ent = jsonArray[i].toString();
+            QJsonDocument tokenJsonResponse = QJsonDocument::fromJson(ent.toUtf8());
+            QJsonObject tokenObj = tokenJsonResponse.object();
+            entry_t entry;
+            if(!tokenObj["AccountType"].isNull())
+                entry.AccountType = tokenObj["AccountType"].toInt();
+            entry.IntSymbol = tokenObj["IntSymbol"].toString();
+            entry.ExtSymbol = tokenObj["ExtSymbol"].toString();
+            entry.ExtProvider = tokenObj["ExtProvider"].toString();
+            entry.ExtAddress = tokenObj["ExtAddress"].toString();
+            entry.OwnerAccountId = tokenObj["OwnerAccountId"].toString();
+            entry.RelatedTx = tokenObj["RelatedTx"].toString();
+            entry.Name = tokenObj["Name"].toString();
+            if(!tokenObj["DestinationAccountId"].isNull())
+                entry.DestinationAccountId = tokenObj["DestinationAccountId"].toString();
+            entry.AccountID = tokenObj["AccountID"].toString();
+            if (!tokenObj["Balances"].isNull()) {
+                QJsonObject balances = tokenObj["Balances"].toObject();
+                foreach (QString key, balances.keys()) {
+                    entry.Balances.append(QPair<QString, double>(key, balances[key].toDouble()));
+                }
+            }
+            entry.Fee = tokenObj["Fee"].toDouble();
+            entry.FeeCode = tokenObj["FeeCode"].toString();
+            entry.FeeType = tokenObj["FeeType"].toInt();
+            entry.NonFungibleToken = tokenObj["NonFungibleToken"].toString();
+            entry.VoteFor = tokenObj["VoteFor"].toString();
+            entry.Height = tokenObj["Height"].toVariant().toLongLong();
+            entry.TimeStamp = tokenObj["TimeStamp"].toString();
+            entry.Version = tokenObj["Version"].toInt();
+            entry.BlockType = tokenObj["BlockType"].toInt();
+            entry.PreviousHash = tokenObj["PreviousHash"].toString();
+            entry.ServiceHash = tokenObj["ServiceHash"].toString();
+            if (!tokenObj["Tags"].isNull()) {
+                QJsonObject tags = tokenObj["Tags"].toObject();
+                foreach (QString key, tags.keys()) {
+                    entry.Tags.append(QPair<QString, QString>(key, tags[key].toString()));
+                }
+            }
+            entry.Hash = tokenObj["Hash"].toString();
+            entry.Signature = tokenObj["Signature"].toString();
+            EntryList.append(entry);
+        }
+        ResultCode = jsonObject["resultCode"].toInt();
+        ResultMessage = jsonObject["resultMessage"].toString();
+        Valid = true;
+    }
+}

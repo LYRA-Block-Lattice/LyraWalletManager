@@ -67,8 +67,10 @@ SOURCES += \
     page/accountManagement/pageopenwallet.cpp \
     page/accountManagement/pagerecoveraccount.cpp \
     page/dex/pagedex.cpp \
+    page/dex/pagedexdeposit.cpp \
     page/dex/pagedexlist/pagedexlist.cpp \
     page/dex/pagedexlist/pagedexlistmain.cpp \
+    page/dex/pagedexwithdraw.cpp \
     page/more/pagemore.cpp \
     page/more/subpage/settings/pagesettings.cpp \
     page/staking/pagestackinglist/pagestakingitemdelegate.cpp \
@@ -117,8 +119,10 @@ HEADERS += \
     page/accountManagement/pageopenwallet.h \
     page/accountManagement/pagerecoveraccount.h \
     page/dex/pagedex.h \
+    page/dex/pagedexdeposit.h \
     page/dex/pagedexlist/pagedexlist.h \
     page/dex/pagedexlist/pagedexlistmain.h \
+    page/dex/pagedexwithdraw.h \
     page/more/pagemore.h \
     page/more/subpage/settings/pagesettings.h \
     page/staking/pagestackinglist/pagestakingitemdelegate.h \
@@ -152,8 +156,10 @@ FORMS += \
     page/accountManagement/pageopenwallet.ui \
     page/accountManagement/pagerecoveraccount.ui \
     page/dex/pagedex.ui \
+    page/dex/pagedexdeposit.ui \
     page/dex/pagedexlist/pagedexlist.ui \
     page/dex/pagedexlist/pagedexlistmain.ui \
+    page/dex/pagedexwithdraw.ui \
     page/more/pagemore.ui \
     page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \
