@@ -46,9 +46,9 @@
   <widget class="QPushButton" name="receivePushButton">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>187</x>
      <y>150</y>
-     <width>58</width>
+     <width>61</width>
      <height>58</height>
     </rect>
    </property>

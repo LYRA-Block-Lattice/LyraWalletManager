@@ -35,8 +35,6 @@ private slots:
     void on_recipientAddressLineEdit_textChanged(const QString &arg1);
     void on_amountLineEdit_textChanged(const QString &arg1);
     void on_qrPushButton_clicked();
-    void on_qrCodeRead(QString qr);
-    void on_qrWindowClosed();
     void on_sendPushButton_clicked();
 
     void on_SendRetriveDone(const QString &s);
@@ -78,6 +76,8 @@ private:
 
     WalletRpc::Send *sendThread = nullptr;
     QThread *sendWorkerThread = nullptr;
+
+    bool checkCameraAvailability();
 signals:
     void sendOperate(QString amount, QString destAccount, QString ticker);
 };

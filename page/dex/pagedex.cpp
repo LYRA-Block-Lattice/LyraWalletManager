@@ -47,15 +47,58 @@ PageDex::PageDex(QWidget *parent) :
     });
     connect(page, &PageDexListMain::depositPushButton, this, [=](int index) {
         qDebug() << "Deposit" << index;
+        PageDexDeposit::entry_t entry;
+        entry.ticker = EntryList[index].Symbol;
+        entry.provider = EntryList[index].NetworkProvider;
+        entry.contract = EntryList[index].Contract;
+        WebClass::DexGetAllWallets::entry_t walletsEntry;
+        foreach(walletsEntry, WalletsEntryList) {
+            if(!walletsEntry.ExtSymbol.compare(EntryList[index].Symbol)) {
+                entry.depositAddress = walletsEntry.ExtAddress;
+                break;
+            }
+        }
+        entry.minimalDeposit = EntryList[index].MinDeposit;
+        entry.depositFee = EntryList[index].DepositFee;
+        entry.confirmations = EntryList[index].ConfirmationInfo;
+        Global::Page::goManagerPage(Global::Page::DEX_DEPOSIT, (void *)&entry);
     });
     connect(page, &PageDexListMain::withdrawPushButton, this, [=](int index) {
         qDebug() << "Withdraw" << index;
+        PageDexWithdraw::entry_t entry;
+        entry.ticker = EntryList[index].Symbol;
+        entry.provider = EntryList[index].NetworkProvider;
+        entry.contract = EntryList[index].Contract;
+        entry.withdrawFee = EntryList[index].WithdrawFee;
+        WebClass::DexGetAllWallets::entry_t walletsEntry;
+        foreach(walletsEntry, WalletsEntryList) {
+            if(!walletsEntry.ExtSymbol.compare(EntryList[index].Symbol)) {
+                entry.amountInAccount = walletsEntry.Balances[0].second / 100000000;
+                break;
+            }
+        }
+        Global::Page::goManagerPage(Global::Page::DEX_WITHDRAW, (void *)&entry);
     });
 
     setScale();
     setStyle();
 
+    QScrollerProperties sp;
+    sp.setScrollMetric(QScrollerProperties::DragVelocitySmoothingFactor, 0.6);
+    sp.setScrollMetric(QScrollerProperties::MinimumVelocity, 0.0);
+    sp.setScrollMetric(QScrollerProperties::MaximumVelocity, 0.5);
+    sp.setScrollMetric(QScrollerProperties::AcceleratingFlickMaximumTime, 0.4);
+    sp.setScrollMetric(QScrollerProperties::AcceleratingFlickSpeedupFactor, 1.2);
+    sp.setScrollMetric(QScrollerProperties::SnapPositionRatio, 0.2);
+    sp.setScrollMetric(QScrollerProperties::MaximumClickThroughVelocity, 0);
+    sp.setScrollMetric(QScrollerProperties::DragStartDistance, 0.001);
+    sp.setScrollMetric(QScrollerProperties::MousePressEventDelay, 0.1);
+    sp.setScrollMetric(QScrollerProperties::OvershootDragDistanceFactor, 0.1);
+    sp.setScrollMetric(QScrollerProperties::OvershootScrollDistanceFactor, 0.1);
     QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
+    QScroller* scroller = QScroller::scroller(ui->scrollArea);
+    scroller->grabGesture(this, QScroller::LeftMouseButtonGesture);
+    scroller->setScrollerProperties(sp);
 }
 
 PageDex::~PageDex() {
@@ -137,7 +180,7 @@ void PageDex::dexGetAllWalles() {
     connect(dexGetAllWalletsFetchWorker, &WebGet::resultReady, this, [=](QString s) {
         WebClass::DexGetAllWallets dexGetAllWalletsInst = WebClass::DexGetAllWallets(s);
         if(dexGetAllWalletsInst.getValid()) {
-            QList<WebClass::DexGetAllWallets::entry_t> WalletsEntryList = dexGetAllWalletsInst.getEntryList();
+            WalletsEntryList = dexGetAllWalletsInst.getEntryList();
             QList<PageDexList *> dexList = page->entryList();
             for( int i = 0; i < page->count(); i++) {
                 WebClass::DexGetAllWallets::entry_t entry;

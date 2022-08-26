@@ -104,6 +104,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pageReceive = new PageReceive(this);
     pageSettings = new PageSettings(this);
     pageAddStakingAccount = new PageAddStakingAccount(this);
+    pageDexDeposit = new PageDexDeposit(this);
+    pageDexWithdraw = new PageDexWithdraw(this);
 
     pageImportWallet->setVisible(false);
     pageNewAccount->setVisible(false);
@@ -116,6 +118,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pageReceive->setVisible(false);
     pageSettings->setVisible(false);
     pageAddStakingAccount->setVisible(false);
+    pageDexDeposit->setVisible(false);
+    pageDexWithdraw->setVisible(false);
     ui->mainTabWidget->setVisible(false);
 
 

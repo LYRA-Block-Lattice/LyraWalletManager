@@ -23,6 +23,9 @@ PageSend *pageSend;
 PageReceive *pageReceive;
 PageAddStakingAccount *pageAddStakingAccount;
 
+PageDexDeposit *pageDexDeposit;
+PageDexWithdraw *pageDexWithdraw;
+
 PageSettings *pageSettings;
 
 /**********************************************************************************/
@@ -97,6 +100,8 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
     pageReceive->setVisible(false);
     pageSettings->setVisible(false);
     pageAddStakingAccount->setVisible(false);
+    pageDexDeposit->setVisible(false);
+    pageDexWithdraw->setVisible(false);
     mainTabWidget->setVisible(false);
     switch(page) {
     case Global::Page::OPEN_WALLET:
@@ -125,7 +130,7 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
         break;
     case Global::Page::TRANSACTION_DETAIL:
         pageTransactionDetail->setVisible(true);
-        pageTransactionDetail->open((RpcClass::History::entry_t *) arg1);
+        pageTransactionDetail->open(arg1);
         break;
     case Global::Page::SEND:
         pageSend->setVisible(true);
@@ -142,6 +147,14 @@ void Global::Page::goManagerPage(Global::Page::PAGE page, void *arg1) {
     case Global::Page::ADD_STAKING_ACCOUNT:
         pageAddStakingAccount->setVisible(true);
         pageAddStakingAccount->open();
+        break;
+    case Global::Page::DEX_DEPOSIT:
+        pageDexDeposit->setVisible(true);
+        pageDexDeposit->open(arg1);
+        break;
+    case Global::Page::DEX_WITHDRAW:
+        pageDexWithdraw->setVisible(true);
+        pageDexWithdraw->open(arg1);
         break;
     default:
         mainTabWidget->setVisible(true);

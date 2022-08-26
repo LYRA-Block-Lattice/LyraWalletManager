@@ -13,6 +13,8 @@
 
 #include "page/account/pageaccount.h"
 #include "page/dex/pagedex.h"
+#include "page/dex/pagedexwithdraw.h"
+#include "page/dex/pagedexdeposit.h"
 #include "page/more/pagemore.h"
 #include "page/staking/pagestaking.h"
 #include "page/swap/pageswap.h"
@@ -70,6 +72,9 @@ extern PageSend *pageSend;
 extern PageReceive *pageReceive;
 extern PageAddStakingAccount *pageAddStakingAccount;
 
+extern PageDexDeposit *pageDexDeposit;
+extern PageDexWithdraw *pageDexWithdraw;
+
 extern PageSettings *pageSettings;
 
 extern double yScale;
@@ -107,19 +112,22 @@ namespace Global {
             DEX,
             MORE,
 
-            IMPORT_WALLET = 10,
+            IMPORT_WALLET,
             NEW_ACCOUNT,
             NEW_WALLET,
             OPEN_WALLET,
             RECOVER_ACCOUNT,
 
-            HISTORY = 20,
+            HISTORY,
             TRANSACTION_DETAIL,
             SEND,
             RECEIVE,
             ADD_STAKING_ACCOUNT,
 
-            SETTINGS = 30,
+            DEX_WITHDRAW,
+            DEX_DEPOSIT,
+
+            SETTINGS,
         }PAGE;
 
         //static void backManagerPage();

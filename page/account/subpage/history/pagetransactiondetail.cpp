@@ -103,26 +103,27 @@ PageTransactionDetail::~PageTransactionDetail() {
     delete ui;
 }
 
-void PageTransactionDetail::open(RpcClass::History::entry_t *entry) {
-    this->entry = entry;
-    ui->lyraLogoLabel->setPixmap(QPixmap(Global::TickerIcon::get(entry->Changes[0].first)));
-    ui->heightValueLabel->setText(QString::number(entry->Height));
-    ui->directionValueLabel->setText(entry->IsReceive ? "Receive" : "Send");
-    ui->directionPushButton->setIcon(QPixmap(entry->IsReceive ? ":/res/ic/res/ic/arrowLeftDown.png" : ":/res/ic/res/ic/arrowRightUp.png"));
-    ui->timeStampValueLabel->setText(QDateTime::fromMSecsSinceEpoch(entry->TimeStamp).toString("yyyy/MM/dd hh:mm:ss"));
-    ui->sendAccountIdValueLabel->setText(Global::Util::truncateIdHash(entry->SendAccountId, 17));
-    ui->sendHashValueLabel->setText(Global::Util::truncateIdHash(entry->SendHash, 17));
-    ui->receiveAccountIdValueLabel->setText(Global::Util::truncateIdHash(entry->RecvAccountId, 17));
-    ui->receiveHashValueLabel->setText(Global::Util::truncateIdHash(entry->RecvHash, 17));
+void PageTransactionDetail::open(void *entry) {
+    RpcClass::History::entry_t *Entry = (RpcClass::History::entry_t *)entry;
+    this->entry = Entry;
+    ui->lyraLogoLabel->setPixmap(QPixmap(Global::TickerIcon::get(Entry->Changes[0].first)));
+    ui->heightValueLabel->setText(QString::number(Entry->Height));
+    ui->directionValueLabel->setText(Entry->IsReceive ? "Receive" : "Send");
+    ui->directionPushButton->setIcon(QPixmap(Entry->IsReceive ? ":/res/ic/res/ic/arrowLeftDown.png" : ":/res/ic/res/ic/arrowRightUp.png"));
+    ui->timeStampValueLabel->setText(QDateTime::fromMSecsSinceEpoch(Entry->TimeStamp).toString("yyyy/MM/dd hh:mm:ss"));
+    ui->sendAccountIdValueLabel->setText(Global::Util::truncateIdHash(Entry->SendAccountId, 17));
+    ui->sendHashValueLabel->setText(Global::Util::truncateIdHash(Entry->SendHash, 17));
+    ui->receiveAccountIdValueLabel->setText(Global::Util::truncateIdHash(Entry->RecvAccountId, 17));
+    ui->receiveHashValueLabel->setText(Global::Util::truncateIdHash(Entry->RecvHash, 17));
     QString tmp;
     QPair<QString, double>tmpPair;
-    foreach(tmpPair, entry->Changes) {
+    foreach(tmpPair, Entry->Changes) {
         tmp.append(QString::asprintf("%s %s\n", Global::Util::normaliseNumber(tmpPair.second).toUtf8().data(), tmpPair.first.toUtf8().data()));
     }
     if(tmp.length() > 1)
         ui->amountTransferedValueLabel->setText(tmp.left(tmp.length() - 1));
     tmp.clear();
-    foreach(tmpPair, entry->Balances) {
+    foreach(tmpPair, Entry->Balances) {
         tmp.append(QString::asprintf("%s %s\n", Global::Util::normaliseNumber(tmpPair.second).toUtf8().data(), tmpPair.first.toUtf8().data()));
     }
     if(tmp.length() > 1)

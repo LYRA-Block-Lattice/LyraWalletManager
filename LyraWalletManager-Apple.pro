@@ -46,6 +46,7 @@ SOURCES += \
     crypto/ecc.cpp \
     crypto/signatures.cpp \
     extensions/qrcodegen.cpp \
+    external/externaladdressvalidator.cpp \
     global.cpp \
     globallyra.cpp \
     main.cpp \
@@ -96,6 +97,7 @@ HEADERS += \
     crypto/ecc.h \
     crypto/signatures.h \
     extensions/qrcodegen.h \
+    external/externaladdressvalidator.h \
     global.h \
     color.h \
     globallyra.h \

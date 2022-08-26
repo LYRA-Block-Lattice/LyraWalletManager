@@ -230,7 +230,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>230</y>
+     <y>220</y>
      <width>231</width>
      <height>35</height>
     </rect>

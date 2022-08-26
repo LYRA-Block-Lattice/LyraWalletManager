@@ -20,7 +20,7 @@ class PageTransactionDetail : public QWidget
 public:
     explicit PageTransactionDetail(QWidget *parent = nullptr);
     ~PageTransactionDetail();
-    void open(RpcClass::History::entry_t *entry);
+    void open(void *entry);
     void close();
     void setScale();
     void setStyle();

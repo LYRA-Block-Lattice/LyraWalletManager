@@ -119,9 +119,9 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>140</y>
      <width>291</width>
-     <height>211</height>
+     <height>231</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -140,6 +140,35 @@ QPushButton:pressed {
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
+   <widget class="QLabel" name="statusLabel">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>90</y>
+      <width>231</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-style: solid;
+border-radius: 5px;
+border-width: 1px;
+border-color: lightgrey;
+background-color: rgb(255, 254, 173);</string>
+    </property>
+    <property name="text">
+     <string>STATUS</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="amountGroupBox">
    <property name="geometry">
@@ -147,7 +176,7 @@ QPushButton:pressed {
      <x>10</x>
      <y>70</y>
      <width>291</width>
-     <height>81</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -202,7 +231,7 @@ QPushButton:pressed {
     </property>
     <property name="icon">
      <iconset resource="../../../res.qrc">
-      <normaloff>:/res/ic/res/ic/paste.png</normaloff>:/res/ic/res/ic/paste.png</iconset>
+      <normaloff>:/res/ic/res/ic/max.png</normaloff>:/res/ic/res/ic/max.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -257,11 +286,16 @@ QLineEdit{
    <widget class="QPushButton" name="availablePushButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>251</width>
+      <x>10</x>
+      <y>40</y>
+      <width>231</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
@@ -444,35 +478,6 @@ QPushButton:disabled {
    </property>
    <property name="flat">
     <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="statusLabel">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>250</y>
-     <width>231</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-style: solid;
-border-radius: 5px;
-border-width: 1px;
-border-color: lightgrey;
-background-color: rgb(255, 254, 173);</string>
-   </property>
-   <property name="text">
-    <string>STATUS</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="textInteractionFlags">
-    <set>Qt::NoTextInteraction</set>
    </property>
   </widget>
  </widget>

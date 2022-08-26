@@ -56,6 +56,7 @@ private:
     int SelectedAccountChangedCount = -1;
     networkName_e network = networkName_e::NONE;
     QList<WebClass::DexGetSuportedExtTokens::entry_t> EntryList;
+    QList<WebClass::DexGetAllWallets::entry_t> WalletsEntryList;
 signals:
     void dexGetSupportedTokensStart(QString url);
     void dexGetAllWalletsStart(QString url);

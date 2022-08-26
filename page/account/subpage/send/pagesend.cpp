@@ -167,7 +167,7 @@ void PageSend::loop() {
 
 }
 
-bool checkCameraAvailability() {
+bool PageSend::checkCameraAvailability() {
     if (QMediaDevices::videoInputs().count() > 0)
         return true;
     else
@@ -277,22 +277,18 @@ void PageSend::on_amountLineEdit_textChanged(const QString &arg1) {
 void PageSend::on_qrPushButton_clicked() {
     if(checkCameraAvailability()) {
         camera = new Camera(this);
-        connect(camera, &Camera::qrRead, this, &PageSend::on_qrCodeRead);
-        connect(camera, &Camera::windowClosed, this, &PageSend::on_qrWindowClosed);
+        connect(camera, &Camera::qrRead, this, [=](QString qr) {
+            ui->recipientAddressLineEdit->setText(qr);
+            ui->qrPushButton->setEnabled(true);
+        });
+        connect(camera, &Camera::windowClosed, this, [=]{
+            ui->qrPushButton->setEnabled(true);
+        });
         camera->show();
         ui->qrPushButton->setEnabled(false);
     } else {
         QMessageBox::critical(this, "ERROR", Tr("No camera device detected"));
     }
-}
-
-void PageSend::on_qrCodeRead(QString qr) {
-    ui->recipientAddressLineEdit->setText(qr);
-    ui->qrPushButton->setEnabled(true);
-}
-
-void PageSend::on_qrWindowClosed() {
-    ui->qrPushButton->setEnabled(true);
 }
 
 void PageSend::on_sendPushButton_clicked() {
