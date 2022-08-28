@@ -43,9 +43,9 @@
 #define MENU_BAR_HEIGHT 30
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#define FONT_OFFSET     1
+#define FONT_OFFSET     0.8
 #elif __linux__
-#define FONT_OFFSET     1
+#define FONT_OFFSET     0.8
 #else
 #define FONT_OFFSET     1
 #endif
@@ -164,10 +164,10 @@ namespace Global {
         static int scaleValueY(double value) { return (int)((double)value * yScale); }
         static int scaleValueX(double value) { return scaleValue(value); }
 
-        static QFont scaleFont(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale/* * FONT_OFFSET * xScale * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
-        static QFont scaleFont(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale/* * FONT_OFFSET * (xScale / scale) * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
-        static QFont scaleFontOffset(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale * FONT_OFFSET * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
-        static QFont scaleFontOffset(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale * FONT_OFFSET * scale * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
+        static QFont scaleFont(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale * FONT_OFFSET/* * xScale * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
+        static QFont scaleFont(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale * FONT_OFFSET/* * (xScale / scale) * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
+        static QFont scaleFontOffset(QFont font) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale*/ * FONT_OFFSET/* * SCREEN_WIDTH_DIFFERENCE*/)); return font; }
+        static QFont scaleFontOffset(QFont font, double scale) { font.setPointSize((int)((double)font.pointSize() * xScale/* * xScale*/ * FONT_OFFSET/* * scale * SCREEN_WIDTH_DIFFERENCE*/)); Q_UNUSED(scale); return font; }
 
         static QRect scaleRect(QRect rect) { return QRect((int)((double)rect.x() * xScale), (int)((double)rect.y() * xScale),
                                                           (int)((double)rect.width() * xScale), (int)((double)rect.height() * xScale)); }

@@ -139,6 +139,9 @@ color:#666666;</string>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">padding-top:0px;
 padding-bottom:0px;
@@ -152,6 +155,9 @@ text-align: center;
    </property>
    <property name="text">
     <string>?</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="tickerLabel">
@@ -258,6 +264,9 @@ color:black;</string>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">padding-top:0px;
 padding-bottom:0px;
@@ -271,6 +280,9 @@ text-align: center;
    </property>
    <property name="text">
     <string>?</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QFrame" name="headerFrame">
