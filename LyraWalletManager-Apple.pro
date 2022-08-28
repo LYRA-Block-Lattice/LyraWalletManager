@@ -96,6 +96,7 @@ HEADERS += \
     crypto/base58Encoding.h \
     crypto/ecc.h \
     crypto/signatures.h \
+    errors.h \
     extensions/qrcodegen.h \
     external/externaladdressvalidator.h \
     global.h \

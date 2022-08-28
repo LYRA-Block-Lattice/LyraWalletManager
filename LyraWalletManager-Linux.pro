@@ -45,7 +45,9 @@ SOURCES += \
     crypto/ecc.cpp \
     crypto/signatures.cpp \
     extensions/qrcodegen.cpp \
+    external/externaladdressvalidator.cpp \
     global.cpp \
+    globallyra.cpp \
     main.cpp \
     mainwindow.cpp \
     api/rpc/rpcclass.cpp \
@@ -65,9 +67,18 @@ SOURCES += \
     page/accountManagement/pageopenwallet.cpp \
     page/accountManagement/pagerecoveraccount.cpp \
     page/dex/pagedex.cpp \
+    page/dex/pagedexdeposit.cpp \
+    page/dex/pagedexlist/pagedexlist.cpp \
+    page/dex/pagedexlist/pagedexlistmain.cpp \
+    page/dex/pagedexwithdraw.cpp \
     page/more/pagemore.cpp \
     page/more/subpage/settings/pagesettings.cpp \
+    page/staking/pagestackinglist/pagestakingitemdelegate.cpp \
+    page/staking/pagestackinglist/pagestakinglist.cpp \
     page/staking/pagestaking.cpp \
+    page/staking/subpage/pageaddstakingaccount.cpp \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegate.cpp \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountlist.cpp \
     page/swap/pageswap.cpp \
     storage/storagecommon.cpp \
     storage/storageinternal.cpp \
@@ -84,7 +95,9 @@ HEADERS += \
     crypto/base58Encoding.h \
     crypto/ecc.h \
     crypto/signatures.h \
+    errors.h \
     extensions/qrcodegen.h \
+    external/externaladdressvalidator.h \
     global.h \
     color.h \
     globallyra.h \
@@ -108,9 +121,20 @@ HEADERS += \
     page/accountManagement/pageopenwallet.h \
     page/accountManagement/pagerecoveraccount.h \
     page/dex/pagedex.h \
+    page/dex/pagedexdeposit.h \
+    page/dex/pagedexlist/pagedexlist.h \
+    page/dex/pagedexlist/pagedexlistmain.h \
+    page/dex/pagedexwithdraw.h \
     page/more/pagemore.h \
     page/more/subpage/settings/pagesettings.h \
+    page/staking/pagestackinglist/pagestakingitemdelegate.h \
+    page/staking/pagestackinglist/pagestakingitemdelegateprivate.h \
+    page/staking/pagestackinglist/pagestakinglist.h \
     page/staking/pagestaking.h \
+    page/staking/subpage/pageaddstakingaccount.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegate.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountitemdelegateprivate.h \
+    page/staking/subpage/pageaddstakingaccountlist/pagestakingaddaccountlist.h \
     page/swap/pageswap.h \
     storage/storagecommon.h \
     storage/storageinternal.h \
@@ -134,9 +158,14 @@ FORMS += \
     page/accountManagement/pageopenwallet.ui \
     page/accountManagement/pagerecoveraccount.ui \
     page/dex/pagedex.ui \
+    page/dex/pagedexdeposit.ui \
+    page/dex/pagedexlist/pagedexlist.ui \
+    page/dex/pagedexlist/pagedexlistmain.ui \
+    page/dex/pagedexwithdraw.ui \
     page/more/pagemore.ui \
     page/more/subpage/settings/pagesettings.ui \
     page/staking/pagestaking.ui \
+    page/staking/subpage/pageaddstakingaccount.ui \
     page/swap/pageswap.ui
 
 

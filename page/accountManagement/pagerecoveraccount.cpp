@@ -99,7 +99,7 @@ void PageRecoverAccount::on_backPushButton_clicked() {
 }
 
 void PageRecoverAccount::on_recoverAccountPushButton_clicked() {
-    StorageCommon::storageError_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text(),ui->privateKeyLineEdit->text());
+    Global::Errors::Errors_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text(),ui->privateKeyLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     Global::Page::goManagerPage(Global::Page::ACCOUNT);

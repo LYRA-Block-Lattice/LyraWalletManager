@@ -86,8 +86,9 @@ extern int ScreenHeight;
 extern networkName_e Net;
 extern QList<QList<QPair<QString,QString>>> NodeList;
 
+#define DEFAULT_WALLET_EXTENSION    ".lyr"
 #define COMPOSE_WALLET_PARH     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
-#define COMPOSE_WALLET_NAME     COMPOSE_WALLET_PARH + QDir::separator() + Global::Wallet::Name::get() + ".lyr"
+#define COMPOSE_WALLET_NAME     COMPOSE_WALLET_PARH + QDir::separator() + Global::Wallet::Name::get() + DEFAULT_WALLET_EXTENSION
 #define COMPOSE_SETTINGS_PARH     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
 #define COMPOSE_SETTINGS_NAME     COMPOSE_SETTINGS_PARH + QDir::separator() + Global::Wallet::Name::get() + "_settings.cfg"
 
@@ -462,36 +463,36 @@ namespace Global {
         INVALID_PASSWORD
         */
     public:
-        static bool show(QWidget *parent, StorageCommon::storageError_e err) {
+        static bool show(QWidget *parent, Global::Errors::Errors_e err) {
             switch(err) {
-            case StorageCommon::ALREADY_EXISTS:
+            case Global::Errors::ALREADY_EXISTS:
                 QMessageBox::critical(parent, "ERROR", "A file with this name already exists.");
                 break;
-            case StorageCommon::FILE_NOT_EXISTS:
+            case Global::Errors::FILE_NOT_EXISTS:
                 QMessageBox::critical(parent, "ERROR", "The file with this name does not exist.");
                 break;
-            case StorageCommon::INVALID_NAME:
+            case Global::Errors::INVALID_NAME:
                 QMessageBox::critical(parent, "ERROR", "The name have invalid format.");
                 break;
-            case StorageCommon::CANNOT_SAVE:
+            case Global::Errors::CANNOT_SAVE:
                 QMessageBox::critical(parent, "ERROR", "Unable to save the wallet file.");
                 break;
-            case StorageCommon::CANNOT_READ:
+            case Global::Errors::CANNOT_READ:
                 QMessageBox::critical(parent, "ERROR", "Unable to read the wallet file.");
                 break;
-            case StorageCommon::INVALID_FILE:
+            case Global::Errors::INVALID_FILE:
                 QMessageBox::critical(parent, "ERROR", "Invalid file format.");
                 break;
-            case StorageCommon::FILE_PROTECTED:
+            case Global::Errors::FILE_PROTECTED:
                 QMessageBox::critical(parent, "ERROR", "The file is protected.");
                 break;
-            case StorageCommon::ACCOUNT_NOT_FOUND:
+            case Global::Errors::ACCOUNT_NOT_FOUND:
                 QMessageBox::critical(parent, "ERROR", "Account not found.");
                 break;
-            case StorageCommon::INVALID_PASSWORD:
+            case Global::Errors::INVALID_PASSWORD:
                 QMessageBox::critical(parent, "ERROR", "Invalid password.");
                 break;
-            case StorageCommon::INVALID_PRIVATE_KEY:
+            case Global::Errors::INVALID_PRIVATE_KEY:
                 QMessageBox::critical(parent, "ERROR", "Invalid private key.");
                 break;
             default:

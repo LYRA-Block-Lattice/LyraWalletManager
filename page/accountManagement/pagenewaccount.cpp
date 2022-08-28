@@ -106,7 +106,7 @@ void PageNewAccount::on_backPushButton_clicked() {
 
 
 void PageNewAccount::on_createAccountPushButton_clicked() {
-    StorageCommon::storageError_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text());
+    Global::Errors::Errors_e err = StorageInternal::accountCreate(ui->accountNameLineEdit->text(), ui->walletPasswordLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     Global::Page::goManagerPage(Global::Page::ACCOUNT);

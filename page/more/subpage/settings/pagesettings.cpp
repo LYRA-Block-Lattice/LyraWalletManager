@@ -8,6 +8,7 @@
 #include "color.h"
 #include "style.h"
 #include "storage/storagesettings.h"
+#include "storage/storageinternal.h"
 
 PageSettings::PageSettings(QWidget *parent) :
     QWidget(parent),
@@ -119,7 +120,7 @@ void PageSettings::on_networkComboBox_currentIndexChanged(int index) {
 }
 
 void PageSettings::on_backupWalletPushButton_clicked() {
-
+    StorageInternal::walletExport();
 }
 
 

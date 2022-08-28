@@ -72,9 +72,8 @@ void PageImportWallet::on_backPushButton_clicked() {
 
 
 void PageImportWallet::on_importWalletPushButton_clicked() {
-    QMessageBox msgBox;
-    msgBox.setText("The document has been modified.");
-    msgBox.exec();
+    if(StorageInternal::walletImport(ui->walletNameLineEdit->text()))
+        Global::Page::goManagerPage(Global::Page::OPEN_WALLET);
 }
 
 

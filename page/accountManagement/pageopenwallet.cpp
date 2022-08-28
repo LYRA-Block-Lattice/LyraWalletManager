@@ -117,7 +117,7 @@ void PageOpenWallet::on_showHidePushButton_clicked() {
 
 void PageOpenWallet::on_openWalletPushButton_clicked(){
     Global::Wallet::Name::set(ui->walletNameLineEdit->text());
-    StorageCommon::storageError_e err = StorageInternal::walletRead(ui->walletPasswordLineEdit->text());
+    Global::Errors::Errors_e err = StorageInternal::walletRead(ui->walletPasswordLineEdit->text());
     if(Global::Error::show(this, err))
         return;
     if(Global::Account::getAccountList().count() == 0)

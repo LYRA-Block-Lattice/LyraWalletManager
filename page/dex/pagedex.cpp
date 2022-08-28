@@ -157,8 +157,6 @@ void PageDex::dexGetSupportedTokens() {
             page->repaint();
             dexGetAllWalles();
         }
-        //progressLabel->setVisible(false);
-        //progressMovie->stop();
     });
     connect(dexGetSupportedTokensFetchWorker, &WebGet::resultError, this, [=](QString s) {
         Q_UNUSED(s)
@@ -172,8 +170,6 @@ void PageDex::dexGetSupportedTokens() {
 }
 
 void PageDex::dexGetAllWalles() {
-    //progressLabel->setVisible(true);
-    //progressMovie->start();
     dexGetAllWalletsFetchWorker = new WebGet;
     dexGetAllWalletsFetchWorkerThread = new QThread;
     dexGetAllWalletsFetchWorker->moveToThread(dexGetAllWalletsFetchWorkerThread);

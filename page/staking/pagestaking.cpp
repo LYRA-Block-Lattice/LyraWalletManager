@@ -111,9 +111,9 @@ void PageStaking::setScale() {
     ui->titleLabel->setFont(Global::Layout::scaleFontOffset(TitleLabelQFontBack));
 
     StakingList->setGeometry(QRect(0,
-                                   Global::Layout::scaleValueX(61),
+                                   Global::Layout::scaleValueX(52),
                                    Parent->geometry().width(),
-                                   Global::Layout::scaleValueX(410 - 61)));
+                                   Global::Layout::scaleValueX(410 - 52)));
 
     ui->stakePushButton->setGeometry(Global::Layout::scaleRect(StakePushButtonQRectBack));
     ui->stakePushButton->setFont(Global::Layout::scaleFontOffset(StakePushButtonQFontBack));
